@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nusrah</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Nusrah - Aid that anchors you to Jannah">
+  <link rel="icon" type="image/png" href="/nusrah-logo.png">
+  <!-- Razorpay Checkout SDK Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Apply saved theme immediately, before Angular renders, to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('nusrah-theme');
+        if (savedTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F]">
+
+  <!-- Top Navbar -->
+  <nav class="bg-[#F2E9D8] dark:bg-[#221D12] border-b border-[#E2D3B8] dark:border-[#4F4534] px-4 sm:px-6 lg:px-8 py-3 sm:py-4 shadow-xs sticky top-0 z-30">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center gap-2 sm:gap-3">
+        <img src="nusrah-logo.png" alt="Nusrah" class="h-9 sm:h-10 w-auto object-contain shrink-0">
+        <span class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-lg">Nusrah</span>
+      </div>
+
+      <!-- Desktop user info -->
+      <div class="hidden sm:flex items-center gap-4">
+        <span class="text-xs font-semibold text-[#5C4433] dark:text-[#EAE5E1] bg-[#E5D8C0] dark:bg-[#393020] px-3 py-1.5 rounded-xl">
+          Logged in as: <strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Admin</strong>
+        </span>
+        <button (click)="logout()" class="text-xs font-semibold text-white bg-[#B5432F] hover:bg-[#953825] px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-xs">
+          Log Out
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button (click)="toggleMobileMenu()" class="sm:hidden cursor-pointer w-10 h-10 flex items-center justify-center rounded-xl bg-[#E5D8C0] dark:bg-[#393020] text-[#3E2A1E] dark:text-[#EBE4E0] active:scale-95 transition" aria-label="Toggle menu">
+        <svg *ngIf="!mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg *ngIf="mobileMenuOpen" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown menu -->
+    <div *ngIf="mobileMenuOpen" class="sm:hidden mt-3 flex flex-col gap-2 pb-1">
+      <span class="text-xs font-semibold text-[#5C4433] dark:text-[#EAE5E1] bg-[#E5D8C0] dark:bg-[#393020] px-3 py-2.5 rounded-xl">
+        Logged in as: <strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Admin</strong>
+      </span>
+      <button (click)="logout()" class="text-xs font-semibold text-white bg-[#B5432F] hover:bg-[#953825] px-4 py-2.5 rounded-xl transition active:scale-[0.98] shadow-xs">
+        Log Out
+      </button>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto space-y-6 sm:space-y-8 p-4 sm:p-6 lg:p-8">
+
+    <!-- Header -->
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Admin Control Center</h1>
+        <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs sm:text-sm mt-1">Manage platform campaigns, review volunteer submissions, and oversee volunteers.</p>
+      </div>
+
+      <!-- Tab Bar Navigation -->
+      <div class="flex bg-[#E5D8C0] dark:bg-[#393020] p-1.5 rounded-xl gap-2 w-full md:w-auto">
+        <button
+          (click)="setActiveTab('campaigns')"
+          [ngClass]="activeTab === 'campaigns' ? 'bg-[#F2E9D8] dark:bg-[#221D12] text-[#3E2A1E] dark:text-[#EBE4E0] shadow-sm font-bold' : 'text-[#5C4433] dark:text-[#EAE5E1] hover:text-[#3E2A1E] dark:hover:text-[#EBE4E0] font-medium'"
+          class="flex-1 md:flex-none px-3 sm:px-5 py-2.5 rounded-lg text-[11px] sm:text-xs transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm whitespace-nowrap">
+          Campaigns
+        </button>
+        <button
+          (click)="setActiveTab('volunteers')"
+          [ngClass]="activeTab === 'volunteers' ? 'bg-[#F2E9D8] dark:bg-[#221D12] text-[#3E2A1E] dark:text-[#EBE4E0] shadow-sm font-bold' : 'text-[#5C4433] dark:text-[#EAE5E1] hover:text-[#3E2A1E] dark:hover:text-[#EBE4E0] font-medium'"
+          class="flex-1 md:flex-none px-3 sm:px-5 py-2.5 rounded-lg text-[11px] sm:text-xs transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm whitespace-nowrap">
+          Volunteers
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: MANAGE CAMPAIGNS & PENDING APPROVALS -->
+    <!-- ========================================== -->
+    <div *ngIf="activeTab === 'campaigns'" class="space-y-6 sm:space-y-8">
+
+      <!-- Pending Campaign Approvals Section -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <div class="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Pending Campaign Approvals</h2>
+          <span class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+            {{ pendingCampaigns.length }} Pending
+          </span>
+        </div>
+
+        <div *ngIf="pendingCampaigns.length === 0" class="text-sm text-[#A89880] py-8 text-center bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl border border-dashed border-[#E2D3B8] dark:border-[#4F4534] px-4">
+          No pending campaign approvals at this time.
+        </div>
+
+        <!-- Desktop / tablet: table view -->
+        <div class="overflow-x-auto hidden sm:block" *ngIf="pendingCampaigns.length > 0">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[#E2D3B8] dark:border-[#4F4534] text-[#A89880] font-medium text-xs uppercase tracking-wider">
+                <th class="p-4">Campaign</th>
+                <th class="p-4">Location & Haajah</th>
+                <th class="p-4">Description</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#E2D3B8] dark:divide-[#4F4534]">
+              <tr *ngFor="let camp of pendingCampaigns" class="hover:bg-[#F8F2E6] dark:hover:bg-[#1F1A0F] text-sm">
+                <td class="p-4 flex items-center gap-3">
+                  <img [src]="camp.image_url || 'https://via.placeholder.com/150'" class="w-12 h-12 rounded-xl object-cover border border-[#E2D3B8] dark:border-[#4F4534]">
+                  <div>
+                    <span class="font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] block">{{ camp.title }}</span>
+                    <span class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">By: {{ camp.user_email || 'Admin' }}</span>
+                  </div>
+                </td>
+                <td class="p-4 text-[#5C4433] dark:text-[#EAE5E1]">
+                  <div class="text-xs font-medium">{{ camp.location || 'No location' }}</div>
+                  <div class="text-xs text-[#B5601F] dark:text-[#DF8642] font-semibold">Haajah: ₹{{ camp.goal | number }}</div>
+                </td>
+                <td class="p-4 text-[#5C4433] dark:text-[#EAE5E1] max-w-xs truncate">
+                  <span class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">{{ camp.description || 'N/A' }}</span>
+                </td>
+                <td class="p-4 text-right space-x-2">
+                  <button (click)="approveCampaign(camp.id)" class="text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] hover:bg-[#F2DFC4] dark:hover:bg-[#332715] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Approve
+                  </button>
+                  <button (click)="rejectCampaign(camp.id)" class="text-[#B5432F] dark:text-[#D56E5C] bg-[#FBEAE5] dark:bg-[#22110C] hover:bg-[#F6DCD3] dark:hover:bg-[#26150F] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile: card view -->
+        <div class="sm:hidden space-y-3" *ngIf="pendingCampaigns.length > 0">
+          <div *ngFor="let camp of pendingCampaigns" class="bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-4 space-y-3">
+            <div class="flex items-center gap-3">
+              <img [src]="camp.image_url || 'https://via.placeholder.com/150'" class="w-14 h-14 rounded-xl object-cover border border-[#E2D3B8] dark:border-[#4F4534] shrink-0">
+              <div class="min-w-0">
+                <p class="font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm truncate">{{ camp.title }}</p>
+                <p class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1] truncate">By: {{ camp.user_email || 'Admin' }}</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-xs bg-[#F2E9D8] dark:bg-[#221D12] rounded-xl px-3 py-2">
+              <span class="text-[#5C4433] dark:text-[#EAE5E1] font-medium truncate">{{ camp.location || 'No location' }}</span>
+              <span class="text-[#B5601F] dark:text-[#DF8642] font-semibold shrink-0 ml-2">₹{{ camp.goal | number }}</span>
+            </div>
+            <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] line-clamp-2">{{ camp.description || 'N/A' }}</p>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button (click)="approveCampaign(camp.id)" class="text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] font-semibold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition">
+                Approve
+              </button>
+              <button (click)="rejectCampaign(camp.id)" class="text-[#B5432F] dark:text-[#D56E5C] bg-[#FBEAE5] dark:bg-[#22110C] font-semibold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition">
+                Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button to Open/Close Create Campaign Dropdown Form -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Campaign Actions</h3>
+          <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">Publish new campaigns directly to the live platform feed.</p>
+        </div>
+        <button (click)="showCreateCampaignForm = !showCreateCampaignForm" class="w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-medium px-5 py-2.5 rounded-xl text-xs transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-sm flex items-center justify-center gap-2">
+          <span>{{ showCreateCampaignForm ? '✕ Close Form' : '+ Publish New Campaign' }}</span>
+        </button>
+      </div>
+
+      <!-- Collapsible Dropdown Create Campaign Section -->
+      <div *ngIf="showCreateCampaignForm" class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] mb-6">Add Direct Campaign</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <input type="text" placeholder="Campaign Title" [(ngModel)]="newCampaign.title" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="text" placeholder="Location" [(ngModel)]="newCampaign.location" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="number" placeholder="Goal Amount (₹)" [(ngModel)]="newCampaign.goal" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <div>
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Category / Cause Type <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <select [(ngModel)]="newCampaign.category" class="w-full px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12] text-[#3E2A1E] dark:text-[#EBE4E0]">
+              <option value="" disabled>Select a category...</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Campaign End Date <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input type="date" [(ngModel)]="newCampaign.end_date" class="w-full px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12] text-[#3E2A1E] dark:text-[#EBE4E0]">
+          </div>
+          <textarea placeholder="Short Description" [(ngModel)]="newCampaign.description" rows="2" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none md:col-span-2 lg:col-span-3 text-sm"></textarea>
+          <div class="md:col-span-2 lg:col-span-3">
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Campaign Story / Detailed Information <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <textarea placeholder="Add detailed background about the masjid, construction plans, history, community impact, etc. This is what donors will read under 'About This Campaign' on the donate page." [(ngModel)]="newCampaign.information" rows="4" class="w-full px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Primary Cover Photo</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#8F4A16] dark:file:text-[#DD7222] hover:file:bg-[#F2DFC4] dark:hover:file:bg-[#332715]">
+          </div>
+          <div class="md:col-span-2 lg:col-span-3">
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Additional Gallery Pictures (Up to 10)</label>
+            <input type="file" (change)="onAdditionalFilesSelected($event)" accept="image/*" multiple class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#8F4A16] dark:file:text-[#DD7222] hover:file:bg-[#F2DFC4] dark:hover:file:bg-[#332715]">
+            <div class="flex flex-wrap gap-2 mt-3" *ngIf="selectedAdditionalFiles.length > 0">
+              <div *ngFor="let file of selectedAdditionalFiles; let i = index" class="bg-[#E5D8C0] dark:bg-[#393020] px-3 py-1 rounded-lg text-xs flex items-center gap-2 max-w-full">
+                <span class="truncate max-w-[10rem] sm:max-w-none">{{ file.name }}</span>
+                <button (click)="removeAdditionalFile(i)" class="text-[#B5432F] dark:text-[#D56E5C] font-bold hover:text-[#8A3B24] dark:hover:text-[#CA5635] shrink-0">×</button>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-span-2 lg:col-span-3">
+            <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">Document Proofs (PDF Files)</label>
+            <input type="file" (change)="onDocumentProofsSelected($event)" accept="application/pdf" multiple class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#EEF0E4] dark:file:bg-[#1A1B13] file:text-[#4B5142] dark:file:text-[#E4E5E2] hover:file:bg-[#E4E6D6] dark:hover:file:bg-[#25261C]">
+            <div class="flex flex-wrap gap-2 mt-3" *ngIf="selectedDocumentProofs.length > 0">
+              <div *ngFor="let file of selectedDocumentProofs; let i = index" class="bg-[#EEF0E4] dark:bg-[#1A1B13] text-[#3F4438] dark:text-[#E6E7E4] px-3 py-1 rounded-lg text-xs flex items-center gap-2 border border-[#D7DAC0] dark:border-[#484A39] max-w-full">
+                <span class="truncate max-w-[10rem] sm:max-w-none">📄 {{ file.name }}</span>
+                <button (click)="removeDocumentProofFile(i)" class="text-[#B5432F] dark:text-[#D56E5C] font-bold hover:text-[#8A3B24] dark:hover:text-[#CA5635] shrink-0">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banking & UPI Details (collected upfront so a campaign is fully donation-ready at launch) -->
+        <div class="mt-6 bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+          <div>
+            <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">🏦 Banking & UPI Details</h3>
+            <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] mt-0.5">Optional at this stage, but donors can't transfer funds directly until these are filled in — add them now if you have them.</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <input type="text" placeholder="Account Holder Name" [(ngModel)]="newCampaign.bank_account_name" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12]">
+            <input type="text" placeholder="Bank Account Number" [(ngModel)]="newCampaign.bank_account_number" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12]">
+            <input type="text" placeholder="IFSC Code" [(ngModel)]="newCampaign.bank_ifsc_code" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12]">
+            <input type="text" placeholder="Bank Name & Branch" [(ngModel)]="newCampaign.bank_name" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12]">
+            <input type="text" placeholder="UPI ID (e.g. name@oksbi)" [(ngModel)]="newCampaign.upi_id" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm bg-[#F2E9D8] dark:bg-[#221D12]">
+            <div>
+              <label class="block text-xs font-medium text-[#8A7863] dark:text-[#BFB8B1] mb-1">UPI QR Code Image</label>
+              <input type="file" (change)="onCreateQrCodeSelected($event)" accept="image/*" class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#8F4A16] dark:file:text-[#DD7222] hover:file:bg-[#F2DFC4] dark:hover:file:bg-[#332715]">
+              <span *ngIf="selectedQrCodeFile" class="text-[11px] text-[#8F4A16] dark:text-[#DD7222] mt-1 block truncate">Selected: {{ selectedQrCodeFile.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <button (click)="createCampaign()" [disabled]="creatingCampaign" class="mt-6 w-full sm:w-auto bg-[#B5601F] text-white font-medium px-6 py-3 sm:py-2.5 rounded-xl hover:bg-[#8F4A16] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-sm text-xs">
+          {{ creatingCampaign ? 'Publishing...' : 'Publish Campaign' }}
+        </button>
+      </div>
+
+      <!-- Manage Existing Campaigns Grid Section -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534] space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="flex items-center gap-3 flex-wrap">
+            <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Manage Existing Campaigns</h2>
+            <span class="bg-[#F3E7D6] dark:bg-[#241C11] text-[#6B380F] dark:text-[#E0751F] text-xs font-bold px-3 py-1 rounded-full border border-[#E9D3BE] dark:border-[#493A2C] whitespace-nowrap">
+              ⭐ Featured: {{ featuredCampaignsCount }}
+            </span>
+          </div>
+
+          <!-- Search and Sort Controls -->
+          <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto">
+            <input
+              type="text"
+              [(ngModel)]="campaignSearchQuery"
+              placeholder="Search campaigns..."
+              class="px-3 py-2.5 sm:py-2 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] w-full sm:w-48">
+
+            <select
+              [(ngModel)]="campaignSortOrder"
+              class="px-3 py-2.5 sm:py-2 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full sm:w-auto">
+              <option value="asc">Funds Required: High to Low</option>
+              <option value="desc">Funds Required: Low to High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div *ngIf="filteredCampaigns.length === 0" class="text-sm text-[#A89880] py-8 text-center bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl border border-dashed border-[#E2D3B8] dark:border-[#4F4534] px-4">
+            No active campaigns found matching your criteria.
+          </div>
+
+          <!-- Campaigns Grid View -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div *ngFor="let camp of filteredCampaigns" class="bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
+
+              <div class="space-y-3">
+                <div class="relative h-40 sm:h-48 bg-[#E5D8C0] dark:bg-[#393020] rounded-xl overflow-hidden group cursor-pointer" (click)="openImageModal(camp.image_url || 'https://via.placeholder.com/150', camp.title)">
+                  <img [src]="camp.image_url || 'https://via.placeholder.com/150'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                  <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold transition">🔍 View Full Image</div>
+                  <span *ngIf="camp.category" class="absolute top-3 left-3 bg-[#3E2A1E]/85 backdrop-blur-xs text-white text-[10px] font-semibold px-2.5 py-1 rounded-full">
+                    {{ camp.category }}
+                  </span>
+                  <div class="absolute top-3 right-3 flex items-center gap-1.5">
+                    <span *ngIf="camp.is_featured" class="bg-[#6B380F] text-white text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider shadow-xs flex items-center gap-1">
+                      ⭐ Featured
+                    </span>
+                    <span [ngClass]="{'bg-amber-500 text-white': camp.status === 'Pending', 'bg-[#B5601F] text-white': camp.status === 'Active'}" class="text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider shadow-xs">
+                      {{ camp.status || 'Active' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <h3 class="text-base font-bold text-[#3E2A1E] dark:text-[#EBE4E0] truncate">{{ camp.title }}</h3>
+                  <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] line-clamp-2">{{ camp.description || camp.location || 'No description provided.' }}</p>
+                </div>
+
+                <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-3 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-1">
+                  <div class="flex justify-between text-xs font-semibold">
+                    <span class="text-[#8A7863] dark:text-[#BFB8B1]">Haajah: ₹{{ camp.goal | number }}</span>
+                    <span class="text-[#B5601F] dark:text-[#DF8642]">Raised: ₹{{ camp.raised || 0 | number }}</span>
+                  </div>
+                  <div class="w-full bg-[#E5D8C0] dark:bg-[#393020] h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-[#B5601F] h-full rounded-full" [style.width.%]="calcPercentage(camp.raised, camp.goal)"></div>
+                  </div>
+                </div>
+
+                <!-- Quick Featured Toggle Checkbox on Card -->
+                <div class="flex items-center justify-between bg-[#F3E7D6]/50 dark:bg-[#241C11]/50 px-3 py-2 rounded-xl border border-[#E9D3BE] dark:border-[#493A2C]">
+                  <span class="text-xs font-bold text-[#4A2609] dark:text-[#E3751C]">Feature on Homepage</span>
+                  <input type="checkbox" [checked]="camp.is_featured" (change)="toggleFeaturedCampaign(camp, $event)" class="w-5 h-5 text-[#6B380F] dark:text-[#E0751F] rounded cursor-pointer">
+                </div>
+              </div>
+
+              <!-- Manage Button -->
+              <div class="pt-3 border-t border-[#E2D3B8] dark:border-[#4F4534] flex items-center justify-between gap-3">
+                <span class="text-[11px] font-medium text-[#A89880] truncate">ID: {{ camp.id.substring(0, 8) }}...</span>
+                <button (click)="openCampaignManageModal(camp)" class="bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-xs flex items-center gap-1.5 shrink-0">
+                  <span>⚙️ Manage</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MANAGE VOLUNTEERS & PENDING APPROVALS -->
+    <!-- ========================================== -->
+    <div *ngIf="activeTab === 'volunteers'" class="space-y-6 sm:space-y-8">
+
+      <!-- Pending Volunteer Approvals Section -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <div class="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Pending Volunteer Approvals</h2>
+          <span class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+            {{ pendingVolunteers.length }} Pending
+          </span>
+        </div>
+
+        <div *ngIf="pendingVolunteers.length === 0" class="text-sm text-[#A89880] py-8 text-center bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl border border-dashed border-[#E2D3B8] dark:border-[#4F4534] px-4">
+          No pending volunteer approvals at this time.
+        </div>
+
+        <div class="space-y-4" *ngIf="pendingVolunteers.length > 0">
+          <div *ngFor="let vol of pendingVolunteers" class="bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-4 sm:p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+              <img [src]="vol.photo_url || 'https://via.placeholder.com/150'" class="w-12 h-12 rounded-full object-cover border border-[#E2D3B8] dark:border-[#4F4534] shrink-0">
+              <div class="min-w-0">
+                <span class="font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] block text-sm sm:text-base truncate">{{ vol.name || vol.full_name }}</span>
+                <span class="text-xs text-[#8A7863] dark:text-[#BFB8B1] block truncate">{{ vol.email }} • {{ vol.phone || 'No phone' }} • {{ vol.city || 'No city' }}</span>
+                <p class="text-xs text-[#5C4433] dark:text-[#EAE5E1] mt-1 italic line-clamp-2">{{ vol.bio || 'No bio provided' }}</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:justify-end">
+              <button (click)="approveVolunteer(vol.id)" class="w-full md:w-auto text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] hover:bg-[#F2DFC4] dark:hover:bg-[#332715] font-semibold text-xs px-4 py-2.5 md:py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-[0.98]">
+                Approve
+              </button>
+              <button (click)="rejectVolunteer(vol.id)" class="w-full md:w-auto text-[#B5432F] dark:text-[#D56E5C] bg-[#FBEAE5] dark:bg-[#22110C] hover:bg-[#F6DCD3] dark:hover:bg-[#26150F] font-semibold text-xs px-4 py-2.5 md:py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-[0.98]">
+                Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button to Open/Close Add Volunteer Dropdown Form -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <div>
+          <h3 class="text-base sm:text-lg font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Volunteer Actions</h3>
+          <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">Register new volunteer accounts directly.</p>
+        </div>
+        <button (click)="showCreateVolunteerForm = !showCreateVolunteerForm" class="w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-medium px-5 py-2.5 rounded-xl text-xs transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-sm flex items-center justify-center gap-2">
+          <span>{{ showCreateVolunteerForm ? '✕ Close Form' : '+ Add New Volunteer' }}</span>
+        </button>
+      </div>
+
+      <!-- Collapsible Dropdown Add Volunteer Section -->
+      <div *ngIf="showCreateVolunteerForm" class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] mb-6">Add New Volunteer</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <input type="text" placeholder="Volunteer Name" [(ngModel)]="newVolunteer.name" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="email" placeholder="Email Address" [(ngModel)]="newVolunteer.email" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="password" placeholder="Password" [(ngModel)]="newVolunteer.password" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="text" placeholder="Phone Number" [(ngModel)]="newVolunteer.phone" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <input type="text" placeholder="City" [(ngModel)]="newVolunteer.city" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm">
+          <textarea placeholder="Short Bio" [(ngModel)]="newVolunteer.bio" rows="1" class="px-4 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none text-sm"></textarea>
+        </div>
+        <button (click)="createVolunteer()" [disabled]="creatingVolunteer" class="mt-6 w-full sm:w-auto bg-[#B5601F] text-white font-medium px-6 py-3 sm:py-2.5 rounded-xl hover:bg-[#8F4A16] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-sm text-xs">
+          {{ creatingVolunteer ? 'Adding...' : 'Add Volunteer' }}
+        </button>
+      </div>
+
+      <!-- Manage Volunteers Grid Section -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534] space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Manage Volunteers</h2>
+
+          <!-- Volunteer Search and Sort Controls -->
+          <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto">
+            <input
+              type="text"
+              [(ngModel)]="volunteerSearchQuery"
+              placeholder="Search volunteers..."
+              class="px-3 py-2.5 sm:py-2 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] w-full sm:w-48">
+
+            <select
+              [(ngModel)]="volunteerSortOrder"
+              class="px-3 py-2.5 sm:py-2 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full sm:w-auto">
+              <option value="asc">Name: A to Z</option>
+              <option value="desc">Name: Z to A</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div *ngIf="filteredVolunteers.length === 0" class="text-sm text-[#A89880] py-8 text-center bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl border border-dashed border-[#E2D3B8] dark:border-[#4F4534] px-4">
+            No volunteers found matching your criteria.
+          </div>
+
+          <!-- Volunteers Grid View -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div *ngFor="let vol of filteredVolunteers" class="bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
+
+              <div class="space-y-3">
+                <div class="flex items-center gap-4">
+                  <img [src]="vol.photo_url || 'https://via.placeholder.com/150'" (click)="openImageModal(vol.photo_url || 'https://via.placeholder.com/150', vol.name || vol.full_name || 'Volunteer Avatar')" class="w-14 h-14 rounded-full object-cover border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs cursor-pointer hover:opacity-90 transition shrink-0" title="Click to view full image">
+                  <div class="overflow-hidden">
+                    <h3 class="text-base font-bold text-[#3E2A1E] dark:text-[#EBE4E0] truncate">{{ vol.name || vol.full_name }}</h3>
+                    <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">{{ vol.role }}</span>
+                  </div>
+                </div>
+
+                <div class="space-y-1 text-xs text-[#8A7863] dark:text-[#BFB8B1]">
+                  <p class="truncate">📧 {{ vol.email }}</p>
+                  <p class="truncate">📞 {{ vol.phone || 'No phone' }} • 📍 {{ vol.city || 'No city' }}</p>
+                </div>
+
+                <p class="text-xs text-[#5C4433] dark:text-[#EAE5E1] italic bg-[#F8F2E6] dark:bg-[#1F1A0F] p-2.5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] line-clamp-2">Bio: {{ vol.bio || 'N/A' }}</p>
+              </div>
+
+              <!-- Manage Button -->
+              <div class="pt-3 border-t border-[#E2D3B8] dark:border-[#4F4534] flex items-center justify-between gap-3">
+                <span class="text-[11px] font-medium text-[#A89880] truncate">Assigned: {{ getVolunteerAssignedCampaigns(vol.id).length }}</span>
+                <button (click)="openVolunteerManageModal(vol)" class="bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md shadow-xs flex items-center gap-1.5 shrink-0">
+                  <span>⚙️ Manage</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ========================================== -->
+<!-- CAMPAIGN MANAGEMENT MODAL POPUP (mobile bottom-sheet / desktop dialog) -->
+<!-- ========================================== -->
+<div *ngIf="selectedCampaignModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4 overflow-y-auto">
+  <div class="relative w-full sm:max-w-3xl bg-[#F2E9D8] dark:bg-[#221D12] rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#E2D3B8] dark:border-[#4F4534] sm:my-8 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+
+    <!-- Mobile drag handle -->
+    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0">
+      <div class="w-10 h-1.5 rounded-full bg-[#DCC9A8] dark:bg-[#4F4534]"></div>
+    </div>
+
+    <!-- Modal Header -->
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-[#E2D3B8] dark:border-[#4F4534] flex justify-between items-center bg-[#F8F2E6] dark:bg-[#1F1A0F] shrink-0">
+      <div class="min-w-0">
+        <h2 class="text-base sm:text-lg font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Manage Campaign</h2>
+        <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] truncate">{{ selectedCampaignModal.title }}</p>
+      </div>
+      <button (click)="closeCampaignManageModal()" class="text-[#A89880] hover:text-[#4A3627] dark:hover:text-[#EAE5E1] text-lg font-bold bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] w-8 h-8 rounded-full flex items-center justify-center transition shadow-xs shrink-0 ml-3">✕</button>
+    </div>
+
+    <!-- Modal Body Content -->
+    <div class="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6">
+
+      <!-- Featured Campaign Status Toggle inside Modal -->
+      <div class="bg-[#F3E7D6] dark:bg-[#241C11] p-4 rounded-xl border border-[#DDBE9E] dark:border-[#64513D] flex items-center justify-between gap-3">
+        <div>
+          <h3 class="font-bold text-[#4A2609] dark:text-[#E3751C] text-sm flex items-center gap-1.5">⭐ Homepage Featured Status</h3>
+          <p class="text-xs text-[#6B380F] dark:text-[#E0751F]">Feature this campaign prominently in the homepage slideshow.</p>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer shrink-0">
+          <input type="checkbox" [checked]="selectedCampaignModal.is_featured" (change)="toggleFeaturedCampaign(selectedCampaignModal)" class="sr-only peer">
+          <div class="w-11 h-6 bg-[#E5D8C0] dark:bg-[#393020] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#F2E9D8] dark:after:bg-[#221D12] after:border-[#DCC9A8] dark:after:border-[#5D513C] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#6B380F]"></div>
+        </label>
+      </div>
+
+      <!-- Featured Slideshow Highlights (only relevant once the toggle above is on) -->
+      <div *ngIf="selectedCampaignModal.is_featured" class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-2">
+        <label class="text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] flex items-center gap-1.5">🎬 Slideshow Highlight Details</label>
+        <p class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1]">A short, important summary shown over the campaign's cover photo in the homepage slideshow (e.g. urgency, key stats, what's needed most). Keep it brief — a sentence or two works best.</p>
+        <textarea [(ngModel)]="selectedCampaignModal.featured_highlights" placeholder="e.g. This masjid serves over 500 families and urgently needs a new roof before the rainy season. Just ₹1.2L left to reach the goal!" rows="3" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs w-full outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]"></textarea>
+        <button (click)="saveCampaignEdit(selectedCampaignModal)" class="w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">Save Highlight Details</button>
+      </div>
+
+      <!-- 1. Edit Details Section -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">✏️ Edit Campaign Information</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input [(ngModel)]="selectedCampaignModal.title" placeholder="Campaign Title" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input [(ngModel)]="selectedCampaignModal.location" placeholder="Location" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input type="number" [(ngModel)]="selectedCampaignModal.goal" placeholder="Goal Amount" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input type="number" [(ngModel)]="selectedCampaignModal.raised_input" placeholder="Raised Amount" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <div>
+            <label class="text-[11px] font-semibold text-[#8A7863] dark:text-[#BFB8B1] block mb-1">Category / Cause Type <span class="font-normal italic text-[#A89880]">(saves instantly)</span></label>
+            <select [(ngModel)]="selectedCampaignModal.category" (change)="updateCampaignCategory(selectedCampaignModal)" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+              <option value="" disabled>Select a category...</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+          </div>
+        </div>
+        <textarea [(ngModel)]="selectedCampaignModal.description" placeholder="Description" rows="3" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs w-full outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]"></textarea>
+
+        <div>
+          <label class="text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] block mb-1.5">ℹ️ Masjid Information (shown to donors on the donate page)</label>
+          <textarea [(ngModel)]="selectedCampaignModal.information" placeholder="Add detailed background about the masjid, construction plans, history, community impact, etc. This will appear under 'About This Campaign & Masjid Project' on the donate page." rows="5" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs w-full outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]"></textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-2">
+          <button (click)="saveCampaignEdit(selectedCampaignModal)" class="w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">Save Text Details</button>
+          <button (click)="updateCampaignFunds(selectedCampaignModal)" class="w-full sm:w-auto bg-[#3E2A1E] hover:bg-[#2E2015] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">Update Funds</button>
+        </div>
+      </div>
+
+      <!-- Edit Bank Details & UPI Section with Delete Feature -->
+      <div class="bg-[#F2E9D8]/60 dark:bg-[#221D12]/60 p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">🏦 Edit Bank & UPI Details</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">Account Holder Name</label>
+            <input [(ngModel)]="selectedCampaignModal.bank_account_name" placeholder="e.g. John Doe / Charitable Trust" class="px-3 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">Bank Account Number</label>
+            <input [(ngModel)]="selectedCampaignModal.bank_account_number" placeholder="e.g. 123456789034" class="px-3 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">IFSC Code</label>
+            <input [(ngModel)]="selectedCampaignModal.bank_ifsc_code" placeholder="e.g. SBIN0001234" class="px-3 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">Bank Name & Branch</label>
+            <input [(ngModel)]="selectedCampaignModal.bank_name" placeholder="e.g. State Bank of India, Main Branch" class="px-3 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">UPI ID</label>
+            <input [(ngModel)]="selectedCampaignModal.upi_id" placeholder="e.g. username@oksbi" class="px-3 py-2.5 border border-[#E2D3B8] dark:border-[#4F4534] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] w-full">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">Upload UPI QR Code Image</label>
+            <input type="file" (change)="onQrCodeUploadSelected($event, selectedCampaignModal.id)" accept="image/*" class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#6B380F] dark:file:text-[#E0751F]">
+          </div>
+        </div>
+
+        <!-- Preview existing QR code if present -->
+        <div *ngIf="selectedCampaignModal.upi_qr_code_url" class="flex items-center gap-4 pt-2">
+          <img [src]="selectedCampaignModal.upi_qr_code_url" (click)="openImageModal(selectedCampaignModal.upi_qr_code_url, 'UPI QR Code')" class="w-16 h-16 object-cover rounded-lg border border-[#E2D3B8] dark:border-[#4F4534] cursor-pointer shadow-xs hover:opacity-90">
+          <span class="text-xs text-[#6B380F] dark:text-[#E0751F] italic">Current UPI QR Code uploaded. Click to enlarge.</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-end pt-2 gap-2 sm:gap-3">
+          <button (click)="deleteCampaignBankDetails(selectedCampaignModal)" class="w-full sm:w-auto bg-[#B5432F] hover:bg-[#953825] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs flex items-center justify-center gap-1">
+            <span>🗑️ Delete Bank & UPI Details</span>
+          </button>
+          <button (click)="saveCampaignBankDetails(selectedCampaignModal)" class="w-full sm:w-auto bg-[#8F4A16] hover:bg-[#4A3627] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+            Save Bank & UPI Details
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Cover Photo & Media Management -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">🖼️ Media & Cover Photo</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="flex flex-col gap-2">
+            <label class="text-xs font-semibold text-[#5C4433] dark:text-[#EAE5E1]">Change Cover Photo</label>
+            <input type="file" (change)="onPhotoUploadSelected($event, selectedCampaignModal.id)" accept="image/*" class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#8F4A16] dark:file:text-[#DD7222]">
+          </div>
+          <div class="flex flex-col gap-2 sm:col-span-2">
+            <label class="text-xs font-semibold text-[#5C4433] dark:text-[#EAE5E1]">Add Gallery Progress Pictures</label>
+            <input type="file" (change)="onGalleryUploadSelected($event, selectedCampaignModal.id)" accept="image/*" multiple class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#F2DFC4] dark:file:bg-[#332715] file:text-[#8F4A16] dark:file:text-[#DD7222]">
+          </div>
+        </div>
+
+        <!-- Progress Photos List & Deletion -->
+        <div class="space-y-2 pt-2">
+          <span class="text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] block">Existing Progress Photos ({{ selectedCampaignModal.additional_images?.length || 0 }})</span>
+          <div *ngIf="!selectedCampaignModal.additional_images || selectedCampaignModal.additional_images.length === 0" class="text-xs text-[#A89880] italic">No additional progress photos uploaded.</div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" *ngIf="selectedCampaignModal.additional_images?.length > 0">
+            <div *ngFor="let imgUrl of selectedCampaignModal.additional_images; let i = index" class="relative group rounded-xl overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] h-24">
+              <img [src]="imgUrl" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition gap-2">
+                <button (click)="openImageModal(imgUrl, 'Progress Photo')" class="bg-[#F2E9D8]/80 dark:bg-[#221D12]/80 text-[#3E2A1E] dark:text-[#EBE4E0] p-1 rounded-md text-xs font-bold hover:bg-[#F2E9D8] dark:hover:bg-[#221D12]">🔍</button>
+                <button (click)="deleteProgressImage(selectedCampaignModal, i)" class="bg-[#B5432F] text-white p-1 rounded-md text-xs font-bold hover:bg-[#953825]">🗑️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Document Proofs (PDFs) Section -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">📄 Document Proofs (PDFs)</h3>
+        <div>
+          <label class="text-xs font-semibold text-[#5C4433] dark:text-[#EAE5E1] block mb-1">Upload Additional Document Proofs</label>
+          <input type="file" (change)="onDocumentUploadSelected($event, selectedCampaignModal.id)" accept="application/pdf" multiple class="w-full text-xs text-[#8A7863] dark:text-[#BFB8B1] file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:font-semibold file:bg-[#EEF0E4] dark:file:bg-[#1A1B13] file:text-[#4B5142] dark:file:text-[#E4E5E2]">
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <span class="text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] block">Existing Verification Documents ({{ selectedCampaignModal.document_proofs?.length || 0 }})</span>
+          <div *ngIf="!selectedCampaignModal.document_proofs || selectedCampaignModal.document_proofs.length === 0" class="text-xs text-[#A89880] italic">No document proofs uploaded.</div>
+          <div class="space-y-2" *ngIf="selectedCampaignModal.document_proofs?.length > 0">
+            <div *ngFor="let docUrl of selectedCampaignModal.document_proofs; let i = index" class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#F2E9D8] dark:bg-[#221D12] p-3 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] text-xs">
+              <a [href]="docUrl" target="_blank" class="text-[#5B6048] dark:text-[#DBDCD6] hover:underline font-semibold truncate max-w-md flex items-center gap-2">
+                <span>📄 Document Proof #{{ i + 1 }}</span>
+              </a>
+              <button (click)="deleteDocumentProof(selectedCampaignModal, i)" class="text-[#B5432F] dark:text-[#D56E5C] hover:bg-[#FBEAE5] dark:hover:bg-[#22110C] px-3 py-1.5 sm:py-1 rounded-lg font-bold transition w-full sm:w-auto text-center">
+                Delete Document
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Volunteer Assignments (Separated into Already Assigned & Assign Sections) -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-6">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">🤝 Volunteer Assignments</h3>
+
+        <!-- Already Assigned Section -->
+        <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-[#3E2A1E] dark:text-[#EBE4E0] uppercase tracking-wider">Already Assigned Volunteers</h4>
+            <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-semibold text-[10px] px-2 py-0.5 rounded-full">
+              {{ getCampaignAssignedVolunteers(selectedCampaignModal.id).length }} Assigned
+            </span>
+          </div>
+
+          <div *ngIf="getCampaignAssignedVolunteers(selectedCampaignModal.id).length === 0" class="text-xs text-[#A89880] italic py-2">
+            No volunteers assigned to this campaign yet.
+          </div>
+
+          <div class="flex flex-wrap gap-2" *ngIf="getCampaignAssignedVolunteers(selectedCampaignModal.id).length > 0">
+            <div *ngFor="let vol of getCampaignAssignedVolunteers(selectedCampaignModal.id)" class="bg-[#F2DFC4] dark:bg-[#332715] text-[#3E2A1E] dark:text-[#EBE4E0] px-3 py-2 rounded-xl text-xs flex items-center gap-3 font-medium border border-[#E2D3B8] dark:border-[#4F4534] shadow-2xs">
+              <span class="flex items-center gap-1.5">👤 <strong>{{ vol.name || vol.full_name }}</strong></span>
+              <button (click)="unassignVolunteerFromCampaignModal(selectedCampaignModal.id, vol.id)" class="text-[#B5432F] dark:text-[#D56E5C] hover:text-[#7A2E1D] dark:hover:text-[#CE4E31] bg-[#F2E9D8] dark:bg-[#221D12] hover:bg-[#FBEAE5] dark:hover:bg-[#22110C] px-2 py-1 rounded-lg transition font-bold text-[11px] border border-[#E8B6A8] dark:border-[#5B3B32] flex items-center gap-1">
+                <span>Unassign ✕</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assign Section -->
+        <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-[#3E2A1E] dark:text-[#EBE4E0] uppercase tracking-wider">Assign Volunteers</h4>
+            <span class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1]">Click to assign available volunteers</span>
+          </div>
+
+          <div *ngIf="getCampaignUnassignedVolunteers(selectedCampaignModal.id).length === 0" class="text-xs text-[#A89880] italic py-2">
+            All available volunteers are already assigned to this campaign.
+          </div>
+
+          <div class="flex flex-wrap gap-2" *ngIf="getCampaignUnassignedVolunteers(selectedCampaignModal.id).length > 0">
+            <button *ngFor="let vol of getCampaignUnassignedVolunteers(selectedCampaignModal.id)" (click)="assignVolunteerToCampaignModal(selectedCampaignModal.id, vol.id)" class="bg-[#F8F2E6] dark:bg-[#1F1A0F] hover:bg-[#F2DFC4] dark:hover:bg-[#332715] border border-[#E2D3B8] dark:border-[#4F4534] hover:border-[#C97B3D] text-[#4A3627] dark:text-[#EAE5E1] hover:text-[#6B380F] dark:hover:text-[#E0751F] px-3 py-2 rounded-xl text-xs font-medium transition flex items-center gap-2 shadow-2xs">
+              <span>+ {{ vol.name || vol.full_name }}</span>
+              <span class="bg-[#E5D8C0] dark:bg-[#393020] text-[#4A3627] dark:text-[#EAE5E1] text-[10px] px-1.5 py-0.5 rounded-md">Assign</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button (click)="saveCampaignAssignments(selectedCampaignModal.id)" class="w-full sm:w-auto bg-[#3E2A1E] hover:bg-[#2E2015] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+            Save Volunteer Assignments
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. Danger Zone -->
+      <div class="bg-[#FBEAE5] dark:bg-[#22110C] p-4 sm:p-5 rounded-xl border border-[#DCA08D] dark:border-[#6E4B40] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="font-bold text-[#5C2216] dark:text-[#CE4C31] text-sm">Delete Campaign</h3>
+          <p class="text-xs text-[#B5432F] dark:text-[#D56E5C]">Permanently remove this campaign and all associated data.</p>
+        </div>
+        <button (click)="deleteCampaign(selectedCampaignModal.id)" class="w-full sm:w-auto bg-[#B5432F] hover:bg-[#953825] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+          Delete Campaign
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-t border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F] flex justify-end shrink-0">
+      <button (click)="closeCampaignManageModal()" class="w-full sm:w-auto bg-[#E5D8C0] dark:bg-[#393020] hover:bg-[#DCC9A8] dark:hover:bg-[#413725] text-[#3E2A1E] dark:text-[#EBE4E0] font-bold text-xs px-5 py-2.5 rounded-xl transition">
+        Done / Close
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- VOLUNTEER MANAGEMENT MODAL POPUP (mobile bottom-sheet / desktop dialog) -->
+<!-- ========================================== -->
+<div *ngIf="selectedVolunteerModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4 overflow-y-auto">
+  <div class="relative w-full sm:max-w-2xl bg-[#F2E9D8] dark:bg-[#221D12] rounded-t-3xl sm:rounded-2xl shadow-2xl border border-[#E2D3B8] dark:border-[#4F4534] sm:my-8 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+
+    <!-- Mobile drag handle -->
+    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0">
+      <div class="w-10 h-1.5 rounded-full bg-[#DCC9A8] dark:bg-[#4F4534]"></div>
+    </div>
+
+    <!-- Modal Header -->
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-[#E2D3B8] dark:border-[#4F4534] flex justify-between items-center bg-[#F8F2E6] dark:bg-[#1F1A0F] shrink-0">
+      <div class="min-w-0">
+        <h2 class="text-base sm:text-lg font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Manage Volunteer</h2>
+        <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] truncate">{{ selectedVolunteerModal.name || selectedVolunteerModal.full_name }}</p>
+      </div>
+      <button (click)="closeVolunteerManageModal()" class="text-[#A89880] hover:text-[#4A3627] dark:hover:text-[#EAE5E1] text-lg font-bold bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] w-8 h-8 rounded-full flex items-center justify-center transition shadow-xs shrink-0 ml-3">✕</button>
+    </div>
+
+    <!-- Modal Body Content -->
+    <div class="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-6">
+
+      <!-- 1. Edit Volunteer Details -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">✏️ Edit Volunteer Profile</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input [(ngModel)]="selectedVolunteerModal.name" placeholder="Full Name" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input [(ngModel)]="selectedVolunteerModal.email" placeholder="Email Address" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input [(ngModel)]="selectedVolunteerModal.phone" placeholder="Phone Number" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+          <input [(ngModel)]="selectedVolunteerModal.city" placeholder="City" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]">
+        </div>
+        <textarea [(ngModel)]="selectedVolunteerModal.bio" placeholder="Bio" rows="2" class="px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-xs w-full outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]"></textarea>
+
+        <div class="flex justify-end pt-2">
+          <button (click)="saveVolunteerEdit(selectedVolunteerModal)" class="w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+            Save Volunteer Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Campaign Assignments for Volunteer (Separated into Already Assigned & Assign Sections) -->
+      <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-6">
+        <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">📋 Campaign Assignments</h3>
+
+        <!-- Already Assigned Section -->
+        <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-[#3E2A1E] dark:text-[#EBE4E0] uppercase tracking-wider">Already Assigned Campaigns</h4>
+            <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-semibold text-[10px] px-2 py-0.5 rounded-full">
+              {{ getVolunteerAssignedCampaigns(selectedVolunteerModal.id).length }} Managed
+            </span>
+          </div>
+
+          <div *ngIf="getVolunteerAssignedCampaigns(selectedVolunteerModal.id).length === 0" class="text-xs text-[#A89880] italic py-2">
+            This volunteer is not assigned to any campaigns.
+          </div>
+
+          <div class="flex flex-wrap gap-2" *ngIf="getVolunteerAssignedCampaigns(selectedVolunteerModal.id).length > 0">
+            <div *ngFor="let camp of getVolunteerAssignedCampaigns(selectedVolunteerModal.id)" class="bg-[#F2DFC4] dark:bg-[#332715] text-[#3E2A1E] dark:text-[#EBE4E0] px-3 py-2 rounded-xl text-xs flex items-center gap-3 font-medium border border-[#E2D3B8] dark:border-[#4F4534] shadow-2xs">
+              <span class="flex items-center gap-1.5">📌 <strong>{{ camp.title }}</strong></span>
+              <button (click)="unassignCampaignFromVolunteerModal(selectedVolunteerModal.id, camp.id)" class="text-[#B5432F] dark:text-[#D56E5C] hover:text-[#7A2E1D] dark:hover:text-[#CE4E31] bg-[#F2E9D8] dark:bg-[#221D12] hover:bg-[#FBEAE5] dark:hover:bg-[#22110C] px-2 py-1 rounded-lg transition font-bold text-[11px] border border-[#E8B6A8] dark:border-[#5B3B32] flex items-center gap-1">
+                <span>Unassign ✕</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assign Section -->
+        <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold text-[#3E2A1E] dark:text-[#EBE4E0] uppercase tracking-wider">Assign to Campaigns</h4>
+            <span class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1]">Click to assign additional campaigns</span>
+          </div>
+
+          <div *ngIf="getVolunteerUnassignedCampaigns(selectedVolunteerModal.id).length === 0" class="text-xs text-[#A89880] italic py-2">
+            This volunteer is already assigned to all active campaigns.
+          </div>
+
+          <div class="flex flex-wrap gap-2" *ngIf="getVolunteerUnassignedCampaigns(selectedVolunteerModal.id).length > 0">
+            <button *ngFor="let camp of getVolunteerUnassignedCampaigns(selectedVolunteerModal.id)" (click)="assignCampaignToVolunteerModal(selectedVolunteerModal.id, camp.id)" class="bg-[#F8F2E6] dark:bg-[#1F1A0F] hover:bg-[#F2DFC4] dark:hover:bg-[#332715] border border-[#E2D3B8] dark:border-[#4F4534] hover:border-[#C97B3D] text-[#4A3627] dark:text-[#EAE5E1] hover:text-[#6B380F] dark:hover:text-[#E0751F] px-3 py-2 rounded-xl text-xs font-medium transition flex items-center gap-2 shadow-2xs">
+              <span>+ {{ camp.title }}</span>
+              <span class="bg-[#E5D8C0] dark:bg-[#393020] text-[#4A3627] dark:text-[#EAE5E1] text-[10px] px-1.5 py-0.5 rounded-md">Assign</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button (click)="saveVolunteerAssignments(selectedVolunteerModal.id)" class="w-full sm:w-auto bg-[#3E2A1E] hover:bg-[#2E2015] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+            Save Campaign Assignments
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Danger Zone -->
+      <div class="bg-[#FBEAE5] dark:bg-[#22110C] p-4 sm:p-5 rounded-xl border border-[#DCA08D] dark:border-[#6E4B40] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <h3 class="font-bold text-[#5C2216] dark:text-[#CE4C31] text-sm">Delete Volunteer</h3>
+          <p class="text-xs text-[#B5432F] dark:text-[#D56E5C]">Permanently delete this volunteer account.</p>
+        </div>
+        <button (click)="deleteVolunteer(selectedVolunteerModal.id)" class="w-full sm:w-auto bg-[#B5432F] hover:bg-[#953825] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs">
+          Delete Volunteer
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-t border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F] flex justify-end shrink-0">
+      <button (click)="closeVolunteerManageModal()" class="w-full sm:w-auto bg-[#E5D8C0] dark:bg-[#393020] hover:bg-[#DCC9A8] dark:hover:bg-[#413725] text-[#3E2A1E] dark:text-[#EBE4E0] font-bold text-xs px-5 py-2.5 rounded-xl transition">
+        Done / Close
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- IMAGE PREVIEW MODAL POPUP -->
+<!-- ========================================== -->
+<div *ngIf="imageModalUrl" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4" (click)="closeImageModal()">
+  <div class="relative max-w-4xl w-full bg-[#3E2A1E] rounded-2xl overflow-hidden shadow-2xl border border-[#2E2015]" (click)="$event.stopPropagation()">
+    <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-[#2E2015] flex justify-between items-center bg-[#1F150E]">
+      <h3 class="text-white font-bold text-sm truncate">{{ imageModalTitle || 'Image Preview' }}</h3>
+      <button (click)="closeImageModal()" class="text-[#A89880] hover:text-white text-lg font-bold bg-[#2E2015] w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 ml-3">✕</button>
+    </div>
+    <div class="p-4 sm:p-6 flex items-center justify-center bg-[#3E2A1E] max-h-[75vh]">
+      <img [src]="imageModalUrl" class="max-w-full max-h-[70vh] object-contain rounded-xl shadow-lg border border-[#2E2015]">
+    </div>
+  </div>
+</div>

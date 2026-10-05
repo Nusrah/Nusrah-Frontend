@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+html, body {
+  @apply bg-[#F8F2E6] dark:bg-[#1F1A0F];
+  min-height: 100%;
+}

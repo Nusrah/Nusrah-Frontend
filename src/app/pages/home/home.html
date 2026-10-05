@@ -1,0 +1,456 @@
+<!-- Page background wrapper: this single color now covers the ENTIRE page,
+     edge to edge, so there is no white showing at the sides anymore. -->
+<div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] w-full">
+
+  <!-- Hero Section -->
+  <section class="bg-[#EFE6D4] dark:bg-[#262015] w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="space-y-4 sm:space-y-6">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">
+                Donate Directly. Give with Confidence.
+            </h1>
+            <p class="text-[#5C4433] dark:text-[#EAE5E1] text-base sm:text-lg leading-relaxed">
+                Support verified Masjids, orphanages, NGOs, schools, medical cases, and community projects by donating directly to those who need it—without intermediaries.
+            </p>
+            <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm leading-relaxed font-medium">
+                Every campaign is carefully verified, and every donation is backed by transparency, updates, and accountability.
+            </p>
+            <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-2">
+                <a routerLink="/campaigns" class="text-center bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                    Explore Campaigns
+                </a>
+                <a routerLink="/register" class="text-center bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                    Start a Campaign
+                </a>
+                <button (click)="scrollToZakat()" class="text-center bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                    Calculate Your Zakah
+                </button>
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center text-center gap-5 sm:gap-6">
+            <img src="nusrah-logo.png" alt="Nusrah" class="w-44 sm:w-56 md:w-64 lg:w-80 h-auto object-contain">
+            <p class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-[#B5601F] dark:text-[#DF8642] max-w-md">
+                Aid that anchors you to Jannah
+            </p>
+        </div>
+    </div>
+  </section>
+
+  <!-- Featured Campaigns Slideshow -->
+  <section class="w-full relative bg-[#1F1A0F]" *ngIf="!loading && campaigns.length > 0">
+    <div class="relative w-full h-[440px] sm:h-[500px] md:h-[580px] overflow-hidden">
+
+      <!-- Slides -->
+      <div *ngFor="let camp of campaigns; let i = index"
+           class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+           [ngClass]="i === currentSlideIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
+        <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=1400'"
+             [alt]="camp.title || camp.name"
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10"></div>
+
+        <div class="absolute inset-0 flex items-end">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
+            <h2 class="text-white text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2 sm:mb-3 max-w-2xl leading-tight">
+              {{ camp.title || camp.name }}
+            </h2>
+            <p *ngIf="camp.location" class="text-white/80 text-xs sm:text-sm mb-3 flex items-center gap-1.5">📍 {{ camp.location }}</p>
+            <p class="text-white/90 text-sm sm:text-base max-w-2xl mb-5 sm:mb-6 leading-relaxed line-clamp-3">
+              {{ camp.featured_highlights || camp.description }}
+            </p>
+
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 mb-6 max-w-md">
+              <div class="flex-1 bg-white/20 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-[#B5601F] h-full rounded-full transition-all duration-500" [style.width.%]="camp.progress || 0"></div>
+              </div>
+              <span class="text-white text-xs sm:text-sm font-semibold whitespace-nowrap">₹{{ (camp.raised || 0) | number }} raised of ₹{{ (camp.goal || camp.budget || 0) | number }}</span>
+            </div>
+
+            <a [routerLink]="['/donate', camp.id]" class="inline-block bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl shadow-lg transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] text-sm">
+              Donate Now →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left / Right Navigation Arrows -->
+      <button *ngIf="campaigns.length > 1" (click)="prevSlide()" aria-label="Previous featured campaign"
+              class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl backdrop-blur-xs transition cursor-pointer">
+        ‹
+      </button>
+      <button *ngIf="campaigns.length > 1" (click)="nextSlide()" aria-label="Next featured campaign"
+              class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl backdrop-blur-xs transition cursor-pointer">
+        ›
+      </button>
+
+      <!-- Dot Indicators -->
+      <div *ngIf="campaigns.length > 1" class="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        <button *ngFor="let camp of campaigns; let i = index" (click)="goToSlide(i)" [attr.aria-label]="'Go to slide ' + (i + 1)"
+                [ngClass]="i === currentSlideIndex ? 'bg-white w-6 sm:w-8' : 'bg-white/50 hover:bg-white/70 w-2.5'"
+                class="h-2.5 rounded-full transition-all duration-300 cursor-pointer"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- No Featured Campaigns Yet -->
+  <section class="w-full" *ngIf="!loading && campaigns.length === 0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 text-center">
+      <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm sm:text-base">
+        No featured campaigns right now. <a routerLink="/campaigns" class="text-[#B5601F] dark:text-[#DF8642] font-semibold underline">Browse all active campaigns</a> instead.
+      </p>
+    </div>
+  </section>
+
+  <!-- View More Button -->
+  <div class="w-full text-center px-4 py-8 sm:py-10">
+      <a routerLink="/campaigns" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-8 py-3.5 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+          <span>View More Campaigns</span>
+          <span>→</span>
+      </a>
+  </div>
+
+  <!-- Why Choose Nusrah Section -->
+  <section class="w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+      <div class="border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 shadow-xs">
+          <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+              <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Why Choose Nusrah?</h2>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Because giving should be simple, transparent, and trustworthy.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+                  <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+                  <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">Donate directly to verified beneficiaries</p>
+              </div>
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+                  <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+                  <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">No money passes through Nusrah</p>
+              </div>
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+                  <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+                  <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">Verified by our team and volunteers</p>
+              </div>
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+                  <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+                  <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">Receive regular campaign updates</p>
+              </div>
+              <div class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12] lg:col-span-2">
+                  <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+                  <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">Know exactly where your contribution goes</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How Nusrah Works -->
+  <section class="w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">How Nusrah Works</h2>
+          <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">A transparent 5-step flow from campaign submission to final impact tracking.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 text-center">
+          <!-- Step 1 -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs relative flex flex-col items-center transition-all duration-300 ease-out md:hover:-translate-y-2 hover:shadow-lg md:hover:scale-[1.02]">
+              <div class="w-10 h-10 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold flex items-center justify-center mb-4 text-sm">1</div>
+              <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base mb-1">Campaign Registration</h3>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">Organizations or individuals submit their campaign with all required documents.</p>
+          </div>
+          <!-- Step 2 -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs relative flex flex-col items-center transition-all duration-300 ease-out md:hover:-translate-y-2 hover:shadow-lg md:hover:scale-[1.02]">
+              <div class="w-10 h-10 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold flex items-center justify-center mb-4 text-sm">2</div>
+              <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base mb-1">Verification</h3>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">Our team reviews documents and performs background & field verification.</p>
+          </div>
+          <!-- Step 3 -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs relative flex flex-col items-center transition-all duration-300 ease-out md:hover:-translate-y-2 hover:shadow-lg md:hover:scale-[1.02]">
+              <div class="w-10 h-10 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold flex items-center justify-center mb-4 text-sm">3</div>
+              <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base mb-1">Campaign Published</h3>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">Once approved, the campaign becomes visible on the platform.</p>
+          </div>
+          <!-- Step 4 -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs relative flex flex-col items-center transition-all duration-300 ease-out md:hover:-translate-y-2 hover:shadow-lg md:hover:scale-[1.02]">
+              <div class="w-10 h-10 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold flex items-center justify-center mb-4 text-sm">4</div>
+              <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base mb-1">Donate Directly</h3>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">Donors contribute directly to the organizer's official account or payment method.</p>
+          </div>
+          <!-- Step 5 -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs relative flex flex-col items-center transition-all duration-300 ease-out md:hover:-translate-y-2 hover:shadow-lg md:hover:scale-[1.02] sm:col-span-2 lg:col-span-1">
+              <div class="w-10 h-10 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold flex items-center justify-center mb-4 text-sm">5</div>
+              <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base mb-1">Receive Updates</h3>
+              <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">Organizers regularly upload progress updates so donors can see real impact.</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Section (Dynamic Database Bindings) -->
+  <section class="w-full py-10 sm:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Our Live Impact</h2>
+            <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Real-time metrics connected directly to our verified database ecosystem.</p>
+        </div>
+
+        <!-- Single dark-brown impact card containing all 4 stats -->
+        <div class="bg-[#3E2A1E] rounded-2xl shadow-lg px-5 sm:px-6 py-8 sm:py-10 md:px-10">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6 divide-y-0 divide-x divide-[#5C4433]/60 lg:divide-x">
+              <div class="text-center px-2 sm:px-4 pt-0">
+                  <h3 class="text-2xl sm:text-3xl font-extrabold text-[#E8A25C] mb-1">{{ stats.active_campaigns }}</h3>
+                  <p class="text-[#F8F2E6] font-semibold text-xs sm:text-sm">Verified Campaigns</p>
+                  <span class="text-[10px] sm:text-[11px] text-[#C9B79C] mt-1 block">Successfully verified & published</span>
+              </div>
+              <div class="text-center px-2 sm:px-4 pt-0">
+                  <h3 class="text-2xl sm:text-3xl font-extrabold text-[#E8A25C] mb-1">{{ stats.communities_supported }}</h3>
+                  <p class="text-[#F8F2E6] font-semibold text-xs sm:text-sm">Communities Supported</p>
+                  <span class="text-[10px] sm:text-[11px] text-[#C9B79C] mt-1 block">Masjids, schools, medical cases</span>
+              </div>
+              <div class="text-center px-2 sm:px-4 pt-6 lg:pt-0 border-t border-[#5C4433]/60 lg:border-t-0">
+                  <h3 class="text-2xl sm:text-3xl font-extrabold text-[#E8A25C] mb-1">{{ stats.active_volunteers }}</h3>
+                  <p class="text-[#F8F2E6] font-semibold text-xs sm:text-sm">Volunteers</p>
+                  <span class="text-[10px] sm:text-[11px] text-[#C9B79C] mt-1 block">Helping verify across locations</span>
+              </div>
+              <div class="text-center px-2 sm:px-4 pt-6 lg:pt-0 border-t border-[#5C4433]/60 lg:border-t-0">
+                  <h3 class="text-2xl sm:text-3xl font-extrabold text-[#E8A25C] mb-1">{{ stats.finished_campaigns }}</h3>
+                  <p class="text-[#F8F2E6] font-semibold text-xs sm:text-sm">Completed Causes</p>
+                  <span class="text-[10px] sm:text-[11px] text-[#C9B79C] mt-1 block">Successfully funded and closed</span>
+              </div>
+          </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Calculate Zakat Section Anchor/Header -->
+  <div #zakatSection class="scroll-mt-12"></div>
+  <section class="w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-4 sm:pb-6 text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Calculate Your Zakah</h2>
+      <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Compute your obligations accurately and give back to those in need</p>
+    </div>
+  </section>
+
+  <!-- Calculate Zakat Section (Card on Left, Information on Right) -->
+  <section class="w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-24">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
+
+          <!-- Left Column: Larger Zakat Campaign-Style Card -->
+          <div class="bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl shadow-lg overflow-hidden border border-[#F2DFC4] dark:border-[#443623] flex flex-col transition-all duration-300 ease-out md:hover:-translate-y-1 hover:shadow-2xl">
+
+              <!-- Card Header / Image Area -->
+              <div class="h-48 sm:h-60 w-full bg-[#3E2A1E] overflow-hidden relative flex items-center justify-center p-5 sm:p-6 text-center">
+                <div class="absolute inset-0 bg-gradient-to-tr from-[#2A1B12] to-[#6B380F] opacity-90"></div>
+                <div class="relative z-10 text-[#F8F2E6] space-y-3">
+                    <span class="bg-[#B5601F]/30 border border-[#C97B3D]/40 text-[#E2D3B8] text-[10px] sm:text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                      Obligatory Pillar of Islam
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-extrabold tracking-tight">Fulfill Your Zakah Easily</h3>
+                </div>
+                <span class="absolute bottom-3 left-3 bg-black/40 backdrop-blur-xs text-[#F8F2E6] text-[10px] sm:text-xs font-medium px-3 py-1 rounded-lg">
+                  💡 2.5% Annual Purification
+                </span>
+              </div>
+
+              <!-- Card Content Body -->
+              <div class="p-5 sm:p-8 flex-1 flex flex-col justify-between space-y-5 sm:space-y-6">
+                <div>
+                  <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed mb-4">
+                    Calculate your precise Zakah obligation instantly on cash, gold, silver, business assets, and investments, and direct it transparently to verified causes.
+                  </p>
+                  <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl p-4 border border-[#F2DFC4] dark:border-[#443623] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-sm font-semibold text-[#3E2A1E] dark:text-[#EBE4E0]">
+                    <span>Standard Nisab Benchmark</span>
+                    <span class="text-[#8F4A16] dark:text-[#DD7222]">Dynamic Valuation</span>
+                  </div>
+                </div>
+
+                <div>
+                  <!-- Calculate Zakat Button -->
+                  <button (click)="openZakatModal()" class="block text-center w-full py-3.5 bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-[#F8F2E6] font-bold rounded-xl shadow-md transition-all duration-300 cursor-pointer text-base">
+                    Calculate Zakah Now
+                  </button>
+                </div>
+              </div>
+
+          </div>
+
+          <!-- Right Column: Information about Zakat & its Importance -->
+          <div class="space-y-4 sm:space-y-6">
+              <div class="inline-block bg-[#F2E9D8] dark:bg-[#221D12] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Spiritual & Social Significance
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">
+                  The Importance of Zakah in Community Well-being
+              </h2>
+              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
+                  Zakah is the third pillar of Islam, serving as a mandatory act of worship and financial obligation for every qualifying Muslim. Beyond its profound spiritual purification, it acts as an economic equalizer designed to eradicate poverty and support those in dire need.
+              </p>
+              <div class="space-y-3 pt-2">
+                  <div class="flex items-start gap-3">
+                      <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                      <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Purification of Wealth:</strong> Cleanses your earnings and possessions while bringing divine barakah (blessing).</p>
+                  </div>
+                  <div class="flex items-start gap-3">
+                      <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                      <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Direct Social Impact:</strong> Directly empowers the poor, needy, orphans, and distressed educational or medical cases without intermediaries.</p>
+                  </div>
+                  <div class="flex items-start gap-3">
+                      <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                      <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Economic Circulation:</strong> Prevents wealth concentration in few hands and fosters robust community solidarity and mutual trust.</p>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+<!-- End of page background wrapper -->
+
+<!-- Welcome / Trust Info Popup Modal (shown only once, on the visitor's first ever visit to the home page) -->
+<div *ngIf="isWelcomeModalOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4">
+    <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+
+        <!-- Mobile drag handle -->
+        <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0 bg-[#F8F2E6] dark:bg-[#1F1A0F]">
+          <div class="w-10 h-1.5 rounded-full bg-[#DCC9A8] dark:bg-[#4F4534]"></div>
+        </div>
+
+        <!-- Modal Header -->
+        <div class="bg-[#3E2A1E] px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-[#F8F2E6] shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-[#F2DFC4]/20 rounded-xl text-lg sm:text-xl shrink-0">
+                    🛡️
+                </div>
+                <div>
+                    <h3 class="font-bold text-base sm:text-lg leading-tight">Welcome to Nusrah</h3>
+                    <p class="text-[#E8C79A] text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5">Aid that anchors you to Jannah</p>
+                </div>
+            </div>
+            <button (click)="closeWelcomeModal()" class="text-[#E2D3B8] hover:text-[#F8F2E6] text-xl font-bold px-2 py-1 cursor-pointer">✕</button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-5 sm:p-6 space-y-4 overflow-y-auto">
+            <div>
+                <h4 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight mb-2">
+                    Direct & Intermediary-Free
+                </h4>
+                <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
+                    Unlike traditional fundraising platforms, Nusrah never holds your money. Every donation goes directly to the verified beneficiary, while we focus on verification, transparency, and accountability.
+                </p>
+            </div>
+
+            <div class="space-y-3 pt-1">
+                <div class="flex items-start gap-3">
+                    <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                    <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">100% Reaches the Cause:</strong> We never hold, deduct from, or take a cut of your donation at any stage.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                    <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Verified Campaigns Only:</strong> Every Masjid, orphanage, NGO, school, and medical case is reviewed by our team before it's published.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                    <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Real Transparency:</strong> Organizers share ongoing updates so you can see exactly how your contribution is making an impact.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                    <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Built on Trust & Accountability:</strong> From Zakah to Sadaqah, give with confidence knowing where every rupee goes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] px-5 sm:px-6 py-3.5 sm:py-4 border-t border-[#E2D3B8] dark:border-[#4F4534] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
+            <button (click)="closeWelcomeModal()" class="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-medium text-[#5C4433] dark:text-[#EAE5E1] hover:text-[#2E2015] dark:hover:text-[#EBE5E0] cursor-pointer">
+                Continue Browsing
+            </button>
+            <a routerLink="/campaigns" (click)="closeWelcomeModal()" class="w-full sm:w-auto text-center px-5 py-2.5 bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">
+                Explore Campaigns
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Zakat Calculator Popup Modal (kept outside the bg wrapper since it's a fixed overlay) -->
+<div *ngIf="isZakatModalOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4">
+    <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+
+        <!-- Mobile drag handle -->
+        <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0 bg-[#F8F2E6] dark:bg-[#1F1A0F]">
+          <div class="w-10 h-1.5 rounded-full bg-[#DCC9A8] dark:bg-[#4F4534]"></div>
+        </div>
+
+        <!-- Modal Header -->
+        <div class="bg-[#B5601F] px-5 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between text-[#F8F2E6] shrink-0">
+            <h3 class="font-bold text-base sm:text-lg">Interactive Zakah Calculator</h3>
+            <button (click)="closeZakatModal()" class="text-[#F2DFC4] hover:text-[#F8F2E6] text-xl font-bold px-2 py-1 cursor-pointer">✕</button>
+        </div>
+
+        <!-- Modal Body Form -->
+        <div class="p-5 sm:p-6 space-y-4 overflow-y-auto">
+            <p class="text-[#8A7863] dark:text-[#BFB8B1] text-xs">Enter your total assets and liabilities below. Zakah (2.5%) is applicable if your net accumulated wealth meets or exceeds the Nisab threshold.</p>
+
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Cash in Hand & Bank Accounts</label>
+                    <input type="number" [(ngModel)]="zakatForm.cashOnHand" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Gold Value</label>
+                    <input type="number" [(ngModel)]="zakatForm.goldValue" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Silver Value</label>
+                    <input type="number" [(ngModel)]="zakatForm.silverValue" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Business Assets / Inventory</label>
+                    <input type="number" [(ngModel)]="zakatForm.businessAssets" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Investments / Shares</label>
+                    <input type="number" [(ngModel)]="zakatForm.investments" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-[#4A3627] dark:text-[#EAE5E1] uppercase tracking-wide mb-1">Immediate Debts / Liabilities (Subtract)</label>
+                    <input type="number" [(ngModel)]="zakatForm.debts" class="w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12]" placeholder="0">
+                </div>
+            </div>
+
+            <!-- Calculation Output Box -->
+            <div *ngIf="calculatedZakatResult !== null" class="mt-6 p-4 rounded-2xl bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] text-center space-y-1">
+                <div *ngIf="isEligibleForZakat">
+                    <p class="text-xs text-[#6B380F] dark:text-[#E0751F] font-semibold uppercase tracking-wider">Your Total Payable Zakah (2.5%)</p>
+                    <h4 class="text-xl sm:text-2xl font-extrabold text-[#8F4A16] dark:text-[#DD7222]">₹{{ calculatedZakatResult | number:'1.2-2' }}</h4>
+                    <p class="text-[11px] text-[#B5601F] dark:text-[#DF8642] mt-1">Net wealth meets the Nisab threshold. You are eligible to give Zakah.</p>
+                </div>
+                <div *ngIf="!isEligibleForZakat">
+                    <p class="text-xs text-[#8F4A16] dark:text-[#DD7222] font-semibold uppercase tracking-wider">Below Nisab Threshold</p>
+                    <h4 class="text-lg sm:text-xl font-bold text-[#B5601F] dark:text-[#DF8642]">₹0.00</h4>
+                    <p class="text-[11px] text-[#B5601F] dark:text-[#DF8642] mt-1">Your net eligible wealth is currently below the Nisab minimum threshold.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] px-5 sm:px-6 py-3.5 sm:py-4 border-t border-[#E2D3B8] dark:border-[#4F4534] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
+            <button (click)="closeZakatModal()" class="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-medium text-[#5C4433] dark:text-[#EAE5E1] hover:text-[#2E2015] dark:hover:text-[#EBE5E0] cursor-pointer">
+                Close
+            </button>
+            <button (click)="calculateZakat()" class="w-full sm:w-auto px-5 py-2.5 bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">
+                Calculate
+            </button>
+        </div>
+
+    </div>
+</div>

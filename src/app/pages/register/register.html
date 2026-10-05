@@ -1,0 +1,301 @@
+<div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] py-6 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12">
+
+    <!-- Hero Header with Interactive Call-to-Action Button on the Top Right -->
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-lg border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col md:flex-row justify-between items-start md:items-center gap-5 sm:gap-6 transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1">
+      <div class="space-y-2 max-w-2xl">
+        <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full border border-[#F2DFC4] dark:border-[#443623] uppercase tracking-wider inline-block">Nusrah Volunteer Program</span>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight leading-tight">Join Our Team & Earn Sadaqah Jariyah</h1>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
+          Be the bridge between generous donors and local communities. Help us verify needs, monitor progress, and bring transparency to charitable giving for the sake of Allah.
+        </p>
+      </div>
+      <div class="w-full md:w-auto">
+        <button
+          type="button"
+          (click)="scrollToRegistration()"
+          class="w-full md:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] cursor-pointer text-sm shrink-0 flex items-center justify-center gap-2">
+          <span>Register as a Volunteer Now ↓</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Informational Cards Grid (Roles, Masjid Assignment, Ground Work & Islamic Rewards) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+
+      <!-- Card 1: Roles & Responsibilities -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#F2DFC4] dark:bg-[#332715] text-[#B5601F] dark:text-[#DF8642] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">📋</div>
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Roles & Responsibilities</h2>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
+          As a Nusrah volunteer, your primary mission is ensuring complete transparency and trust across campaigns.
+        </p>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> Verify genuine campaign needs and project details on the ground.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> Monitor fund utilization and make sure contributions reach the rightful recipients.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> Maintain transparent documentation to build absolute donor confidence.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Masjid Assignment & Preference -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#E4E6D6] dark:bg-[#25261C] text-[#5B6048] dark:text-[#DBDCD6] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">🕌</div>
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Local Masjid Assignment</h2>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
+          We believe community work starts locally. Admins will assign each volunteer to their nearest masjid or a masjid of their personal liking and preference.
+        </p>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> Coordinate directly with local mosque committees for community welfare.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> Seamlessly oversee local community campaigns near your neighborhood.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> Foster local unity and charitable engagement close to home.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 3: Ground Work & Dashboard Updates -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">📊</div>
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Ground Work & Digital Updates</h2>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
+          You will be provided an exclusive volunteer portal where you can document your field findings and keep donors updated in real-time.
+        </p>
+        <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">✓</span> Perform on-site checks on progress, funds, and active requirements.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">✓</span> Use the dedicated volunteer dashboard to upload photos, reports, and progress updates.
+          </li>
+          <li class="flex items-start gap-2.5">
+            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">✓</span> Keep donors informed with genuine visual proof and transparent milestones.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 4: Islamic Rewards & Sadaqah Jariyah -->
+      <div class="bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#B5601F]/20 text-[#E8A25C] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs border border-[#B5601F]/30">✨</div>
+        <h2 class="text-lg sm:text-xl font-bold text-white">Sadaqah Jariyah & Aakhirah Rewards</h2>
+        <p class="text-[#E2D3B8] text-sm leading-relaxed">
+          Doing this good work purely for the sake of Allah SWT brings immense blessings. Every effort you make serves as a continuous charity (*Sadaqah Jariyah*).
+        </p>
+        <div class="bg-[#F2E9D8]/10 dark:bg-[#221D12]/10 p-4 rounded-2xl border border-white/10 text-xs sm:text-sm text-[#E8C79A] italic">
+          "When a person dies, all their deeds come to an end except three: ongoing charity (Sadaqah Jariyah), beneficial knowledge, or a righteous child who prays for them." (Sahih Muslim)
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Step-by-Step Registration Guide Section (Placed Right Before the Form) -->
+    <div id="registration-steps-section" class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-5 sm:space-y-6 transition-all duration-300 hover:shadow-lg scroll-mt-4">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block">How to Join</span>
+        <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Step-by-Step Registration Guide</h2>
+        <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm">Follow these simple steps to start your journey as a Nusrah volunteer.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-4">
+        <!-- Step 1 -->
+        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8]/80 dark:border-[#4F4534]/80 space-y-3 transition-all duration-300 md:hover:-translate-y-1 hover:bg-[#F2E9D8] dark:hover:bg-[#221D12] hover:shadow-md">
+          <div class="w-10 h-10 bg-[#B5601F] text-white font-bold rounded-xl flex items-center justify-center text-base shadow-xs">1</div>
+          <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base">Submit Your Details</h3>
+          <p class="text-[#5C4433] dark:text-[#EAE5E1] text-xs sm:text-sm leading-relaxed">
+            Fill out the registration form below with your accurate personal and contact information.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8]/80 dark:border-[#4F4534]/80 space-y-3 transition-all duration-300 md:hover:-translate-y-1 hover:bg-[#F2E9D8] dark:hover:bg-[#221D12] hover:shadow-md">
+          <div class="w-10 h-10 bg-[#B5601F] text-white font-bold rounded-xl flex items-center justify-center text-base shadow-xs">2</div>
+          <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base">Admin Review & Approval</h3>
+          <p class="text-[#5C4433] dark:text-[#EAE5E1] text-xs sm:text-sm leading-relaxed">
+            Wait for the platform admin to review and approve your registration. Once approved, you can log in using your credentials.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-5 sm:p-6 rounded-2xl border border-[#E2D3B8]/80 dark:border-[#4F4534]/80 space-y-3 transition-all duration-300 md:hover:-translate-y-1 hover:bg-[#F2E9D8] dark:hover:bg-[#221D12] hover:shadow-md">
+          <div class="w-10 h-10 bg-[#B5601F] text-white font-bold rounded-xl flex items-center justify-center text-base shadow-xs">3</div>
+          <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base">Assignment & Field Updates</h3>
+          <p class="text-[#5C4433] dark:text-[#EAE5E1] text-xs sm:text-sm leading-relaxed">
+            The admin will assign you to a campaign near your masjid. Conduct ground work, verify progress, and upload photo updates via your dashboard.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration Form Container -->
+    <div class="max-w-xl mx-auto bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 sm:space-y-8 transition-all duration-300 hover:shadow-2xl">
+      <div>
+        <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Volunteer Registration Form</h2>
+        <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">
+          Create your volunteer account and join our noble cause.
+        </p>
+      </div>
+
+      <div class="space-y-5 sm:space-y-6">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Full Name <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="text"
+              [(ngModel)]="fullName"
+              name="fullName"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Enter Your Name"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Email Address <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Enter Valid Email"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Password <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="password"
+              [(ngModel)]="password"
+              name="password"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Enter Your Password"
+            />
+            <!-- Live Password Requirements Indicator -->
+            <ul class="mt-2 text-xs space-y-1 bg-[#F8F2E6] dark:bg-[#1F1A0F] p-3 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534]">
+              <li [ngClass]="hasMinLength ? 'text-[#B5601F] dark:text-[#DF8642] font-medium' : 'text-[#8A7863] dark:text-[#BFB8B1]'">
+                {{ hasMinLength ? '✓' : '○' }} At least 5 characters
+              </li>
+              <li [ngClass]="hasLowercase ? 'text-[#B5601F] dark:text-[#DF8642] font-medium' : 'text-[#8A7863] dark:text-[#BFB8B1]'">
+                {{ hasLowercase ? '✓' : '○' }} At least one lowercase letter (a-z)
+              </li>
+              <li [ngClass]="hasUppercase ? 'text-[#B5601F] dark:text-[#DF8642] font-medium' : 'text-[#8A7863] dark:text-[#BFB8B1]'">
+                {{ hasUppercase ? '✓' : '○' }} At least one uppercase letter (A-Z)
+              </li>
+              <li [ngClass]="hasSpecialChar ? 'text-[#B5601F] dark:text-[#DF8642] font-medium' : 'text-[#8A7863] dark:text-[#BFB8B1]'">
+                {{ hasSpecialChar ? '✓' : '○' }} At least one special character (e.g., @, ., !, #)
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Confirm Password <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Re-Enter Your Password"
+            />
+            <div *ngIf="confirmPassword && password !== confirmPassword" class="text-[#B5432F] dark:text-[#D56E5C] text-xs mt-1">
+              Passwords do not match.
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Phone Number <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="text"
+              [(ngModel)]="phone"
+              name="phone"
+              maxlength="10"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Enter Valid Phone Number"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">City <span class="text-[#B5432F] dark:text-[#D56E5C]">*</span></label>
+            <input
+              type="text"
+              [(ngModel)]="city"
+              name="city"
+              required
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="City, State"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Referral <span class="text-[#A89880] font-normal">(Optional)</span></label>
+            <input
+              type="text"
+              [(ngModel)]="referral"
+              name="referral"
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Referral name"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Short Bio <span class="text-[#A89880] font-normal">(Optional)</span></label>
+            <textarea
+              [(ngModel)]="bio"
+              name="bio"
+              rows="3"
+              class="appearance-none rounded-xl relative block w-full px-4 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-slate-400 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] text-sm transition shadow-2xs"
+              placeholder="Tell us a bit about yourself..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-[#B5432F] dark:text-[#D56E5C] text-sm text-center font-medium bg-[#FBEAE5] dark:bg-[#22110C] p-3 rounded-xl border border-[#E8B6A8] dark:border-[#5B3B32]">
+          {{ errorMessage }}
+        </div>
+
+        <div>
+          <button
+            type="button"
+            (click)="onRegister()"
+            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-[#B5601F] hover:bg-[#8F4A16] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] cursor-pointer">
+            Sign Up as Volunteer
+          </button>
+        </div>
+
+        <div class="text-center text-sm">
+          <span class="text-[#5C4433] dark:text-[#EAE5E1]">Already have an account? </span>
+          <a href="/login" class="font-medium text-[#B5601F] dark:text-[#DF8642] hover:text-[#8F4A16] dark:hover:text-[#DD7222] transition">Sign in</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Success Modal Popup with Live Countdown Timer -->
+<div *ngIf="showSuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center sm:p-4 animate-fade-in">
+  <div class="bg-[#F2E9D8] dark:bg-[#221D12] rounded-t-3xl sm:rounded-3xl max-w-sm w-full p-5 sm:p-6 text-center shadow-2xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
+    <div class="w-12 h-12 bg-[#F2DFC4] dark:bg-[#332715] text-[#B5601F] dark:text-[#DF8642] rounded-full flex items-center justify-center mx-auto text-xl font-bold shadow-xs">✓</div>
+    <h3 class="text-lg font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Application Sent Successfully!</h3>
+    <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">
+      Your volunteer application has been sent successfully. Please wait until it is approved by the admin.
+    </p>
+    <div class="p-3 bg-[#F2DFC4] dark:bg-[#332715] text-[#6B380F] dark:text-[#E0751F] rounded-2xl text-xs font-medium border border-[#F2DFC4] dark:border-[#443623]">
+      You will be redirected to the login page in <span class="font-bold underline text-sm">{{ countdownSeconds }} seconds</span>.
+    </div>
+    <button (click)="closeModalAndRedirect()" class="w-full bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-white font-medium py-3 rounded-2xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md text-sm cursor-pointer shadow-xs">
+      Go to Sign In Now
+    </button>
+  </div>
+</div>
