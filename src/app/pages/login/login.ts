@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       password: this.password.trim()
     };
 
-    this.http.post<any>('http://localhost:8000/api/auth/login', payload).subscribe({
+    this.http.post<any>('/api/auth/login', payload).subscribe({
       next: (res) => {
         this.isLoading = false;
 
@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
 
     const payload = { email: this.email.trim() };
 
-    this.http.post<any>('http://localhost:8000/api/auth/forgot-password', payload).subscribe({
+    this.http.post<any>('/api/auth/forgot-password', payload).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.view = 'reset';
@@ -179,7 +179,7 @@ export class LoginComponent implements OnInit {
     // in forgot-password, and also checks "otp_expires_at" (10 minute
     // window). A wrong or expired code comes back as a 400 with a detail
     // message, which lands in errorMessage below.
-    this.http.post<any>('http://localhost:8000/api/auth/reset-password', payload).subscribe({
+    this.http.post<any>('/api/auth/reset-password', payload).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.successMessage = res.message || 'Password reset successfully.';

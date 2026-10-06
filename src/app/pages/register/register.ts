@@ -123,7 +123,7 @@ export class RegisterComponent implements OnDestroy {
       approval_status: 'pending'
     };
 
-    this.http.post<any>('http://127.0.0.1:8000/api/auth/register', payload).subscribe({
+    this.http.post<any>('/api/auth/register', payload).subscribe({
       next: (res) => {
         this.countdownSeconds = 10;
         this.showSuccessModal = true;
