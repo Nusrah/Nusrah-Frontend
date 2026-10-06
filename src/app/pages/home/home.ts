@@ -22,13 +22,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     total_donations_enabled: 0
   };
   
+  // Featured campaigns shown as a card grid below the hero
   campaigns: any[] = [];
   loading = true;
 
-  // Featured Campaigns Slideshow State (auto-advances every 8s, loops, supports manual arrow navigation)
-  currentSlideIndex = 0;
-  private readonly SLIDESHOW_INTERVAL_MS = 8000;
-  private slideshowTimer: any = null;
+  // Hero Slideshow State (3 fixed pages: Explore Campaigns / Start a Campaign / Calculate Your Zakah)
+  // Auto-advances every 8s, loops, supports manual arrow + dot navigation, pauses while hovered.
+  heroSlideIndex = 0;
+  private readonly HERO_SLIDE_COUNT = 3;
+  private readonly HERO_SLIDESHOW_INTERVAL_MS = 8000;
+  private heroTimer: any = null;
 
   // Zakat Calculator Modal State & Form Fields
   isZakatModalOpen = false;
@@ -67,6 +70,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.warn('Unable to access localStorage for welcome modal flag', e);
     }
 
+    // Start the hero slideshow autoplay
+    this.startHeroAutoplay();
+
     this.http.get<any>('http://127.0.0.1:8000/api/stats').subscribe({
       next: (res) => {
         if (res) {
@@ -89,8 +95,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         const rawCampaigns = res.campaigns || res;
         this.campaigns = Array.isArray(rawCampaigns) ? rawCampaigns : [];
         this.loading = false;
-        this.currentSlideIndex = 0;
-        this.startSlideshowAutoplay();
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -106,48 +110,40 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.stopSlideshowAutoplay();
+    this.stopHeroAutoplay();
   }
 
-  // Starts (or restarts) the auto-advancing timer for the featured campaigns slideshow.
-  // Only runs when there's more than one slide, since a single slide has nowhere to advance to.
-  startSlideshowAutoplay(): void {
-    this.stopSlideshowAutoplay();
-    if (this.campaigns && this.campaigns.length > 1) {
-      this.slideshowTimer = setInterval(() => {
-        this.nextSlide();
-      }, this.SLIDESHOW_INTERVAL_MS);
+  // Starts (or restarts) the auto-advancing timer for the hero slideshow.
+  startHeroAutoplay(): void {
+    this.stopHeroAutoplay();
+    this.heroTimer = setInterval(() => {
+      this.nextHeroSlide();
+    }, this.HERO_SLIDESHOW_INTERVAL_MS);
+  }
+
+  stopHeroAutoplay(): void {
+    if (this.heroTimer) {
+      clearInterval(this.heroTimer);
+      this.heroTimer = null;
     }
   }
 
-  stopSlideshowAutoplay(): void {
-    if (this.slideshowTimer) {
-      clearInterval(this.slideshowTimer);
-      this.slideshowTimer = null;
-    }
-  }
-
-  // Advances to the next slide, looping back to the first slide after the last one
-  nextSlide(): void {
-    if (!this.campaigns || this.campaigns.length === 0) return;
-    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.campaigns.length;
-    this.startSlideshowAutoplay();
+  // Advances to the next hero slide, looping back to the first slide after the last one
+  nextHeroSlide(): void {
+    this.heroSlideIndex = (this.heroSlideIndex + 1) % this.HERO_SLIDE_COUNT;
     this.cdr.detectChanges();
   }
 
-  // Goes back to the previous slide, looping to the last slide from the first one
-  prevSlide(): void {
-    if (!this.campaigns || this.campaigns.length === 0) return;
-    this.currentSlideIndex = (this.currentSlideIndex - 1 + this.campaigns.length) % this.campaigns.length;
-    this.startSlideshowAutoplay();
+  // Goes back to the previous hero slide, looping to the last slide from the first one
+  prevHeroSlide(): void {
+    this.heroSlideIndex = (this.heroSlideIndex - 1 + this.HERO_SLIDE_COUNT) % this.HERO_SLIDE_COUNT;
     this.cdr.detectChanges();
   }
 
-  // Jumps directly to a specific slide (used by the dot indicators) and resets the
-  // autoplay timer so it doesn't unexpectedly advance right after a manual click
-  goToSlide(index: number): void {
-    this.currentSlideIndex = index;
-    this.startSlideshowAutoplay();
+  // Jumps directly to a specific hero slide (used by the dot indicators)
+  goToHeroSlide(index: number): void {
+    this.heroSlideIndex = index;
+    this.cdr.detectChanges();
   }
 
   scrollToZakat(): void {

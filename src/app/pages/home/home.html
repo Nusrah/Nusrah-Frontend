@@ -1,93 +1,185 @@
+<!-- Fonts matched to the Nusrah logo: serif wordmark style for headings, light geometric sans for body + spaced tagline.
+     (The Google Fonts <link> for 'Cormorant Garamond' and 'Jost' goes in src/index.html.) -->
+<style>
+  :host {
+    display: block;
+    font-family: 'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+</style>
+
 <!-- Page background wrapper: this single color now covers the ENTIRE page,
      edge to edge, so there is no white showing at the sides anymore. -->
 <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] w-full">
 
-  <!-- Hero Section -->
+  <!-- Hero Section: 3-page slideshow (Explore Campaigns / Start a Campaign / Calculate Your Zakah) -->
   <section class="bg-[#EFE6D4] dark:bg-[#262015] w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
-        <div class="space-y-4 sm:space-y-6">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">
-                Donate Directly. Give with Confidence.
-            </h1>
-            <p class="text-[#5C4433] dark:text-[#EAE5E1] text-base sm:text-lg leading-relaxed">
-                Support verified Masjids, orphanages, NGOs, schools, medical cases, and community projects by donating directly to those who need it—without intermediaries.
-            </p>
-            <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm leading-relaxed font-medium">
-                Every campaign is carefully verified, and every donation is backed by transparency, updates, and accountability.
-            </p>
-            <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-2">
-                <a routerLink="/campaigns" class="text-center bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
-                    Explore Campaigns
-                </a>
-                <a routerLink="/register" class="text-center bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
-                    Start a Campaign
-                </a>
-                <button (click)="scrollToZakat()" class="text-center bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
-                    Calculate Your Zakah
-                </button>
-            </div>
-        </div>
-        <div class="flex flex-col items-center justify-center text-center gap-5 sm:gap-6">
-            <img src="nusrah-logo.png" alt="Nusrah" class="w-44 sm:w-56 md:w-64 lg:w-80 h-auto object-contain">
-            <p class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-[#B5601F] dark:text-[#DF8642] max-w-md">
+    <h1 class="sr-only">Nusrah — Donate Directly. Give with Confidence.</h1>
+
+    <div class="w-full px-2 sm:px-3 pt-0 pb-8 sm:pb-12 lg:pb-14">
+
+      <!-- Arrows sit in the side gaps, slideshow sits between them -->
+      <div class="flex items-center gap-2 sm:gap-4 lg:gap-5">
+
+        <!-- Left Arrow -->
+        <button (click)="prevHeroSlide()" aria-label="Previous slide"
+                class="shrink-0 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] flex items-center justify-center text-xl sm:text-2xl leading-none shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.08] active:scale-[0.95] cursor-pointer">
+          <span class="-mt-0.5">‹</span>
+        </button>
+
+        <!-- Slideshow viewport (all slides share one grid cell so height = tallest slide, no layout jumping) -->
+        <div class="flex-1 min-w-0 grid rounded-3xl overflow-hidden shadow-lg border border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F]"
+             (mouseenter)="stopHeroAutoplay()" (mouseleave)="startHeroAutoplay()">
+
+          <!-- Slide 1: Logo, tagline, short description (Explore Campaigns) -->
+          <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out"
+               [ngClass]="heroSlideIndex === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+               [attr.aria-hidden]="heroSlideIndex !== 0">
+            <div class="p-6 sm:p-8 lg:p-16 flex flex-col items-center justify-center text-center gap-4 sm:gap-5 order-2 md:order-1">
+              <img src="nusrah-logo.png" alt="Nusrah" class="w-36 sm:w-44 lg:w-64 h-auto object-contain">
+              <p class="uppercase tracking-[0.22em] text-[11px] sm:text-sm lg:text-base font-light text-[#3E2A1E] dark:text-[#EBE4E0]">
                 Aid that anchors you to Jannah
-            </p>
+              </p>
+              <span class="block w-14 h-px bg-[#B5601F]"></span>
+              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">
+                Nusrah connects you directly with verified Masjids, orphanages, NGOs, schools, medical cases, and community projects—no intermediaries, with every donation backed by transparency, updates, and accountability.
+              </p>
+              <a routerLink="/campaigns" class="text-center bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                Explore Campaigns
+              </a>
+            </div>
+            <div class="relative h-44 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2">
+              <img src="images/hero-1.jpg" alt="A mosque glowing softly at dawn" class="absolute inset-0 w-full h-full object-cover object-center">
+            </div>
+          </div>
+
+          <!-- Slide 2: Campaigns on Nusrah + how to start one (Start a Campaign) -->
+          <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out"
+               [ngClass]="heroSlideIndex === 1 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+               [attr.aria-hidden]="heroSlideIndex !== 1">
+            <div class="p-6 sm:p-8 lg:p-16 flex flex-col justify-center gap-3 sm:gap-4 order-2 md:order-1">
+              <span class="self-start bg-[#F2E9D8] dark:bg-[#221D12] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                Campaigns on Nusrah
+              </span>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">
+                Raise Support for a Cause You Believe In
+              </h2>
+              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
+                Nusrah hosts verified campaigns for Masjids, orphanages, schools, medical cases, and community projects—each with live progress and regular updates. Anyone can start one:
+              </p>
+              <ol class="space-y-2 text-sm text-[#4A3627] dark:text-[#EAE5E1]">
+                <li class="flex items-start gap-3"><span class="shrink-0 w-6 h-6 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-xs font-bold flex items-center justify-center">1</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Register</strong> a free account.</span></li>
+                <li class="flex items-start gap-3"><span class="shrink-0 w-6 h-6 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-xs font-bold flex items-center justify-center">2</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Submit</strong> your campaign with the required documents.</span></li>
+                <li class="flex items-start gap-3"><span class="shrink-0 w-6 h-6 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-xs font-bold flex items-center justify-center">3</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Get verified</strong> by our team and volunteers, then go live.</span></li>
+                <li class="flex items-start gap-3"><span class="shrink-0 w-6 h-6 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-xs font-bold flex items-center justify-center">4</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Receive donations</strong> directly and share updates with donors.</span></li>
+              </ol>
+              <div class="pt-1">
+                <a routerLink="/register" class="inline-block text-center bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                  Start a Campaign
+                </a>
+              </div>
+            </div>
+            <div class="relative h-44 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2">
+              <img src="images/hero-2.jpg" alt="Volunteers working together to help their community" class="absolute inset-0 w-full h-full object-cover object-center">
+            </div>
+          </div>
+
+          <!-- Slide 3: Zakah calculation + importance of Zakah (Calculate Your Zakah) -->
+          <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out"
+               [ngClass]="heroSlideIndex === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
+               [attr.aria-hidden]="heroSlideIndex !== 2">
+            <div class="p-6 sm:p-8 lg:p-16 flex flex-col justify-center gap-3 sm:gap-4 order-2 md:order-1">
+              <span class="self-start bg-[#F2E9D8] dark:bg-[#221D12] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                Obligatory Pillar of Islam
+              </span>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">
+                Calculate Your Zakah with Confidence
+              </h2>
+              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
+                Work out your 2.5% Zakah on cash, gold, silver, business assets, and investments against the Nisab threshold—then give it directly to verified causes.
+              </p>
+              <div class="space-y-2 text-sm text-[#4A3627] dark:text-[#EAE5E1]">
+                <div class="flex items-start gap-3"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Purifies your wealth</strong> and brings barakah.</span></div>
+                <div class="flex items-start gap-3"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Lifts the poor, orphans, and the needy</strong> with direct support.</span></div>
+                <div class="flex items-start gap-3"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">Keeps wealth circulating</strong> and communities strong.</span></div>
+              </div>
+              <div class="pt-1">
+                <button (click)="scrollToZakat()" class="inline-block text-center bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                  Calculate Your Zakah
+                </button>
+              </div>
+            </div>
+            <div class="relative h-44 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2">
+              <img src="images/hero-3.jpg" alt="Hands giving charity to someone in need" class="absolute inset-0 w-full h-full object-cover object-center">
+            </div>
+          </div>
+
         </div>
+
+        <!-- Right Arrow -->
+        <button (click)="nextHeroSlide()" aria-label="Next slide"
+                class="shrink-0 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] flex items-center justify-center text-xl sm:text-2xl leading-none shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.08] active:scale-[0.95] cursor-pointer">
+          <span class="-mt-0.5">›</span>
+        </button>
+      </div>
+
+      <!-- Dot Indicators -->
+      <div class="flex items-center justify-center gap-2 mt-5">
+        <button *ngFor="let s of [0, 1, 2]" (click)="goToHeroSlide(s)" [attr.aria-label]="'Go to slide ' + (s + 1)"
+                [ngClass]="s === heroSlideIndex ? 'bg-[#B5601F] w-6 sm:w-8' : 'bg-[#B5601F]/30 hover:bg-[#B5601F]/60 w-2.5'"
+                class="h-2.5 rounded-full transition-all duration-300 cursor-pointer"></button>
+      </div>
     </div>
   </section>
 
-  <!-- Featured Campaigns Slideshow -->
-  <section class="w-full relative bg-[#1F1A0F]" *ngIf="!loading && campaigns.length > 0">
-    <div class="relative w-full h-[440px] sm:h-[500px] md:h-[580px] overflow-hidden">
-
-      <!-- Slides -->
-      <div *ngFor="let camp of campaigns; let i = index"
-           class="absolute inset-0 transition-opacity duration-700 ease-in-out"
-           [ngClass]="i === currentSlideIndex ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'">
-        <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=1400'"
-             [alt]="camp.title || camp.name"
-             class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10"></div>
-
-        <div class="absolute inset-0 flex items-end">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
-            <h2 class="text-white text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2 sm:mb-3 max-w-2xl leading-tight">
-              {{ camp.title || camp.name }}
-            </h2>
-            <p *ngIf="camp.location" class="text-white/80 text-xs sm:text-sm mb-3 flex items-center gap-1.5">📍 {{ camp.location }}</p>
-            <p class="text-white/90 text-sm sm:text-base max-w-2xl mb-5 sm:mb-6 leading-relaxed line-clamp-3">
-              {{ camp.featured_highlights || camp.description }}
-            </p>
-
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 mb-6 max-w-md">
-              <div class="flex-1 bg-white/20 rounded-full h-2.5 overflow-hidden">
-                <div class="bg-[#B5601F] h-full rounded-full transition-all duration-500" [style.width.%]="camp.progress || 0"></div>
-              </div>
-              <span class="text-white text-xs sm:text-sm font-semibold whitespace-nowrap">₹{{ (camp.raised || 0) | number }} raised of ₹{{ (camp.goal || camp.budget || 0) | number }}</span>
-            </div>
-
-            <a [routerLink]="['/donate', camp.id]" class="inline-block bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl shadow-lg transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] text-sm">
-              Donate Now →
-            </a>
-          </div>
-        </div>
+  <!-- Featured Campaigns (card grid) -->
+  <section class="w-full" *ngIf="!loading && campaigns.length > 0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-2">
+      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Featured Campaigns</h2>
+        <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Discover verified causes making real impact in communities</p>
       </div>
 
-      <!-- Left / Right Navigation Arrows -->
-      <button *ngIf="campaigns.length > 1" (click)="prevSlide()" aria-label="Previous featured campaign"
-              class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl backdrop-blur-xs transition cursor-pointer">
-        ‹
-      </button>
-      <button *ngIf="campaigns.length > 1" (click)="nextSlide()" aria-label="Next featured campaign"
-              class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-12 sm:h-12 bg-black/40 hover:bg-black/60 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl backdrop-blur-xs transition cursor-pointer">
-        ›
-      </button>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div *ngFor="let camp of campaigns"
+             class="bg-[#F8F2E6] dark:bg-[#221D12] rounded-2xl overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] shadow-sm flex flex-col transition-all duration-300 ease-out md:hover:-translate-y-1 hover:shadow-lg">
 
-      <!-- Dot Indicators -->
-      <div *ngIf="campaigns.length > 1" class="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        <button *ngFor="let camp of campaigns; let i = index" (click)="goToSlide(i)" [attr.aria-label]="'Go to slide ' + (i + 1)"
-                [ngClass]="i === currentSlideIndex ? 'bg-white w-6 sm:w-8' : 'bg-white/50 hover:bg-white/70 w-2.5'"
-                class="h-2.5 rounded-full transition-all duration-300 cursor-pointer"></button>
+          <!-- Card image with status + location badges -->
+          <div class="relative h-44 sm:h-48 w-full bg-[#3E2A1E]">
+            <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800'"
+                 [alt]="camp.title || camp.name"
+                 class="w-full h-full object-cover">
+            <span class="absolute top-3 right-3 bg-[#6B7A4F] text-[#F8F2E6] text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full">
+              {{ (camp.status || 'Active') | titlecase }}
+            </span>
+            <span *ngIf="camp.location" class="absolute bottom-3 left-3 bg-black/50 backdrop-blur-xs text-[#F8F2E6] text-[10px] sm:text-xs font-medium px-2.5 py-1 rounded-lg">
+              📍 {{ camp.location }}
+            </span>
+          </div>
+
+          <!-- Card body -->
+          <div class="p-4 sm:p-5 flex flex-col flex-1">
+            <h3 class="text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-snug">{{ camp.title || camp.name }}</h3>
+            <p *ngIf="camp.category || camp.type" class="text-xs text-[#B5601F] dark:text-[#DF8642] mt-0.5">{{ camp.category || camp.type }}</p>
+
+            <div class="mt-4 flex items-center justify-between text-xs font-semibold text-[#4A3627] dark:text-[#EAE5E1]">
+              <span>Haajah: ₹{{ (camp.goal || camp.budget || 0) | number }}</span>
+              <span>{{ camp.progress || 0 }}%</span>
+            </div>
+            <div class="mt-1.5 w-full bg-[#E2D3B8] dark:bg-[#4F4534] rounded-full h-2 overflow-hidden">
+              <div class="bg-[#B5601F] h-full rounded-full transition-all duration-500"
+                   [style.width.%]="(camp.progress || 0) > 100 ? 100 : (camp.progress || 0)"></div>
+            </div>
+
+            <div class="mt-auto pt-5">
+              <a [routerLink]="['/donate', camp.id]" class="block text-center w-full bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                Donate Now
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
