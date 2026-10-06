@@ -196,7 +196,10 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   loadCampaigns(): void {
-    this.http.get<any>('http://127.0.0.1:8000/api/campaigns').subscribe({
+    // Uses the admin endpoint (not the public /api/campaigns, which only returns
+    // active campaigns) so a volunteer can see their own submissions at every
+    // stage — pending approval, awaiting bank details, and active.
+    this.http.get<any>('http://127.0.0.1:8000/api/admin/campaigns').subscribe({
       next: (res) => {
         const rawCampaigns = res.campaigns || res;
         this.campaigns = rawCampaigns.map((c: any) => {
@@ -260,7 +263,15 @@ export class VolunteerDashboardComponent implements OnInit {
   get assignedCampaigns(): any[] {
     return this.campaigns.filter(c => 
       this.assignedCampaignIds.includes(c.id) || 
-      c.user_email === this.volunteerProfile.email
+      c.user_id === this.volunteerProfile.id
+    );
+  }
+
+  // Campaigns this volunteer personally submitted that have been approved by
+  // an admin but are still hidden from donors until bank details are added.
+  get myNeedsBankDetailsCampaigns(): any[] {
+    return this.campaigns.filter(c =>
+      c.status === 'pending_bank_details' && c.user_id === this.volunteerProfile.id
     );
   }
 
@@ -514,6 +525,35 @@ export class VolunteerDashboardComponent implements OnInit {
         this.loadCampaigns();
       },
       error: (err) => console.error('Error updating campaign', err)
+    });
+  }
+
+  // Saves bank transfer details for a campaign. If this campaign was approved
+  // but waiting on bank details, the backend automatically flips it to
+  // "active" the moment account number, IFSC code, and bank name are all present.
+  saveCampaignBankDetails(camp: any): void {
+    const payload = {
+      bank_account_name: camp.bank_account_name,
+      bank_account_number: camp.bank_account_number,
+      bank_ifsc_code: camp.bank_ifsc_code,
+      bank_name: camp.bank_name,
+      upi_id: camp.upi_id
+    };
+
+    this.http.put<any>(`http://127.0.0.1:8000/api/admin/campaigns/${camp.id}`, payload).subscribe({
+      next: (res) => {
+        const updatedStatus = res?.campaign?.[0]?.status;
+        if (updatedStatus === 'active') {
+          alert('Bank details saved — this campaign is now live for donors!');
+        } else {
+          alert('Bank details saved successfully!');
+        }
+        this.loadCampaigns();
+      },
+      error: (err) => {
+        console.error('Error saving bank details', err);
+        alert(err.error?.detail || 'Failed to save bank details. Please try again.');
+      }
     });
   }
 

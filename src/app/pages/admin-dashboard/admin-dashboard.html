@@ -151,6 +151,81 @@
         </div>
       </div>
 
+      <!-- Needs Bank Details Section: approved campaigns that can't go live until bank details are on file -->
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 md:p-8 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
+        <div class="flex items-center justify-between mb-4 sm:mb-6">
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Needs Bank Details</h2>
+            <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] mt-1">Approved, but hidden from donors until bank transfer details are added.</p>
+          </div>
+          <span class="bg-amber-50 text-amber-700 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+            {{ needsBankDetailsCampaigns.length }} Waiting
+          </span>
+        </div>
+
+        <div *ngIf="needsBankDetailsCampaigns.length === 0" class="text-sm text-[#A89880] py-8 text-center bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-xl border border-dashed border-[#E2D3B8] dark:border-[#4F4534] px-4">
+          No campaigns are currently waiting on bank details.
+        </div>
+
+        <!-- Desktop / tablet: table view -->
+        <div class="overflow-x-auto hidden sm:block" *ngIf="needsBankDetailsCampaigns.length > 0">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[#E2D3B8] dark:border-[#4F4534] text-[#A89880] font-medium text-xs uppercase tracking-wider">
+                <th class="p-4">Campaign</th>
+                <th class="p-4">Location & Haajah</th>
+                <th class="p-4">Description</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#E2D3B8] dark:divide-[#4F4534]">
+              <tr *ngFor="let camp of needsBankDetailsCampaigns" class="hover:bg-[#F8F2E6] dark:hover:bg-[#1F1A0F] text-sm">
+                <td class="p-4 flex items-center gap-3">
+                  <img [src]="camp.image_url || 'https://via.placeholder.com/150'" class="w-12 h-12 rounded-xl object-cover border border-[#E2D3B8] dark:border-[#4F4534]">
+                  <div>
+                    <span class="font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] block">{{ camp.title }}</span>
+                    <span class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">By: {{ camp.user_email || 'Admin' }}</span>
+                  </div>
+                </td>
+                <td class="p-4 text-[#5C4433] dark:text-[#EAE5E1]">
+                  <div class="text-xs font-medium">{{ camp.location || 'No location' }}</div>
+                  <div class="text-xs text-[#B5601F] dark:text-[#DF8642] font-semibold">Haajah: ₹{{ camp.goal | number }}</div>
+                </td>
+                <td class="p-4 text-[#5C4433] dark:text-[#EAE5E1] max-w-xs truncate">
+                  <span class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">{{ camp.description || 'N/A' }}</span>
+                </td>
+                <td class="p-4 text-right">
+                  <button (click)="openCampaignManageModal(camp)" class="text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Add Bank Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile: card view -->
+        <div class="sm:hidden space-y-3" *ngIf="needsBankDetailsCampaigns.length > 0">
+          <div *ngFor="let camp of needsBankDetailsCampaigns" class="bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-4 space-y-3">
+            <div class="flex items-center gap-3">
+              <img [src]="camp.image_url || 'https://via.placeholder.com/150'" class="w-14 h-14 rounded-xl object-cover border border-[#E2D3B8] dark:border-[#4F4534] shrink-0">
+              <div class="min-w-0">
+                <p class="font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm truncate">{{ camp.title }}</p>
+                <p class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1] truncate">By: {{ camp.user_email || 'Admin' }}</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-xs bg-[#F2E9D8] dark:bg-[#221D12] rounded-xl px-3 py-2">
+              <span class="text-[#5C4433] dark:text-[#EAE5E1] font-medium truncate">{{ camp.location || 'No location' }}</span>
+              <span class="text-[#B5601F] dark:text-[#DF8642] font-semibold shrink-0 ml-2">₹{{ camp.goal | number }}</span>
+            </div>
+            <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] line-clamp-2">{{ camp.description || 'N/A' }}</p>
+            <button (click)="openCampaignManageModal(camp)" class="w-full text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] font-semibold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition">
+              Add Bank Details
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Action Button to Open/Close Create Campaign Dropdown Form -->
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 rounded-2xl shadow-sm border border-[#E2D3B8] dark:border-[#4F4534]">
         <div>
@@ -537,6 +612,9 @@
       <!-- Edit Bank Details & UPI Section with Delete Feature -->
       <div class="bg-[#F2E9D8]/60 dark:bg-[#221D12]/60 p-4 sm:p-5 rounded-xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-4">
         <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-sm flex items-center gap-2">🏦 Edit Bank & UPI Details</h3>
+        <p *ngIf="selectedCampaignModal.status === 'pending_bank_details'" class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
+          ⏳ This campaign is approved but hidden from donors. Fill in the Account Number, IFSC Code, and Bank Name below and save — it will go live automatically.
+        </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-[11px] font-semibold text-[#6B380F] dark:text-[#E0751F] mb-1">Account Holder Name</label>

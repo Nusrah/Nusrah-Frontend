@@ -20,6 +20,7 @@ export class AdminDashboardComponent implements OnInit {
 
   campaigns: any[] = [];
   pendingCampaigns: any[] = [];
+  needsBankDetailsCampaigns: any[] = [];
   volunteers: any[] = [];
   pendingVolunteers: any[] = [];
   
@@ -170,13 +171,19 @@ export class AdminDashboardComponent implements OnInit {
             this.pendingCampaigns = allCampaigns.filter((c: any) => 
               c.approval_status?.toLowerCase() === 'pending' || c.status?.toLowerCase() === 'pending'
             );
+            this.needsBankDetailsCampaigns = allCampaigns.filter((c: any) =>
+              c.status?.toLowerCase() === 'pending_bank_details'
+            );
             this.campaigns = allCampaigns.filter((c: any) => 
-              c.approval_status?.toLowerCase() !== 'pending' && c.status?.toLowerCase() !== 'pending'
+              c.approval_status?.toLowerCase() !== 'pending' &&
+              c.status?.toLowerCase() !== 'pending' &&
+              c.status?.toLowerCase() !== 'pending_bank_details'
             );
 
             if (this.selectedCampaignModal) {
               const updated = this.campaigns.find(c => c.id === this.selectedCampaignModal.id) ||
-                              this.pendingCampaigns.find(c => c.id === this.selectedCampaignModal.id);
+                              this.pendingCampaigns.find(c => c.id === this.selectedCampaignModal.id) ||
+                              this.needsBankDetailsCampaigns.find(c => c.id === this.selectedCampaignModal.id);
               if (updated) this.selectedCampaignModal = { ...updated };
             }
 
@@ -275,7 +282,7 @@ export class AdminDashboardComponent implements OnInit {
 
   getVolunteerAssignedCampaigns(volunteerId: string): any[] {
     const assigned: any[] = [];
-    const allCamps = [...this.campaigns, ...this.pendingCampaigns];
+    const allCamps = [...this.campaigns, ...this.pendingCampaigns, ...this.needsBankDetailsCampaigns];
     for (const cId in this.campaignVolunteers) {
       if (this.campaignVolunteers[cId]?.includes(volunteerId)) {
         const found = allCamps.find(c => c.id === cId);
@@ -288,7 +295,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   getVolunteerUnassignedCampaigns(volunteerId: string): any[] {
-    const allCamps = [...this.campaigns, ...this.pendingCampaigns];
+    const allCamps = [...this.campaigns, ...this.pendingCampaigns, ...this.needsBankDetailsCampaigns];
     const assignedCamps = this.getVolunteerAssignedCampaigns(volunteerId);
     const assignedIds = assignedCamps.map(c => c.id);
     return allCamps.filter(c => !assignedIds.includes(c.id));
@@ -310,7 +317,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   saveVolunteerAssignments(volunteerId: string): void {
-    const allCamps = [...this.campaigns, ...this.pendingCampaigns];
+    const allCamps = [...this.campaigns, ...this.pendingCampaigns, ...this.needsBankDetailsCampaigns];
     let completedRequests = 0;
     let hasError = false;
 
@@ -455,9 +462,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   approveCampaign(id: string): void {
-    this.http.put(`http://127.0.0.1:8000/api/admin/campaigns/${id}/approve`, {}).subscribe({
-      next: () => {
-        alert('Campaign approved and published to donor feed!');
+    this.http.put<any>(`http://127.0.0.1:8000/api/admin/campaigns/${id}/approve`, {}).subscribe({
+      next: (res) => {
+        if (res?.status === 'pending_bank_details') {
+          alert('Campaign approved — it will go live once bank details are added for it.');
+        } else {
+          alert('Campaign approved and published to donor feed!');
+        }
         this.loadAdminData();
       },
       error: (err) => {
@@ -759,7 +770,9 @@ export class AdminDashboardComponent implements OnInit {
         if (this.selectedCampaignModal && this.selectedCampaignModal.id === camp.id) {
           this.selectedCampaignModal.category = camp.category;
         }
-        const cached = this.campaigns.find(c => c.id === camp.id) || this.pendingCampaigns.find(c => c.id === camp.id);
+        const cached = this.campaigns.find(c => c.id === camp.id) ||
+          this.pendingCampaigns.find(c => c.id === camp.id) ||
+          this.needsBankDetailsCampaigns.find(c => c.id === camp.id);
         if (cached) cached.category = camp.category;
         this.cdr.detectChanges();
       },
