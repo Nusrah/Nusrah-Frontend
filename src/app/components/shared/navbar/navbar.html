@@ -1,127 +1,38 @@
 <header class="flex items-center justify-between px-4 sm:px-8 py-4 border-b-2 border-[#D9BD8F] sticky top-0 bg-[#F8F2E6] z-50 shadow-[0_2px_8px_rgba(181,96,31,0.08)] dark:bg-[#2A1B12] dark:border-[#4A3627] dark:shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-colors duration-300">
-    <div class="flex items-center space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5" routerLink="/">
-        <img src="/nusrah-logo.png" alt="Nusrah" class="h-10 sm:h-11 w-auto object-contain shrink-0">
-        <span class="hidden sm:inline text-xl font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
-    </div>
-
-    <!-- Desktop nav links -->
-    <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-        <a routerLink="/" #rlaHome="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: true}" 
-           [ngClass]="rlaHome.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'" 
-           class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Home</a>
-           
-        <a routerLink="/campaigns" #rlaCamp="routerLinkActive" routerLinkActive 
-           [ngClass]="rlaCamp.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'" 
-           class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Campaigns</a>
-           
-        <a routerLink="/about" #rlaAbout="routerLinkActive" routerLinkActive 
-           [ngClass]="rlaAbout.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'" 
-           class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">About Us</a>
-           
-        <a routerLink="/register" #rlaTeam="routerLinkActive" routerLinkActive 
-           [ngClass]="rlaTeam.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'" 
-           class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Join Our Team</a>
-           
-        <a routerLink="/contact" #rlaContact="routerLinkActive" routerLinkActive 
-           [ngClass]="rlaContact.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'" 
-           class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Contact Us</a>
-    </nav>
-
-    <div class="flex items-center space-x-3 sm:space-x-4 text-sm font-medium">
-
-        <!-- Theme Toggle Button -->
-        <button 
-            type="button"
-            (click)="themeService.toggleTheme()"
-            aria-label="Toggle dark mode"
-            class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#8F4A16] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.05] cursor-pointer shadow-xs">
-            <!-- Sun icon (shown in dark mode, click to go light) -->
-            <svg *ngIf="themeService.isDarkMode()" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4"></circle>
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-            </svg>
-            <!-- Moon icon (shown in light mode, click to go dark) -->
-            <svg *ngIf="!themeService.isDarkMode()" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-        </button>
-
-        <!-- Login (desktop / tablet only, tucked into the drawer on mobile) -->
-        <a routerLink="/login" #rlaLogin="routerLinkActive" routerLinkActive 
-           [ngClass]="rlaLogin.isActive ? 'text-[#B5601F] font-semibold' : 'text-[#4A3627]'" 
-           class="hidden md:inline-block hover:text-[#F8F2E6] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] px-4 py-2 rounded-lg bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-semibold shadow-xs">Login</a>
-
-        <!-- Hamburger button (mobile only) -->
-        <button
-            type="button"
-            (click)="toggleMobileMenu()"
-            [attr.aria-expanded]="isMobileMenuOpen"
-            aria-label="Open menu"
-            aria-controls="mobile-nav-drawer"
-            class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="4" y1="7" x2="20" y2="7"></line>
-                <line x1="4" y1="12" x2="20" y2="12"></line>
-                <line x1="4" y1="17" x2="20" y2="17"></line>
-            </svg>
-        </button>
-    </div>
+  <div class="flex items-center space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5" routerLink="/">
+    <img src="/nusrah-logo.png" alt="Nusrah" class="h-10 sm:h-11 w-auto object-contain shrink-0">
+    <span class="hidden sm:inline text-xl font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
+  </div>
+  <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+    <a *ngFor="let l of [['/', 'Home'], ['/campaigns', 'Campaigns'], ['/about', 'About Us'], ['/register', 'Join Our Team'], ['/contact', 'Contact Us']]" [routerLink]="l[0]" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: l[0] === '/'}"
+      [ngClass]="rla.isActive ? 'text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
+      class="hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">{{ l[1] }}</a>
+  </nav>
+  <div class="flex items-center space-x-3 sm:space-x-4 text-sm font-medium">
+    <button type="button" (click)="themeService.toggleTheme()" aria-label="Toggle dark mode" class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#8F4A16] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#E8B77C] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.05] cursor-pointer shadow-xs">
+      <svg *ngIf="themeService.isDarkMode()" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg *ngIf="!themeService.isDarkMode()" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <a routerLink="/login" #rlaLogin="routerLinkActive" routerLinkActive [ngClass]="rlaLogin.isActive ? 'text-[#B5601F] font-semibold' : 'text-[#4A3627]'" class="hidden md:inline-block hover:text-[#F8F2E6] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] px-4 py-2 rounded-lg bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-semibold shadow-xs">Login</a>
+    <button type="button" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen" aria-label="Open menu" aria-controls="mobile-nav-drawer" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+    </button>
+  </div>
 </header>
-
-<!-- Backdrop -->
-<div *ngIf="isMobileMenuOpen"
-     (click)="closeMobileMenu()"
-     class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
-     aria-hidden="true">
-</div>
-
-<!-- Mobile sidebar drawer -->
-<aside
-    id="mobile-nav-drawer"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Site navigation"
-    class="fixed top-0 right-0 h-full w-72 max-w-[80%] bg-[#F8F2E6] dark:bg-[#2A1B12] z-50 shadow-2xl transform transition-transform duration-300 ease-out md:hidden flex flex-col"
-    [ngClass]="isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'">
-
-    <div class="flex items-center justify-between px-6 py-4 border-b-2 border-[#D9BD8F] dark:border-[#4A3627]">
-        <span class="text-lg font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Menu</span>
-        <button
-            type="button"
-            (click)="closeMobileMenu()"
-            aria-label="Close menu"
-            class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-            </svg>
-        </button>
+<div *ngIf="isMobileMenuOpen" (click)="closeMobileMenu()" class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300" aria-hidden="true"></div>
+<aside id="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Site navigation" class="fixed top-0 right-0 h-full w-72 max-w-[80%] bg-[#F8F2E6] dark:bg-[#2A1B12] z-50 shadow-2xl transform transition-transform duration-300 ease-out md:hidden flex flex-col" [ngClass]="isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'">
+  <div class="flex items-center justify-between px-6 py-4 border-b-2 border-[#D9BD8F] dark:border-[#4A3627]">
+    <span class="text-lg font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Menu</span>
+    <button type="button" (click)="closeMobileMenu()" aria-label="Close menu" class="flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+    </button>
+  </div>
+  <nav class="flex flex-col p-4 space-y-1 text-base font-medium overflow-y-auto">
+    <a *ngFor="let l of [['/', 'Home'], ['/campaigns', 'Campaigns'], ['/about', 'About Us'], ['/register', 'Join Our Team'], ['/contact', 'Contact Us']]" [routerLink]="l[0]" (click)="closeMobileMenu()" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: l[0] === '/'}"
+      [ngClass]="rla.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
+      class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">{{ l[1] }}</a>
+    <div class="pt-3 mt-2 border-t border-[#E2D3B8] dark:border-[#4A3627]">
+      <a routerLink="/login" (click)="closeMobileMenu()" class="block text-center px-4 py-3 rounded-xl bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-semibold shadow-xs transition-all duration-200">Login</a>
     </div>
-
-    <nav class="flex flex-col p-4 space-y-1 text-base font-medium overflow-y-auto">
-        <a routerLink="/" (click)="closeMobileMenu()" #rlaHomeM="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: true}"
-           [ngClass]="rlaHomeM.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
-           class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">Home</a>
-
-        <a routerLink="/campaigns" (click)="closeMobileMenu()" #rlaCampM="routerLinkActive" routerLinkActive
-           [ngClass]="rlaCampM.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
-           class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">Campaigns</a>
-
-        <a routerLink="/about" (click)="closeMobileMenu()" #rlaAboutM="routerLinkActive" routerLinkActive
-           [ngClass]="rlaAboutM.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
-           class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">About Us</a>
-
-        <a routerLink="/register" (click)="closeMobileMenu()" #rlaTeamM="routerLinkActive" routerLinkActive
-           [ngClass]="rlaTeamM.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
-           class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">Join Our Team</a>
-
-        <a routerLink="/contact" (click)="closeMobileMenu()" #rlaContactM="routerLinkActive" routerLinkActive
-           [ngClass]="rlaContactM.isActive ? 'bg-[#F2DFC4] dark:bg-[#4A3627] text-[#B5601F] dark:text-[#E8B77C] font-semibold' : 'text-[#5C4433] dark:text-[#C9B79E]'"
-           class="px-4 py-3 rounded-xl hover:bg-[#F2DFC4] dark:hover:bg-[#4A3627] hover:text-[#B5601F] dark:hover:text-[#E8B77C] transition-all duration-200">Contact Us</a>
-
-        <div class="pt-3 mt-2 border-t border-[#E2D3B8] dark:border-[#4A3627]">
-            <a routerLink="/login" (click)="closeMobileMenu()" #rlaLoginM="routerLinkActive" routerLinkActive
-               class="block text-center px-4 py-3 rounded-xl bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-semibold shadow-xs transition-all duration-200">Login</a>
-        </div>
-    </nav>
+  </nav>
 </aside>

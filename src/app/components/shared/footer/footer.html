@@ -1,139 +1,71 @@
 <footer class="relative overflow-hidden bg-[#3E2A1E] dark:bg-[#241C15] border-t border-[#B5601F]/40 dark:border-[#B5601F]/25 pt-12 sm:pt-16 pb-10 sm:pb-12">
-
-    <!-- Decorative background scene: desert oasis with realistic palm trees. Uses "meet" so the full scene (including tree tops) is always visible, never cropped, on any screen size. -->
-    <div class="absolute inset-x-0 bottom-0 h-40 sm:h-52 md:h-64 lg:h-72 pointer-events-none overflow-hidden" aria-hidden="true">
-        <svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax meet" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <!-- Single leaf/frond blade, drawn pointing straight up from its base point -->
-                <path id="footerFrond" fill="currentColor"
-                    d="M0,0 C-4,-16 -9,-34 -8,-52 C-7,-68 -2,-80 0,-92 C2,-80 7,-68 8,-52 C9,-34 4,-16 0,0 Z"/>
-
-                <!-- Full palm tree: tapered trunk + a fanned crown of fronds + a small date cluster -->
-                <g id="footerPalmTree">
-                    <path fill="currentColor"
-                        d="M-7,0 C-9,-25 -3,-45 -5,-70 C-7,-95 -1,-110 -3,-130 L3,-130 C1,-110 7,-95 5,-70 C3,-45 9,-25 7,0 Z"/>
-                    <g transform="translate(0,-130)">
-                        <use href="#footerFrond" transform="rotate(-145) scale(1.15)"/>
-                        <use href="#footerFrond" transform="rotate(-105) scale(1.05)"/>
-                        <use href="#footerFrond" transform="rotate(-65) scale(1.05)"/>
-                        <use href="#footerFrond" transform="rotate(-25) scale(0.85)"/>
-                        <use href="#footerFrond" transform="rotate(25) scale(0.85)"/>
-                        <use href="#footerFrond" transform="rotate(65) scale(1.05)"/>
-                        <use href="#footerFrond" transform="rotate(105) scale(1.05)"/>
-                        <use href="#footerFrond" transform="rotate(145) scale(1.15)"/>
-                        <circle cx="-5" cy="-4" r="4"/>
-                        <circle cx="3" cy="-2" r="3.5"/>
-                        <circle cx="-1" cy="-8" r="3.5"/>
-                    </g>
-                </g>
-            </defs>
-
-            <!-- Sun / moon -->
-            <circle cx="1080" cy="42" r="28" class="fill-[#F8F2E6] dark:fill-[#E8A25C]" opacity="0.07"/>
-
-            <!-- Oasis water with ripples -->
-            <ellipse cx="600" cy="232" rx="230" ry="22" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.13"/>
-            <ellipse cx="600" cy="232" rx="150" ry="12" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.11"/>
-            <ellipse cx="600" cy="232" rx="80" ry="6" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.10"/>
-
-            <!-- Faint reflections of the two center palms in the water -->
-            <g class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.04">
-                <use href="#footerPalmTree" transform="translate(430,242) scale(0.75,-0.4)"/>
-                <use href="#footerPalmTree" transform="translate(760,242) scale(-0.75,-0.4)"/>
-            </g>
-
-            <!-- Sand / horizon line -->
-            <path d="M0,230 Q200,220 400,228 T800,226 T1200,230" stroke="currentColor" stroke-width="2" fill="none" class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.08"/>
-
-            <!-- Palm trees around the oasis, full trees (trunk + crown) never cropped -->
-            <g class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.08">
-                <use href="#footerPalmTree" transform="translate(150,230) scale(1,1)"/>
-                <use href="#footerPalmTree" transform="translate(430,230) scale(0.75,0.75)"/>
-                <use href="#footerPalmTree" transform="translate(760,230) scale(-0.75,0.75)"/>
-                <use href="#footerPalmTree" transform="translate(1020,230) scale(-1,1)"/>
-            </g>
-        </svg>
+  <div class="absolute inset-x-0 bottom-0 h-40 sm:h-52 md:h-64 lg:h-72 pointer-events-none overflow-hidden" aria-hidden="true">
+    <svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax meet" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="footerFrond" fill="currentColor" d="M0,0 C-4,-16 -9,-34 -8,-52 C-7,-68 -2,-80 0,-92 C2,-80 7,-68 8,-52 C9,-34 4,-16 0,0 Z"/>
+        <g id="footerPalmTree">
+          <path fill="currentColor" d="M-7,0 C-9,-25 -3,-45 -5,-70 C-7,-95 -1,-110 -3,-130 L3,-130 C1,-110 7,-95 5,-70 C3,-45 9,-25 7,0 Z"/>
+          <g transform="translate(0,-130)">
+            <use href="#footerFrond" transform="rotate(-145) scale(1.15)"/><use href="#footerFrond" transform="rotate(-105) scale(1.05)"/><use href="#footerFrond" transform="rotate(-65) scale(1.05)"/><use href="#footerFrond" transform="rotate(-25) scale(0.85)"/>
+            <use href="#footerFrond" transform="rotate(25) scale(0.85)"/><use href="#footerFrond" transform="rotate(65) scale(1.05)"/><use href="#footerFrond" transform="rotate(105) scale(1.05)"/><use href="#footerFrond" transform="rotate(145) scale(1.15)"/>
+            <circle cx="-5" cy="-4" r="4"/><circle cx="3" cy="-2" r="3.5"/><circle cx="-1" cy="-8" r="3.5"/>
+          </g>
+        </g>
+      </defs>
+      <circle cx="1080" cy="42" r="28" class="fill-[#F8F2E6] dark:fill-[#E8A25C]" opacity="0.07"/>
+      <ellipse cx="600" cy="232" rx="230" ry="22" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.13"/>
+      <ellipse cx="600" cy="232" rx="150" ry="12" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.11"/>
+      <ellipse cx="600" cy="232" rx="80" ry="6" class="fill-[#6FA8A0] dark:fill-[#3FB6A6]" opacity="0.10"/>
+      <g class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.04">
+        <use href="#footerPalmTree" transform="translate(430,242) scale(0.75,-0.4)"/>
+        <use href="#footerPalmTree" transform="translate(760,242) scale(-0.75,-0.4)"/>
+      </g>
+      <path d="M0,230 Q200,220 400,228 T800,226 T1200,230" stroke="currentColor" stroke-width="2" fill="none" class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.08"/>
+      <g class="text-[#F8F2E6] dark:text-[#E8A25C]" opacity="0.08">
+        <use href="#footerPalmTree" transform="translate(150,230) scale(1,1)"/>
+        <use href="#footerPalmTree" transform="translate(430,230) scale(0.75,0.75)"/>
+        <use href="#footerPalmTree" transform="translate(760,230) scale(-0.75,0.75)"/>
+        <use href="#footerPalmTree" transform="translate(1020,230) scale(-1,1)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12">
+    <div class="md:col-span-2 space-y-4">
+      <div class="flex items-center space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex" routerLink="/">
+        <img src="/nusrah-logo.png" alt="Nusrah" class="h-11 w-auto object-contain shrink-0">
+        <span class="text-xl font-bold text-[#F8F2E6] tracking-tight">Nusrah</span>
+      </div>
+      <p class="text-[#E8B77C] dark:text-[#F0C48A] text-xs font-semibold tracking-wide uppercase -mt-2">Aid that anchors you to Jannah</p>
+      <p class="text-[#C9B79E] dark:text-[#DCC9AE] text-sm leading-relaxed max-w-sm">Connecting donors directly with verified causes for transparent community impact.</p>
     </div>
-
-    <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12">
-        
-        <!-- Brand Info -->
-        <div class="md:col-span-2 space-y-4">
-            <div class="flex items-center space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex" routerLink="/">
-                <img src="/nusrah-logo.png" alt="Nusrah" class="h-11 w-auto object-contain shrink-0">
-                <span class="text-xl font-bold text-[#F8F2E6] tracking-tight">Nusrah</span>
-            </div>
-            <p class="text-[#E8B77C] dark:text-[#F0C48A] text-xs font-semibold tracking-wide uppercase -mt-2">
-                Aid that anchors you to Jannah
-            </p>
-            <p class="text-[#C9B79E] dark:text-[#DCC9AE] text-sm leading-relaxed max-w-sm">
-                Connecting donors directly with verified causes for transparent community impact.
-            </p>
-        </div>
-
-        <!-- Join Our Team Links -->
-        <div class="space-y-4">
-            <h3 class="text-[#E8B77C] dark:text-[#F0C48A] font-semibold text-sm tracking-wide">Join Our Team</h3>
-            <ul class="space-y-3 text-sm text-[#C9B79E] dark:text-[#DCC9AE]">
-                <li><a routerLink="/campaigns" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Campaigns</a></li>
-                <li><a routerLink="/about" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">About Us</a></li>
-                <li><a routerLink="/join-team" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Join Our Team</a></li>
-                <li><a routerLink="/careers" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Careers</a></li>
-                <li><a routerLink="/work-with-us" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Work With Us</a></li>
-                <li><a routerLink="/contact" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Contact</a></li>
-            </ul>
-        </div>
-
-        <!-- Legal Links -->
-        <div class="space-y-4">
-            <h3 class="text-[#E8B77C] dark:text-[#F0C48A] font-semibold text-sm tracking-wide">Legal</h3>
-            <ul class="space-y-3 text-sm text-[#C9B79E] dark:text-[#DCC9AE]">
-                <li><a routerLink="/privacy-policy" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Privacy Policy</a></li>
-                <li><a routerLink="/terms" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">Terms & Conditions</a></li>
-            </ul>
-        </div>
-
-        <!-- Contact Us Info & Actions -->
-        <div class="space-y-4">
-            <h3 class="text-[#E8B77C] dark:text-[#F0C48A] font-semibold text-sm tracking-wide">Contact Us</h3>
-            <ul class="space-y-3 text-sm text-[#C9B79E] dark:text-[#DCC9AE]">
-                <li>
-                    <a href="tel:+919876543210" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex items-center space-x-2">
-                      <span>📞</span>
-                      <span>+91 98765 43210</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="mailto:nusrah.support@gmail.com" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex items-center space-x-2">
-                      <span>✉️</span>
-                      <span>nusrah.support@gmail.com</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex items-center space-x-2">
-                      <span>💬</span>
-                      <span>WhatsApp Support</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
+        <div *ngFor="let col of [
+      { t: 'Join Our Team', l: [['/campaigns', 'Campaigns'], ['/about', 'About Us'], ['/join-team', 'Join Our Team'], ['/careers', 'Careers'], ['/work-with-us', 'Work With Us'], ['/contact', 'Contact']] },
+      { t: 'Legal', l: [['/privacy-policy', 'Privacy Policy'], ['/terms', 'Terms &amp; Conditions']] }
+    ]" class="space-y-4">
+      <h3 class="text-[#E8B77C] dark:text-[#F0C48A] font-semibold text-sm tracking-wide">{{ col.t }}</h3>
+      <ul class="space-y-3 text-sm text-[#C9B79E] dark:text-[#DCC9AE]">
+        <li *ngFor="let l of col.l"><a [routerLink]="l[0]" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-block">{{ l[1] }}</a></li>
+      </ul>
     </div>
-
-    <!-- Bottom Bar (Copyright & Social Icons) -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mt-12 sm:mt-16 pt-8 border-t border-[#5C4433] dark:border-[#4A3627] flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-sm text-[#8A7863] dark:text-[#BFB8B1] text-center md:text-left">
-        <p>© {{ currentYear }} Nusrah. All rights reserved.</p>
-        
-        <div class="flex space-x-6 text-[#C9B79E] dark:text-[#DCC9AE]">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110 inline-block" aria-label="Facebook">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110 inline-block" aria-label="Instagram">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110 inline-block" aria-label="Twitter">
-                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-            </a>
-        </div>
+    <div class="space-y-4">
+      <h3 class="text-[#E8B77C] dark:text-[#F0C48A] font-semibold text-sm tracking-wide">Contact Us</h3>
+      <ul class="space-y-3 text-sm text-[#C9B79E] dark:text-[#DCC9AE]">
+        <li *ngFor="let c of [['tel:+919876543210', '📞', '+91 98765 43210'], ['mailto:nusrah.support@gmail.com', '✉️', 'nusrah.support@gmail.com'], ['https://wa.me/919876543210', '💬', 'WhatsApp Support']]">
+          <a [href]="c[0]" [attr.target]="c[0].startsWith('https') ? '_blank' : null" [attr.rel]="c[0].startsWith('https') ? 'noopener noreferrer' : null" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-0.5 inline-flex items-center space-x-2"><span>{{ c[1] }}</span><span>{{ c[2] }}</span></a>
+        </li>
+      </ul>
     </div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 mt-12 sm:mt-16 pt-8 border-t border-[#5C4433] dark:border-[#4A3627] flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-sm text-[#8A7863] dark:text-[#BFB8B1] text-center md:text-left">
+    <p>© {{ currentYear }} Nusrah. All rights reserved.</p>
+    <div class="flex space-x-6 text-[#C9B79E] dark:text-[#DCC9AE]">
+      <a *ngFor="let s of [
+        ['https://facebook.com', 'Facebook', 'M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z'],
+        ['https://instagram.com', 'Instagram', 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'],
+        ['https://twitter.com', 'Twitter', 'M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z']
+      ]" [href]="s[0]" target="_blank" rel="noopener noreferrer" [attr.aria-label]="s[1]" class="hover:text-[#B5601F] dark:hover:text-[#DF8642] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-110 inline-block">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path [attr.d]="s[2]"/></svg>
+      </a>
+    </div>
+  </div>
 </footer>

@@ -20,96 +20,38 @@ export class RegisterComponent implements OnDestroy {
   city = '';
   bio = '';
   referral = '';
-  
   errorMessage = '';
   showSuccessModal = false;
-  
   countdownSeconds = 10;
   private timerInterval: any = null;
 
-  constructor(
-    private http: HttpClient, 
-    private router: Router, 
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.clearTimer();
   }
 
-  // Smooth scroll method to jump directly to the steps section and form
   scrollToRegistration(): void {
-    const element = document.getElementById('registration-steps-section');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    document.getElementById('registration-steps-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Password requirement live check getters
-  get hasMinLength(): boolean {
-    return this.password.length >= 5;
-  }
-
-  get hasLowercase(): boolean {
-    return /[a-z]/.test(this.password);
-  }
-
-  get hasUppercase(): boolean {
-    return /[A-Z]/.test(this.password);
-  }
-
-  get hasSpecialChar(): boolean {
-    return /[^A-Za-z0-9]/.test(this.password);
-  }
+  get hasMinLength(): boolean { return this.password.length >= 5; }
+  get hasLowercase(): boolean { return /[a-z]/.test(this.password); }
+  get hasUppercase(): boolean { return /[A-Z]/.test(this.password); }
+  get hasSpecialChar(): boolean { return /[^A-Za-z0-9]/.test(this.password); }
 
   onRegister(): void {
-    this.errorMessage = '';
-
-    // 1. Validation: Full Name (Only alphabets and spaces)
-    const nameRegex = /^[A-Za-z\s]+$/;
-    if (!this.fullName.trim() || !nameRegex.test(this.fullName)) {
-      this.errorMessage = 'Full Name must contain only text/letters.';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    // 2. Validation: Email format
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!this.email || !emailRegex.test(this.email)) {
-      this.errorMessage = 'Please enter a valid email address (e.g., xxxxxxx@gmail.com).';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    // 3. Validation: Password Rules
-    if (!this.hasMinLength || !this.hasLowercase || !this.hasUppercase || !this.hasSpecialChar) {
-      this.errorMessage = 'Password does not meet all security requirements.';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    // 4. Validation: Confirm Password Match
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match.';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    // 5. Validation: Indian Phone Number (10 digits, does not start with 0)
-    const phoneRegex = /^[1-9][0-9]{9}$/;
-    if (!this.phone || !phoneRegex.test(this.phone)) {
-      this.errorMessage = 'Phone number must be exactly 10 digits and cannot start with 0.';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    // 6. Validation: City (Only text/letters, spaces or commas)
-    const cityRegex = /^[A-Za-z\s,]+$/;
-    if (!this.city.trim() || !cityRegex.test(this.city)) {
-      this.errorMessage = 'City must contain only text (e.g., City, State).';
-      this.cdr.detectChanges();
-      return;
-    }
+    // first failing rule wins; phone is 10 digits not starting with 0
+    const error =
+      !this.fullName.trim() || !/^[A-Za-z\s]+$/.test(this.fullName) ? 'Full Name must contain only text/letters.'
+      : !this.email || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.email) ? 'Please enter a valid email address (e.g., xxxxxxx@gmail.com).'
+      : !this.hasMinLength || !this.hasLowercase || !this.hasUppercase || !this.hasSpecialChar ? 'Password does not meet all security requirements.'
+      : this.password !== this.confirmPassword ? 'Passwords do not match.'
+      : !this.phone || !/^[1-9][0-9]{9}$/.test(this.phone) ? 'Phone number must be exactly 10 digits and cannot start with 0.'
+      : !this.city.trim() || !/^[A-Za-z\s,]+$/.test(this.city) ? 'City must contain only text (e.g., City, State).'
+      : '';
+    this.errorMessage = error;
+    if (error) return this.cdr.detectChanges();
 
     const payload = {
       full_name: this.fullName.trim(),
@@ -122,9 +64,8 @@ export class RegisterComponent implements OnDestroy {
       role: 'volunteer',
       approval_status: 'pending'
     };
-
     this.http.post<any>('/api/auth/register', payload).subscribe({
-      next: (res) => {
+      next: () => {
         this.countdownSeconds = 10;
         this.showSuccessModal = true;
         this.cdr.detectChanges();
@@ -143,11 +84,7 @@ export class RegisterComponent implements OnDestroy {
     this.timerInterval = setInterval(() => {
       this.countdownSeconds--;
       this.cdr.detectChanges();
-      
-      if (this.countdownSeconds <= 0) {
-        this.clearTimer();
-        this.closeModalAndRedirect();
-      }
+      if (this.countdownSeconds <= 0) this.closeModalAndRedirect();
     }, 1000);
   }
 

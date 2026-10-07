@@ -16,16 +16,10 @@ export class NavbarComponent {
 
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    this.updateBodyScroll();
+    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
   }
 
   closeMobileMenu(): void {
-    if (!this.isMobileMenuOpen) return;
-    this.isMobileMenuOpen = false;
-    this.updateBodyScroll();
-  }
-
-  private updateBodyScroll(): void {
-    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
+    if (this.isMobileMenuOpen) this.toggleMobileMenu();
   }
 }

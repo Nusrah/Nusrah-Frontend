@@ -1,113 +1,48 @@
 <div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] py-6 sm:py-10 lg:py-12 px-4 sm:px-6">
   <div class="max-w-7xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12">
-
-    <!-- Top Header & Skip Button Section -->
     <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-lg border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col md:flex-row justify-between items-start md:items-center gap-5 sm:gap-6 transition-all duration-300 hover:shadow-xl md:hover:-translate-y-1">
       <div class="space-y-2 max-w-2xl">
         <span class="bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full border border-[#F2DFC4] dark:border-[#443623] uppercase tracking-wider inline-block">Nusrah Campaigns</span>
         <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight leading-tight">Support Verified Masjid & Community Projects</h1>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">
-          The following campaigns are those that need your support. All campaigns are thoroughly verified by our team.
-        </p>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">The following campaigns are those that need your support. All campaigns are thoroughly verified by our team.</p>
       </div>
       <div class="w-full md:w-auto">
-        <button
-          type="button"
-          (click)="scrollToCampaigns()"
-          class="w-full md:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] cursor-pointer text-sm shrink-0 flex items-center justify-center gap-2">
+        <button type="button" (click)="scrollToCampaigns()" class="w-full md:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 py-3.5 rounded-2xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] cursor-pointer text-sm shrink-0 flex items-center justify-center gap-2">
           <span>See All Campaigns ↓</span>
         </button>
       </div>
     </div>
 
-    <!-- Informational Cards Grid (Verification, Progress Tracking, Steps to Donate, Islamic Rewards) -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-
-      <!-- Card 1: Rigorous Verification Process -->
-      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
-        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#F2DFC4] dark:bg-[#332715] text-[#B5601F] dark:text-[#DF8642] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">🔍</div>
-        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">How We Verify Campaigns</h2>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
-          Trust and absolute transparency are our core values. We do not list campaigns blindly.
-        </p>
+      <div *ngFor="let c of [
+        { icon: '🔍', iconCls: 'bg-[#F2DFC4] dark:bg-[#332715] text-[#B5601F] dark:text-[#DF8642]', tick: 'text-[#B5601F] dark:text-[#DF8642]', title: 'How We Verify Campaigns', desc: 'Trust and absolute transparency are our core values. We do not list campaigns blindly.', items: ['Our team goes directly to the ground to inspect the physical site.', 'We verify financial requirements, estimates, and immediate needs with local committees.', 'Every single project is vetted before going live to protect donor contributions.'] },
+        { icon: '📈', iconCls: 'bg-[#E4E6D6] dark:bg-[#25261C] text-[#5B6048] dark:text-[#DBDCD6]', tick: 'text-[#5B6048] dark:text-[#DBDCD6]', title: 'Live Progress Tracking', desc: 'You can always see how a project is evolving from start to completion.', items: ['Click on any campaign card to open its dedicated donation and progress page.', 'View real-time funding meters, percentage metrics, and milestones.', 'Our volunteers update progress updates ASAP via photo logs from the field.'] },
+        { icon: '💳', iconCls: 'bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F]', tick: 'text-[#6B380F] dark:text-[#E0751F]', num: true, title: 'Simple Steps to Donate', desc: 'Contributing to noble causes has never been easier or more secure.', items: ['Open any campaign page by clicking its card below.', 'Pay securely through Razorpay using UPI, card, netbanking, or wallet.', 'Receive an instant digital donation receipt and watch project milestones unfold.'] }
+      ]" class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+        <div [ngClass]="c.iconCls" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">{{ c.icon }}</div>
+        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">{{ c.title }}</h2>
+        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ c.desc }}</p>
         <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> Our team goes directly to the ground to inspect the physical site.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> We verify financial requirements, estimates, and immediate needs with local committees.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> Every single project is vetted before going live to protect donor contributions.
+          <li *ngFor="let item of c.items; let i = index" class="flex items-start gap-2.5">
+            <span [ngClass]="c.tick" class="font-bold shrink-0">{{ c.num ? (i + 1) + '.' : '✓' }}</span> {{ item }}
           </li>
         </ul>
       </div>
 
-      <!-- Card 2: Transparent Progress Tracking -->
-      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
-        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#E4E6D6] dark:bg-[#25261C] text-[#5B6048] dark:text-[#DBDCD6] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">📈</div>
-        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Live Progress Tracking</h2>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
-          You can always see how a project is evolving from start to completion.
-        </p>
-        <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> Click on any campaign card to open its dedicated donation and progress page.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> View real-time funding meters, percentage metrics, and milestones.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#5B6048] dark:text-[#DBDCD6] font-bold shrink-0">✓</span> Our volunteers update progress updates ASAP via photo logs from the field.
-          </li>
-        </ul>
-      </div>
-
-      <!-- Card 3: Step-by-Step Donation Guide -->
-      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
-        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">💳</div>
-        <h2 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Simple Steps to Donate</h2>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">
-          Contributing to noble causes has never been easier or more secure.
-        </p>
-        <ul class="space-y-2.5 text-xs sm:text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-2">
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">1.</span> Open any campaign page by clicking its card below.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">2.</span> Pay securely through Razorpay using UPI, card, netbanking, or wallet.
-          </li>
-          <li class="flex items-start gap-2.5">
-            <span class="text-[#6B380F] dark:text-[#E0751F] font-bold shrink-0">3.</span> Receive an instant digital donation receipt and watch project milestones unfold.
-          </li>
-        </ul>
-      </div>
-
-      <!-- Card 4: Islamic Teachings & Aakhirah Rewards -->
       <div class="bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
         <div class="w-11 h-11 sm:w-12 sm:h-12 bg-[#B5601F]/20 text-[#E8A25C] rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs border border-[#B5601F]/30">✨</div>
         <h2 class="text-lg sm:text-xl font-bold text-white">Rewards for Building the House of Allah</h2>
-        <p class="text-[#E2D3B8] text-sm leading-relaxed">
-          Supporting the construction, maintenance, and needs of masjids brings immense spiritual barakah and acts as continuous charity (*Sadaqah Jariyah*).
-        </p>
-        <div class="bg-[#F2E9D8]/10 dark:bg-[#221D12]/10 p-4 rounded-2xl border border-white/10 text-xs sm:text-sm text-[#E8C79A] italic">
-          "Whoever builds a mosque for the sake of Allah, Allah will build for him a house like it in Paradise." (Sahih Al-Bukhari)
-        </div>
+        <p class="text-[#E2D3B8] text-sm leading-relaxed">Supporting the construction, maintenance, and needs of masjids brings immense spiritual barakah and acts as continuous charity (*Sadaqah Jariyah*).</p>
+        <div class="bg-[#F2E9D8]/10 dark:bg-[#221D12]/10 p-4 rounded-2xl border border-white/10 text-xs sm:text-sm text-[#E8C79A] italic">"Whoever builds a mosque for the sake of Allah, Allah will build for him a house like it in Paradise." (Sahih Al-Bukhari)</div>
       </div>
-
     </div>
 
-    <!-- Main Campaigns Section Anchor -->
     <div id="campaigns-section" class="space-y-5 sm:space-y-6 pt-2 sm:pt-4 scroll-mt-4">
-
-      <!-- Top Header and Sort Section -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534]">
         <div>
           <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Active Campaigns</h2>
           <p class="text-[#5C4433] dark:text-[#EAE5E1] text-xs sm:text-sm">Browse and support masjid construction and maintenance projects.</p>
         </div>
-
-        <!-- Sort Dropdown -->
         <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 bg-[#F8F2E6] dark:bg-[#1F1A0F] px-4 py-2.5 rounded-2xl border border-[#E2D3B8]/80 dark:border-[#4F4534]/80 shadow-2xs w-full md:w-auto">
           <label for="sortSelect" class="text-xs font-bold text-[#5C4433] dark:text-[#EAE5E1] whitespace-nowrap">Sort By Funds:</label>
           <select id="sortSelect" [(ngModel)]="sortOrder" class="text-xs font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] bg-transparent outline-none cursor-pointer w-full sm:w-auto">
@@ -117,53 +52,28 @@
         </div>
       </div>
 
-      <!-- Search Bars Section (Search by Name & Search by City) -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         <div class="relative">
           <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#A89880]">🔍︎</span>
-          <input type="text"
-                 [(ngModel)]="searchName"
-                 placeholder="Search by Masjid or Campaign Name..."
-                 class="w-full pl-11 pr-4 py-3 sm:py-3.5 bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] outline-none shadow-2xs transition">
+          <input type="text" [(ngModel)]="searchName" placeholder="Search by Masjid or Campaign Name..." class="w-full pl-11 pr-4 py-3 sm:py-3.5 bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] outline-none shadow-2xs transition">
         </div>
-
         <div class="relative">
           <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#A89880]">📍︎</span>
-          <input type="text"
-                 [(ngModel)]="searchCity"
-                 placeholder="Search by City Location..."
-                 class="w-full pl-11 pr-4 py-3 sm:py-3.5 bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] outline-none shadow-2xs transition">
+          <input type="text" [(ngModel)]="searchCity" placeholder="Search by City Location..." class="w-full pl-11 pr-4 py-3 sm:py-3.5 bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] focus:border-[#B5601F] outline-none shadow-2xs transition">
         </div>
       </div>
 
-      <!-- Category Filter Dropdown -->
       <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-5 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534]">
         <label class="text-xs font-bold text-[#5C4433] dark:text-[#EAE5E1] block mb-2 tracking-wide uppercase">Filter by Category</label>
-
         <div class="relative w-full sm:w-80">
-          <!-- Dropdown Trigger Button -->
-          <button
-            type="button"
-            (click)="toggleCategoryDropdown()"
-            [attr.aria-expanded]="isCategoryDropdownOpen"
-            class="w-full flex items-center justify-between gap-3 px-4 sm:px-5 py-3 sm:py-3.5 bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] shadow-2xs hover:border-[#B5601F] dark:hover:border-[#DF8642] focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none transition cursor-pointer">
+          <button type="button" (click)="toggleCategoryDropdown()" [attr.aria-expanded]="isCategoryDropdownOpen" class="w-full flex items-center justify-between gap-3 px-4 sm:px-5 py-3 sm:py-3.5 bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl text-sm font-semibold text-[#3E2A1E] dark:text-[#EBE4E0] shadow-2xs hover:border-[#B5601F] dark:hover:border-[#DF8642] focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642] outline-none transition cursor-pointer">
             <span class="truncate">{{ selectedCategory }}</span>
             <span class="text-[#B5601F] dark:text-[#DF8642] text-xs shrink-0 transition-transform duration-200" [ngClass]="isCategoryDropdownOpen ? 'rotate-180' : ''">▼</span>
           </button>
-
-          <!-- Click-away Backdrop -->
           <div *ngIf="isCategoryDropdownOpen" (click)="closeCategoryDropdown()" class="fixed inset-0 z-10"></div>
-
-          <!-- Dropdown Panel -->
-          <div *ngIf="isCategoryDropdownOpen"
-               class="absolute z-20 mt-2 w-full max-h-80 overflow-y-auto bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl shadow-xl py-2 animate-fade-in">
-            <button
-              *ngFor="let cat of categoryTabs"
-              type="button"
-              (click)="selectCategory(cat)"
-              [ngClass]="selectedCategory === cat
-                ? 'bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold'
-                : 'text-[#4A3627] dark:text-[#EAE5E1] hover:bg-[#F2E9D8] dark:hover:bg-[#221D12] font-medium'"
+          <div *ngIf="isCategoryDropdownOpen" class="absolute z-20 mt-2 w-full max-h-80 overflow-y-auto bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl shadow-xl py-2 animate-fade-in">
+            <button *ngFor="let cat of categoryTabs" type="button" (click)="selectCategory(cat)"
+              [ngClass]="selectedCategory === cat ? 'bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] font-bold' : 'text-[#4A3627] dark:text-[#EAE5E1] hover:bg-[#F2E9D8] dark:hover:bg-[#221D12] font-medium'"
               class="w-full flex items-center justify-between gap-2 text-left px-4 sm:px-5 py-2.5 text-sm transition-colors cursor-pointer">
               <span class="truncate">{{ cat }}</span>
               <span *ngIf="selectedCategory === cat" class="text-[#B5601F] dark:text-[#DF8642] shrink-0">✓</span>
@@ -172,70 +82,39 @@
         </div>
       </div>
 
-      <!-- Loading State -->
       <div *ngIf="loading" class="text-center py-14 sm:py-16 text-[#8A7863] dark:text-[#BFB8B1] font-medium bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl sm:rounded-3xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-sm px-4">Loading campaigns...</div>
 
-      <!-- No Results State -->
       <div *ngIf="!loading && filteredCampaigns.length === 0" class="text-center py-14 sm:py-16 bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl sm:rounded-3xl border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs px-4">
-        <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm sm:text-base font-medium">
-          No campaigns match your search{{ selectedCategory !== 'All' ? ' in "' + selectedCategory + '"' : '' }}.
-        </p>
-        <button *ngIf="selectedCategory !== 'All'" type="button" (click)="selectCategory('All')" class="mt-4 text-xs sm:text-sm font-semibold text-[#B5601F] dark:text-[#DF8642] hover:text-[#8F4A16] dark:hover:text-[#DD7222] underline cursor-pointer">
-          Clear category filter
-        </button>
+        <p class="text-[#8A7863] dark:text-[#BFB8B1] text-sm sm:text-base font-medium">No campaigns match your search{{ selectedCategory !== 'All' ? ' in "' + selectedCategory + '"' : '' }}.</p>
+        <button *ngIf="selectedCategory !== 'All'" type="button" (click)="selectCategory('All')" class="mt-4 text-xs sm:text-sm font-semibold text-[#B5601F] dark:text-[#DF8642] hover:text-[#8F4A16] dark:hover:text-[#DD7222] underline cursor-pointer">Clear category filter</button>
       </div>
 
-      <!-- Campaigns Grid -->
       <div *ngIf="!loading && filteredCampaigns.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-        <div *ngFor="let camp of filteredCampaigns"
-             [routerLink]="['/donate', camp.id]"
-             class="bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl sm:rounded-3xl shadow-md overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col cursor-pointer transition-all duration-300 ease-out active:scale-[0.98] md:hover:-translate-y-2 hover:shadow-2xl md:hover:scale-[1.02]">
-
-          <!-- Masjid Image -->
+        <div *ngFor="let camp of filteredCampaigns" [routerLink]="['/donate', camp.id]" class="bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl sm:rounded-3xl shadow-md overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col cursor-pointer transition-all duration-300 ease-out active:scale-[0.98] md:hover:-translate-y-2 hover:shadow-2xl md:hover:scale-[1.02]">
           <div class="h-44 sm:h-48 w-full bg-[#E5D8C0] dark:bg-[#393020] overflow-hidden relative">
-            <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800'"
-                 [alt]="camp.title || camp.name"
-                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-            <span class="absolute top-3 right-3 bg-[#B5601F] text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">
-              {{ camp.status }}
-            </span>
-            <span *ngIf="camp.category" class="absolute top-3 left-3 bg-[#3E2A1E]/85 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-semibold px-3 py-1 rounded-full">
-              {{ camp.category }}
-            </span>
-            <span *ngIf="camp.location" class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-medium px-3 py-1 rounded-xl">
-              📍 {{ camp.location }}
-            </span>
+            <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800'" [alt]="camp.title || camp.name" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+            <span class="absolute top-3 right-3 bg-[#B5601F] text-white text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">{{ camp.status }}</span>
+            <span *ngIf="camp.category" class="absolute top-3 left-3 bg-[#3E2A1E]/85 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-semibold px-3 py-1 rounded-full">{{ camp.category }}</span>
+            <span *ngIf="camp.location" class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-medium px-3 py-1 rounded-xl">📍 {{ camp.location }}</span>
           </div>
-
-          <!-- Card Content -->
           <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
             <div>
               <h3 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] mb-2">{{ camp.title || camp.name }}</h3>
               <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm line-clamp-2 leading-relaxed">{{ camp.description }}</p>
             </div>
-
             <div class="space-y-3">
               <div class="flex justify-between text-xs sm:text-sm font-semibold text-[#4A3627] dark:text-[#EAE5E1]">
                 <span>Haajah: ₹{{ (camp.goal || camp.budget || 0) | number }}</span>
                 <span>{{ camp.progress || 0 }}%</span>
               </div>
-
-              <!-- Progress Bar -->
               <div class="w-full bg-[#E5D8C0] dark:bg-[#393020] rounded-full h-3 p-0.5 border border-[#E2D3B8]/60 dark:border-[#4F4534]/60">
                 <div class="bg-[#B5601F] h-2 rounded-full transition-all duration-500" [style.width.%]="camp.progress || 0"></div>
               </div>
-
-              <!-- Donate Button -->
-              <div class="block text-center w-full py-3 bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold rounded-2xl shadow-xs transition-all duration-300 ease-out hover:-translate-y-0.5 text-sm">
-                Donate Now
-              </div>
+              <div class="block text-center w-full py-3 bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold rounded-2xl shadow-xs transition-all duration-300 ease-out hover:-translate-y-0.5 text-sm">Donate Now</div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
-
   </div>
 </div>

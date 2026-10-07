@@ -1,151 +1,102 @@
 <div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-6 sm:space-y-8 bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 rounded-xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534]">
-
-    <!-- ================= VIEW 1: SIGN IN ================= -->
-    <div *ngIf="view === 'login'">
-      <div>
-        <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Portal Sign In</h2>
-        <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Enter your credentials to access your dashboard</p>
-      </div>
-
-      <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onLogin()">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Email Address</label>
-            <input type="email" [(ngModel)]="email" name="email" required autocomplete="email" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter Your Email">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Password</label>
-            <input type="password" [(ngModel)]="password" name="password" required autocomplete="current-password" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="********">
-
-            <!-- Forgot Password below password input -->
-            <div class="flex justify-end mt-1.5">
-              <button type="button" (click)="switchView('forgot')" class="text-xs font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer py-1">
-                Forgot password?
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Error Notice Box -->
-        <div *ngIf="errorMessage" class="bg-amber-50 border-l-4 border-amber-500 p-3.5 sm:p-4 rounded-r-lg shadow-sm">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <div class="ml-3">
-              <p class="text-sm text-amber-800 font-medium">{{ errorMessage }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <button type="submit" [disabled]="isLoading" class="group relative w-full flex justify-center py-3 sm:py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#6C7154] hover:bg-[#5B6048] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg active:translate-y-0 active:scale-[0.98]">
-            <span *ngIf="isLoading">Signing in...</span>
-            <span *ngIf="!isLoading">Sign In</span>
-          </button>
-        </div>
-
-        <div class="text-center text-sm">
-          <span class="text-[#5C4433] dark:text-[#EAE5E1]">Don't have an account? </span>
-          <a routerLink="/register" class="font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer">Sign up</a>
-        </div>
-      </form>
-    </div>
-
-    <!-- ================= VIEW 2: FORGOT PASSWORD (REQUEST OTP) ================= -->
-    <div *ngIf="view === 'forgot'">
-      <div>
-        <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Reset Password</h2>
-        <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Enter your email address to receive a verification code</p>
-      </div>
-
-      <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onRequestOtp()">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Email Address</label>
-            <input type="email" [(ngModel)]="email" name="forgotEmail" required autocomplete="email" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter Your Email">
-          </div>
-        </div>
-
-        <!-- Success Message -->
-        <div *ngIf="successMessage" class="bg-[#EDF1E1] dark:bg-[#1A1C12] border-l-4 border-[#6C7154] p-3.5 sm:p-4 rounded-r-lg shadow-sm">
-          <p class="text-sm text-[#4B5F3A] dark:text-[#E0E5DC] font-medium">{{ successMessage }}</p>
-        </div>
-
-        <!-- Not Registered Notice + Register CTA -->
-        <div *ngIf="notRegistered" class="bg-[#FBEAE5] dark:bg-[#22110C] border-l-4 border-[#B5432F] p-3.5 sm:p-4 rounded-r-lg shadow-sm space-y-3">
-          <p class="text-sm text-[#7A2E1D] dark:text-[#CE4E31] font-medium">Oops!! Seems like you have not registered yet.</p>
-          <button type="button" (click)="goToRegister()" class="w-full flex justify-center py-2.5 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#B5432F] hover:bg-[#953825] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B5432F] dark:focus:ring-[#D56E5C] cursor-pointer transition-colors active:scale-[0.98]">
-            Register Now
-          </button>
-        </div>
-
-        <!-- Error Message -->
-        <div *ngIf="errorMessage" class="bg-amber-50 border-l-4 border-amber-500 p-3.5 sm:p-4 rounded-r-lg shadow-sm">
-          <p class="text-sm text-amber-800 font-medium">{{ errorMessage }}</p>
-        </div>
-
-        <div>
-          <button type="submit" [disabled]="isLoading" class="group relative w-full flex justify-center py-3 sm:py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#6C7154] hover:bg-[#5B6048] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg active:translate-y-0 active:scale-[0.98]">
-            <span *ngIf="isLoading">Sending Code...</span>
-            <span *ngIf="!isLoading">Send Verification OTP</span>
-          </button>
-        </div>
-
-        <div class="text-center text-sm">
-          <button type="button" (click)="switchView('login')" class="font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer py-1">
-            &larr; Back to Sign In
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- ================= VIEW 3: RESET PASSWORD (VERIFY OTP & NEW PASSWORD) ================= -->
-    <div *ngIf="view === 'reset'">
-      <div>
-        <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Enter New Password</h2>
-        <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Provide the OTP sent to your email and your new password</p>
-      </div>
-
-      <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onVerifyAndReset()">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">OTP Code</label>
-            <input type="text" [(ngModel)]="otp" name="otp" required class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter 6-digit OTP">
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">New Password</label>
-            <input type="password" [(ngModel)]="newPassword" name="newPassword" required autocomplete="new-password" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="********">
-          </div>
-        </div>
-
-        <!-- Success Message -->
-        <div *ngIf="successMessage" class="bg-[#EDF1E1] dark:bg-[#1A1C12] border-l-4 border-[#6C7154] p-3.5 sm:p-4 rounded-r-lg shadow-sm">
-          <p class="text-sm text-[#4B5F3A] dark:text-[#E0E5DC] font-medium">{{ successMessage }}</p>
-        </div>
-
-        <!-- Error Message -->
-        <div *ngIf="errorMessage" class="bg-amber-50 border-l-4 border-amber-500 p-3.5 sm:p-4 rounded-r-lg shadow-sm">
-          <p class="text-sm text-amber-800 font-medium">{{ errorMessage }}</p>
-        </div>
-
-        <div>
-          <button type="submit" [disabled]="isLoading" class="group relative w-full flex justify-center py-3 sm:py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#6C7154] hover:bg-[#5B6048] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg active:translate-y-0 active:scale-[0.98]">
-            <span *ngIf="isLoading">Resetting...</span>
-            <span *ngIf="!isLoading">Update Password</span>
-          </button>
-        </div>
-
-        <div class="text-center text-sm">
-          <button type="button" (click)="switchView('login')" class="font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer py-1">
-            &larr; Back to Sign In
-          </button>
-        </div>
-      </form>
-    </div>
-
+<div class="max-w-md w-full space-y-6 sm:space-y-8 bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-8 rounded-xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534]">
+<div *ngIf="view === 'login'">
+  <div>
+    <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Portal Sign In</h2>
+    <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Enter your credentials to access your dashboard</p>
   </div>
+  <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onLogin()">
+    <div class="rounded-md shadow-sm space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Email Address</label>
+        <input type="email" [(ngModel)]="email" name="email" required autocomplete="email" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter Your Email">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Password</label>
+        <input type="password" [(ngModel)]="password" name="password" required autocomplete="current-password" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="********">
+        <div class="flex justify-end mt-1.5">
+          <button type="button" (click)="switchView('forgot')" class="text-xs font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer py-1">Forgot password?</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="errorMessage" class="bg-amber-50 border-l-4 border-amber-500 p-3.5 sm:p-4 rounded-r-lg shadow-sm">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="ml-3"><p class="text-sm text-amber-800 font-medium">{{ errorMessage }}</p></div>
+      </div>
+    </div>
+    <ng-container *ngTemplateOutlet="submitBtn; context: { $implicit: 'Signing in...', idle: 'Sign In' }"></ng-container>
+    <div class="text-center text-sm">
+      <span class="text-[#5C4433] dark:text-[#EAE5E1]">Don't have an account? </span>
+      <a routerLink="/register" class="font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer">Sign up</a>
+    </div>
+  </form>
 </div>
+<div *ngIf="view === 'forgot'">
+  <div>
+    <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Reset Password</h2>
+    <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Enter your email address to receive a verification code</p>
+  </div>
+  <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onRequestOtp()">
+    <div class="rounded-md shadow-sm space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">Email Address</label>
+        <input type="email" [(ngModel)]="email" name="forgotEmail" required autocomplete="email" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter Your Email">
+      </div>
+    </div>
+    <ng-container *ngTemplateOutlet="successBox"></ng-container>
+    <div *ngIf="notRegistered" class="bg-[#FBEAE5] dark:bg-[#22110C] border-l-4 border-[#B5432F] p-3.5 sm:p-4 rounded-r-lg shadow-sm space-y-3">
+      <p class="text-sm text-[#7A2E1D] dark:text-[#CE4E31] font-medium">Oops!! Seems like you have not registered yet.</p>
+      <button type="button" (click)="goToRegister()" class="w-full flex justify-center py-2.5 sm:py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#B5432F] hover:bg-[#953825] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#B5432F] dark:focus:ring-[#D56E5C] cursor-pointer transition-colors active:scale-[0.98]">Register Now</button>
+    </div>
+    <ng-container *ngTemplateOutlet="errorBox"></ng-container>
+    <ng-container *ngTemplateOutlet="submitBtn; context: { $implicit: 'Sending Code...', idle: 'Send Verification OTP' }"></ng-container>
+    <ng-container *ngTemplateOutlet="backBtn"></ng-container>
+  </form>
+</div>
+<div *ngIf="view === 'reset'">
+  <div>
+    <h2 class="text-center text-2xl sm:text-3xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Enter New Password</h2>
+    <p class="mt-2 text-center text-sm text-[#5C4433] dark:text-[#EAE5E1]">Provide the OTP sent to your email and your new password</p>
+  </div>
+  <form class="mt-6 sm:mt-8 space-y-5 sm:space-y-6" (ngSubmit)="onVerifyAndReset()">
+    <div class="rounded-md shadow-sm space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">OTP Code</label>
+        <input type="text" [(ngModel)]="otp" name="otp" required class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="Enter 6-digit OTP">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-[#4A3627] dark:text-[#EAE5E1] mb-1">New Password</label>
+        <input type="password" [(ngModel)]="newPassword" name="newPassword" required autocomplete="new-password" class="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-[#DCC9A8] dark:border-[#5D513C] placeholder-gray-500 text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#F2E9D8] dark:bg-[#221D12] focus:outline-none focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] focus:border-[#6C7154] text-sm" placeholder="********">
+      </div>
+    </div>
+    <ng-container *ngTemplateOutlet="successBox"></ng-container>
+    <ng-container *ngTemplateOutlet="errorBox"></ng-container>
+    <ng-container *ngTemplateOutlet="submitBtn; context: { $implicit: 'Resetting...', idle: 'Update Password' }"></ng-container>
+    <ng-container *ngTemplateOutlet="backBtn"></ng-container>
+  </form>
+</div>
+</div>
+</div>
+<ng-template #submitBtn let-busy let-idle="idle">
+  <div>
+    <button type="submit" [disabled]="isLoading" class="group relative w-full flex justify-center py-3 sm:py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#6C7154] hover:bg-[#5B6048] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6C7154] dark:focus:ring-[#CDCFC6] cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-[1.01] hover:shadow-lg active:translate-y-0 active:scale-[0.98]">{{ isLoading ? busy : idle }}</button>
+  </div>
+</ng-template>
+<ng-template #successBox>
+  <div *ngIf="successMessage" class="bg-[#EDF1E1] dark:bg-[#1A1C12] border-l-4 border-[#6C7154] p-3.5 sm:p-4 rounded-r-lg shadow-sm">
+    <p class="text-sm text-[#4B5F3A] dark:text-[#E0E5DC] font-medium">{{ successMessage }}</p>
+  </div>
+</ng-template>
+<ng-template #errorBox>
+  <div *ngIf="errorMessage" class="bg-amber-50 border-l-4 border-amber-500 p-3.5 sm:p-4 rounded-r-lg shadow-sm">
+    <p class="text-sm text-amber-800 font-medium">{{ errorMessage }}</p>
+  </div>
+</ng-template>
+<ng-template #backBtn>
+  <div class="text-center text-sm">
+    <button type="button" (click)="switchView('login')" class="font-medium text-[#6C7154] dark:text-[#CDCFC6] hover:text-[#6C7154] dark:hover:text-[#CDCFC6] cursor-pointer py-1">&larr; Back to Sign In</button>
+  </div>
+</ng-template>
