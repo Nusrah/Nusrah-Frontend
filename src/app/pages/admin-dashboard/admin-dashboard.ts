@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 
-const API = 'http://127.0.0.1:8000/api';
+const API = '/api';
 
 @Component({
   selector: 'app-admin-dashboard',

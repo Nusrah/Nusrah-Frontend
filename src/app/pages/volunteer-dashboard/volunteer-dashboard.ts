@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-const API = 'http://127.0.0.1:8000/api';
+const API = '/api';
 const emptyCampaign = () => ({ title: '', location: '', description: '', goal: 0, category: '', information: '', end_date: '', bank_account_name: '', bank_account_number: '', bank_ifsc_code: '', bank_name: '', upi_id: '' });
 const toArray = (v: any): any[] => {
   if (typeof v === 'string') { try { v = JSON.parse(v); } catch { v = []; } }

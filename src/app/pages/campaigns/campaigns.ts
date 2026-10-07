@@ -25,7 +25,7 @@ export class CampaignsComponent implements OnInit {
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.http.get<any>('http://127.0.0.1:8000/api/campaigns').subscribe({
+    this.http.get<any>('/api/campaigns').subscribe({
       next: res => this.done(res.campaigns || res),
       error: err => { console.error('Failed to load all campaigns', err); this.done(this.campaigns); }
     });
