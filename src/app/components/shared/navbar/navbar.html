@@ -1,7 +1,7 @@
-<header class="flex items-center justify-between px-4 sm:px-8 py-4 border-b-2 border-[#D9BD8F] sticky top-0 bg-[#F8F2E6] z-50 shadow-[0_2px_8px_rgba(181,96,31,0.08)] dark:bg-[#2A1B12] dark:border-[#4A3627] dark:shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-colors duration-300">
-  <div class="flex items-center space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5" routerLink="/">
-    <img src="/nusrah-logo.png" alt="Nusrah" class="h-10 sm:h-11 w-auto object-contain shrink-0">
-    <span class="hidden sm:inline text-xl font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
+<header class="flex items-center justify-between px-4 sm:px-8 py-2.5 sm:py-4 border-b sm:border-b-2 border-[#D9BD8F] sticky top-0 bg-[#F8F2E6] z-50 shadow-[0_2px_8px_rgba(181,96,31,0.08)] dark:bg-[#2A1B12] dark:border-[#4A3627] dark:shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-colors duration-300">
+  <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5" routerLink="/">
+    <img src="/nusrah-logo.png" alt="Nusrah" class="h-9 sm:h-11 w-auto object-contain shrink-0">
+    <span class="inline text-lg sm:text-xl font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
   </div>
   <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
     <a *ngFor="let l of [['/', 'Home'], ['/campaigns', 'Campaigns'], ['/about', 'About Us'], ['/register', 'Join Our Team'], ['/contact', 'Contact Us']]" [routerLink]="l[0]" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: l[0] === '/'}"
@@ -14,7 +14,7 @@
       <svg *ngIf="!themeService.isDarkMode()" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
     <a routerLink="/login" #rlaLogin="routerLinkActive" routerLinkActive [ngClass]="rlaLogin.isActive ? 'text-[#B5601F] font-semibold' : 'text-[#4A3627]'" class="hidden md:inline-block hover:text-[#F8F2E6] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] px-4 py-2 rounded-lg bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-semibold shadow-xs">Login</a>
-    <button type="button" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen" aria-label="Open menu" aria-controls="mobile-nav-drawer" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
+    <button type="button" (click)="toggleMobileMenu()" [attr.aria-expanded]="isMobileMenuOpen" aria-label="Open menu" aria-controls="mobile-nav-drawer" class="hidden sm:flex md:hidden items-center justify-center w-9 h-9 rounded-lg bg-[#EFE6D4] hover:bg-[#E2D3B8] text-[#3E2A1E] dark:bg-[#4A3627] dark:hover:bg-[#5C4433] dark:text-[#F2E9D8] transition-all duration-300 ease-out hover:scale-[1.05] cursor-pointer shadow-xs">
       <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
     </button>
   </div>
@@ -36,3 +36,19 @@
     </div>
   </nav>
 </aside>
+<nav class="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-[#F8F2E6]/95 dark:bg-[#2A1B12]/95 backdrop-blur-md border-t border-[#D9BD8F] dark:border-[#4A3627] pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
+  <div class="grid grid-cols-5">
+    <a *ngFor="let t of [
+      { p: '/', l: 'Home', d: 'M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V11z' },
+      { p: '/campaigns', l: 'Campaigns', d: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z' },
+      { p: '/about', l: 'About', d: 'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 16v-4M12 8h.01' },
+      { p: '/register', l: 'Join', d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M19 8v6M22 11h-6' },
+      { p: '/login', l: 'Login', d: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0' }
+    ]" [routerLink]="t.p" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: t.p === '/'}"
+      [ngClass]="rla.isActive ? 'text-[#B5601F] dark:text-[#E8B77C]' : 'text-[#8A7863] dark:text-[#BFB8B1]'"
+      class="flex flex-col items-center justify-center gap-0.5 pt-2 pb-1.5 text-[10px] font-semibold active:scale-90 transition-all duration-150">
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="t.d"></path></svg>
+      <span>{{ t.l }}</span>
+    </a>
+  </div>
+</nav>

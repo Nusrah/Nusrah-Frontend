@@ -54,6 +54,10 @@ export class CampaignsComponent implements OnInit {
     document.getElementById('campaigns-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+    getPercent(camp: any): number {
+    return Math.min(100, ((Number(camp.raised) || 0) / (Number(camp.goal ?? camp.budget) || 1)) * 100);
+  }
+
   get filteredCampaigns(): any[] {
     const name = (this.searchName || '').toLowerCase().trim();
     const city = (this.searchCity || '').toLowerCase().trim();

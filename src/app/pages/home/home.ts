@@ -20,6 +20,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly HERO_SLIDE_COUNT = 3;
   private readonly HERO_SLIDESHOW_INTERVAL_MS = 8000;
   private heroTimer: any = null;
+  showSwipeHint = true;
+  private hintTimer: any = null;
+  private touchStartX = 0;
+  private touchStartY = 0;
   isZakatModalOpen = false;
   zakatForm = { cashOnHand: 0, goldValue: 0, silverValue: 0, businessAssets: 0, investments: 0, debts: 0 };
   nisabThreshold = 45000;
@@ -41,6 +45,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.warn('Unable to access localStorage for welcome modal flag', e);
     }
     this.startHeroAutoplay();
+    // phone-only swipe hint: shown on every visit, hides on the first swipe or after 6 seconds
+    this.hintTimer = setTimeout(() => this.dismissSwipeHint(), 6000);
     this.http.get<any>('/api/stats').subscribe({
       next: (res) => {
         if (!res) return;
@@ -70,6 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopHeroAutoplay();
+    clearTimeout(this.hintTimer);
   }
 
   private finishLoading(): void {
@@ -102,6 +109,34 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   prevHeroSlide(): void {
     this.goToHeroSlide((this.heroSlideIndex - 1 + this.HERO_SLIDE_COUNT) % this.HERO_SLIDE_COUNT);
+  }
+
+  onHeroTouchStart(e: TouchEvent): void {
+    this.touchStartX = e.touches[0].clientX;
+    this.touchStartY = e.touches[0].clientY;
+    this.stopHeroAutoplay();
+  }
+
+  onHeroTouchEnd(e: TouchEvent): void {
+    const dx = e.changedTouches[0].clientX - this.touchStartX;
+    const dy = e.changedTouches[0].clientY - this.touchStartY;
+    // only a mostly-horizontal drag of 50px or more counts as a swipe
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) this.nextHeroSlide();
+      else this.prevHeroSlide();
+      this.dismissSwipeHint();
+    }
+    this.startHeroAutoplay();
+  }
+
+  dismissSwipeHint(): void {
+    this.showSwipeHint = false;
+    clearTimeout(this.hintTimer);
+    this.cdr.detectChanges();
+  }
+
+  getPercent(camp: any): number {
+    return Math.min(100, ((Number(camp.raised) || 0) / (Number(camp.goal ?? camp.budget) || 1)) * 100);
   }
 
   scrollToZakat(): void {
