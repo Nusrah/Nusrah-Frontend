@@ -16,7 +16,6 @@ const API = '/api';
 })
 export class AdminDashboardComponent implements OnInit {
   activeTab: 'campaigns' | 'volunteers' = 'campaigns';
-  mobileMenuOpen = false;
   showCreateCampaignForm = false;
   showCreateVolunteerForm = false;
   campaigns: any[] = [];
@@ -102,13 +101,8 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
-  }
-
   setActiveTab(tab: 'campaigns' | 'volunteers'): void {
     this.activeTab = tab;
-    this.mobileMenuOpen = false;
   }
 
   loadAdminData(): void {

@@ -68,13 +68,8 @@ export class VolunteerDashboardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
-  }
-
   setActiveTab(tab: 'profile' | 'campaigns'): void {
     this.activeTab = tab;
-    this.mobileMenuOpen = false;
   }
 
   fetchLatestProfile(identifier: string): void {
