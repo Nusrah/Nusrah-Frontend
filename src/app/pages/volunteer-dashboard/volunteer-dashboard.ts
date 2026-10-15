@@ -91,7 +91,7 @@ export class VolunteerDashboardComponent implements OnInit {
   updateVolunteerProfile(): void {
     this.updatingProfile = true;
     const id = this.volunteerProfile.id;
-    this.http.put(id ? `${API}/admin/volunteers/${id}` : `${API}/volunteers/profile`, { ...this.volunteerProfile, full_name: this.volunteerProfile.name }).subscribe({
+    this.http.put(id ? `${API}/volunteers/${id}` : `${API}/volunteers/profile`, { ...this.volunteerProfile, full_name: this.volunteerProfile.name }).subscribe({
       next: (res: any) => {
         this.updatingProfile = false;
         this.isEditingProfile = false;
@@ -113,7 +113,7 @@ export class VolunteerDashboardComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', file, file.name);
     const id = this.volunteerProfile.id;
-    this.http.post(id ? `${API}/admin/volunteers/${id}/upload-photo` : `${API}/volunteers/upload-photo`, formData).subscribe({
+    this.http.post(id ? `${API}/volunteers/${id}/upload-photo` : `${API}/volunteers/upload-photo`, formData).subscribe({
       next: (res: any) => {
         alert('Profile photo updated successfully!');
         if (res?.photo_url) {
@@ -130,7 +130,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   loadCampaigns(): void {
-    this.http.get<any>(`${API}/admin/campaigns`).subscribe({
+    this.http.get<any>(`${API}/volunteer/campaigns`).subscribe({
       next: res => {
         this.campaigns = (res.campaigns || res).map((c: any) => ({
           ...c,
@@ -190,7 +190,7 @@ export class VolunteerDashboardComponent implements OnInit {
   deleteProgressImage(campaign: any, imageIndex: number): void {
     if (!confirm('Are you sure you want to delete this progress photo?')) return;
     const updatedImages = campaign.additional_images.filter((_: any, i: number) => i !== imageIndex);
-    this.http.put(`${API}/admin/campaigns/${campaign.id}`, { ...campaign, additional_images: updatedImages }).subscribe({
+    this.http.put(`${API}/campaigns/${campaign.id}`, { ...campaign, additional_images: updatedImages }).subscribe({
       next: () => {
         campaign.additional_images = updatedImages;
         if (this.selectedCampaignModal) this.selectedCampaignModal.additional_images = updatedImages;
@@ -326,7 +326,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   saveCampaignEdit(camp: any): void {
-    this.http.put(`${API}/admin/campaigns/${camp.id}`, camp).subscribe({
+    this.http.put(`${API}/campaigns/${camp.id}`, camp).subscribe({
       next: () => {
         alert('Campaign details updated successfully!');
         this.loadCampaigns();
@@ -337,7 +337,7 @@ export class VolunteerDashboardComponent implements OnInit {
 
   saveCampaignBankDetails(camp: any): void {
     const { bank_account_name, bank_account_number, bank_ifsc_code, bank_name, upi_id } = camp;
-    this.http.put<any>(`${API}/admin/campaigns/${camp.id}`, { bank_account_name, bank_account_number, bank_ifsc_code, bank_name, upi_id }).subscribe({
+    this.http.put<any>(`${API}/campaigns/${camp.id}`, { bank_account_name, bank_account_number, bank_ifsc_code, bank_name, upi_id }).subscribe({
       next: res => {
         alert(res?.campaign?.[0]?.status === 'active' ? 'Bank details saved — this campaign is now live for donors!' : 'Bank details saved successfully!');
         this.loadCampaigns();
@@ -350,7 +350,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   updateCampaignCategory(camp: any): void {
-    this.http.put(`${API}/admin/campaigns/${camp.id}`, { category: camp.category }).subscribe({
+    this.http.put(`${API}/campaigns/${camp.id}`, { category: camp.category }).subscribe({
       next: () => {
         if (this.selectedCampaignModal?.id === camp.id) this.selectedCampaignModal.category = camp.category;
         const cached = this.campaigns.find(c => c.id === camp.id);

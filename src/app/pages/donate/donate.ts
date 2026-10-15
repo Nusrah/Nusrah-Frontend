@@ -55,16 +55,7 @@ export class DonateComponent implements OnInit, OnDestroy {
           this.done();
           return;
         }
-        this.http.get<any>('/api/admin/campaigns').subscribe({
-          next: (adminRes) => {
-            this.campaign = find(adminRes);
-            this.done(this.campaign ? '' : `Campaign with ID "${this.campaignId}" was not found in database.`);
-          },
-          error: (err) => {
-            console.error('Admin API error:', err);
-            this.done('Could not load campaign details from server.');
-          }
-        });
+                this.done(`Campaign with ID "${this.campaignId}" was not found in database.`);
       },
       error: (err) => {
         console.error('Public API error:', err);

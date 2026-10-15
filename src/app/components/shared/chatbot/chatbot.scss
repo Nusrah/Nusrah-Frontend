@@ -1,0 +1,71 @@
+// Fonts match the Nusrah logo (loaded in src/index.html): Jost for text, Cormorant Garamond for the title
+:host {
+  font-family: 'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+h3 {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+}
+
+// Chat window slides up and fades in when opened
+section[role='dialog'] {
+  animation: nusrah-chat-in 0.22s ease-out;
+}
+
+@keyframes nusrah-chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// "Nusrah is typing" dots
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #b5601f;
+  opacity: 0.35;
+  animation: nusrah-typing 1.2s infinite ease-in-out;
+
+  &:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+}
+
+:host-context(.dark) .typing-dot {
+  background: #df8642;
+}
+
+@keyframes nusrah-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+// Respect visitors who prefer less motion
+@media (prefers-reduced-motion: reduce) {
+  section[role='dialog'] {
+    animation: none;
+  }
+
+  .typing-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+}

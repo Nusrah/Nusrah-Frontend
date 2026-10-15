@@ -1,11 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly storageKey = 'nusrah-theme';
-
   isDarkMode = signal<boolean>(this.getInitialTheme());
 
   constructor() {
@@ -13,10 +10,10 @@ export class ThemeService {
   }
 
   toggleTheme(): void {
-    const newValue = !this.isDarkMode();
-    this.isDarkMode.set(newValue);
-    localStorage.setItem(this.storageKey, newValue ? 'dark' : 'light');
-    this.applyTheme(newValue);
+    const isDark = !this.isDarkMode();
+    this.isDarkMode.set(isDark);
+    localStorage.setItem(this.storageKey, isDark ? 'dark' : 'light');
+    this.applyTheme(isDark);
   }
 
   private getInitialTheme(): boolean {
@@ -28,11 +25,6 @@ export class ThemeService {
   }
 
   private applyTheme(isDark: boolean): void {
-    const html = document.documentElement;
-    if (isDark) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', isDark);
   }
 }
