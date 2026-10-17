@@ -1,7 +1,10 @@
 <header class="flex items-center justify-between px-4 sm:px-8 py-2.5 sm:py-4 border-b sm:border-b-2 border-[#D9BD8F] sticky top-0 bg-[#F8F2E6] z-50 shadow-[0_2px_8px_rgba(181,96,31,0.08)] dark:bg-[#2A1B12] dark:border-[#4A3627] dark:shadow-[0_2px_8px_rgba(0,0,0,0.35)] transition-colors duration-300">
   <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-0.5" routerLink="/">
     <img src="/nusrah-logo.png" alt="Nusrah" class="h-9 sm:h-11 w-auto object-contain shrink-0">
-    <span class="inline text-lg sm:text-xl font-bold tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
+    <div class="flex flex-col justify-center min-w-0">
+      <span class="text-lg sm:text-xl font-bold leading-none tracking-tight text-[#3E2A1E] dark:text-[#F2E9D8]">Nusrah</span>
+      <span class="mt-1 sm:mt-1.5 text-[8px] sm:text-[10px] font-medium uppercase leading-none tracking-[0.12em] sm:tracking-[0.2em] whitespace-nowrap text-[#B5601F] dark:text-[#E8B77C]">Aid that anchors you to Jannah</span>
+    </div>
   </div>
   <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
     <a *ngFor="let l of [['/', 'Home'], ['/campaigns', 'Campaigns'], ['/about', 'About Us'], ['/register', 'Join Our Team'], ['/contact', 'Contact Us']]" [routerLink]="l[0]" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: l[0] === '/'}"
@@ -39,12 +42,12 @@
 <nav class="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-[#F8F2E6]/95 dark:bg-[#2A1B12]/95 backdrop-blur-md border-t border-[#D9BD8F] dark:border-[#4A3627] pb-[env(safe-area-inset-bottom)]" aria-label="Primary">
   <div class="grid grid-cols-5">
     <a *ngFor="let t of [
-      { p: '/', l: 'Home', d: 'M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V11z' },
-      { p: '/campaigns', l: 'Campaigns', d: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z' },
-      { p: '/about', l: 'About', d: 'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 16v-4M12 8h.01' },
-      { p: '/register', l: 'Join', d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M19 8v6M22 11h-6' },
-      { p: '/login', l: 'Login', d: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0' }
-    ]" [routerLink]="t.p" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: t.p === '/'}"
+{ p: '/', l: 'Home', d: 'M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V11z' },
+{ p: '/campaigns', l: 'Campaigns', d: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z' },
+{ p: '/about', l: 'About', d: 'M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 16v-4M12 8h.01' },
+{ p: '/register', l: 'Join', d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M19 8v6M22 11h-6' },
+{ p: '/login', l: 'Login', d: 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M8 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0' }
+]" [routerLink]="t.p" #rla="routerLinkActive" routerLinkActive [routerLinkActiveOptions]="{exact: t.p === '/'}"
       [ngClass]="rla.isActive ? 'text-[#B5601F] dark:text-[#E8B77C]' : 'text-[#8A7863] dark:text-[#BFB8B1]'"
       class="flex flex-col items-center justify-center gap-0.5 pt-2 pb-1.5 text-[10px] font-semibold active:scale-90 transition-all duration-150">
       <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path [attr.d]="t.d"></path></svg>

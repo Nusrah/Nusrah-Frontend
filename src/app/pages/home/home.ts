@@ -30,19 +30,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   calculatedZakatResult: number | null = null;
   isEligibleForZakat = false;
   isWelcomeModalOpen = false;
-  private readonly WELCOME_MODAL_STORAGE_KEY = 'nusrah_hasSeenWelcomeModal';
+  // lives on the class itself, so it resets on a full page load or refresh,
+  // but clicking "Home" again inside the app doesn't bring the popup back
+  private static welcomeShownThisLoad = false;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    // welcome popup shows only on a visitor's first visit; the flag lives in localStorage
-    try {
-      if (!localStorage.getItem(this.WELCOME_MODAL_STORAGE_KEY)) {
-        this.isWelcomeModalOpen = true;
-        localStorage.setItem(this.WELCOME_MODAL_STORAGE_KEY, 'true');
-      }
-    } catch (e) {
-      console.warn('Unable to access localStorage for welcome modal flag', e);
+    // welcome popup shows every time the website is opened or refreshed (once per page load)
+    if (!HomeComponent.welcomeShownThisLoad) {
+      this.isWelcomeModalOpen = true;
+      HomeComponent.welcomeShownThisLoad = true;
     }
     this.startHeroAutoplay();
     // phone-only swipe hint: shown on every visit, hides on the first swipe or after 6 seconds
