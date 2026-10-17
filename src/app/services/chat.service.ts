@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // Same backend address the rest of the app uses. Change this one line when you deploy the backend.
-const API_BASE = 'http://127.0.0.1:8000';
+const API_BASE = '';
 
 // One message in the conversation (what the backend receives as "history")
 export interface ChatTurn {
