@@ -1,18 +1,17 @@
-<!-- Floating launcher button (bottom-right, on every public page) -->
+<!-- Launcher button: sits above the phone tab bar (and above the donate bar on donate pages) -->
 <button *ngIf="!isOpen()" (click)="toggle()" aria-label="Open the Nusrah assistant"
-        class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 h-14 px-4 sm:px-5 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] shadow-lg flex items-center gap-2 font-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:scale-[1.04] active:scale-[0.97] cursor-pointer">
+  [ngClass]="onDonatePage() ? 'bottom-[calc(8.5rem+env(safe-area-inset-bottom))]' : 'bottom-[calc(4.75rem+env(safe-area-inset-bottom))]'"
+  class="fixed right-4 sm:bottom-6 sm:right-6 z-40 h-14 px-4 sm:px-5 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] shadow-lg flex items-center gap-2 font-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:scale-[1.04] active:scale-[0.97] cursor-pointer">
   <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>
   <span class="hidden sm:inline text-sm">Ask Nusrah</span>
 </button>
 
-<!-- Chat window -->
-<section *ngIf="isOpen()" role="dialog" aria-label="Nusrah assistant chat"
-         class="fixed z-40 inset-x-2 bottom-2 top-20 sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[390px] sm:h-[600px] sm:max-h-[calc(100vh-3rem)] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F]">
-
-  <!-- Header -->
-  <header class="shrink-0 bg-[#3E2A1E] text-[#F8F2E6] px-4 py-3 flex items-center gap-3">
+<!-- Chat window: a full-screen sheet on phones (above the tab bar, follows the keyboard), a floating panel from 640px up -->
+<section *ngIf="isOpen()" role="dialog" aria-modal="true" aria-label="Nusrah assistant chat"
+  class="fixed z-[60] sm:z-40 inset-x-0 top-[var(--chat-top,0px)] h-[var(--chat-vh,100dvh)] sm:inset-auto sm:top-auto sm:bottom-6 sm:right-6 sm:w-[390px] sm:h-[600px] sm:max-h-[calc(100vh-3rem)] flex flex-col rounded-none sm:rounded-2xl overflow-hidden shadow-2xl sm:border border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F]">
+  <header class="shrink-0 bg-[#3E2A1E] text-[#F8F2E6] px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] sm:pt-3 flex items-center gap-3">
     <div class="w-10 h-10 rounded-full bg-[#F8F2E6] flex items-center justify-center shrink-0 overflow-hidden">
       <img src="nusrah-logo.png" alt="" class="w-8 h-8 object-contain">
     </div>
@@ -20,104 +19,63 @@
       <h3 class="font-bold text-lg leading-tight">Nusrah Assistant</h3>
       <p class="text-[11px] text-[#E8C79A] truncate">Campaigns, donating, zakah &amp; more</p>
     </div>
-    <button (click)="clearChat()" aria-label="Start a new chat" title="New chat"
-            class="p-2 rounded-full text-[#E2D3B8] hover:text-[#F8F2E6] hover:bg-white/10 transition cursor-pointer">
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>
-      </svg>
+    <button (click)="clearChat()" aria-label="Start a new chat" title="New chat" class="p-2.5 sm:p-2 rounded-full text-[#E2D3B8] hover:text-[#F8F2E6] hover:bg-white/10 transition cursor-pointer">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
     </button>
-    <button (click)="close()" aria-label="Close chat"
-            class="p-2 rounded-full text-[#E2D3B8] hover:text-[#F8F2E6] hover:bg-white/10 transition cursor-pointer">
-      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M18 6L6 18"/><path d="M6 6l12 12"/>
-      </svg>
+    <button (click)="close()" aria-label="Close chat" class="p-2.5 sm:p-2 rounded-full text-[#E2D3B8] hover:text-[#F8F2E6] hover:bg-white/10 transition cursor-pointer">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
     </button>
   </header>
-
-  <!-- Messages -->
-  <div #scrollArea class="flex-1 overflow-y-auto px-3 py-4 space-y-4" aria-live="polite">
-
-    <div *ngFor="let m of messages(); trackBy: trackById" class="flex flex-col"
-         [ngClass]="m.role === 'user' ? 'items-end' : 'items-start'">
-
-      <!-- Bubble (text is always shown as plain text, never as HTML) -->
+  <div #scrollArea class="flex-1 overflow-y-auto overscroll-contain px-3 py-4 space-y-4" aria-live="polite">
+    <div *ngFor="let m of messages(); trackBy: trackById" class="flex flex-col" [ngClass]="m.role === 'user' ? 'items-end' : 'items-start'">
+      <!-- text is always shown as plain text, never as HTML -->
       <div class="max-w-[88%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-line break-words"
-           [ngClass]="m.role === 'user'
-             ? 'bg-[#B5601F] text-[#F8F2E6] rounded-br-md'
-             : (m.isError
-                 ? 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-950/40 dark:text-red-200 dark:border-red-900 rounded-bl-md'
-                 : 'bg-[#F2E9D8] text-[#3E2A1E] dark:bg-[#221D12] dark:text-[#EAE5E1] border border-[#E2D3B8] dark:border-[#4F4534] rounded-bl-md')">{{ m.text }}</div>
-
-      <!-- Campaign cards -->
+        [ngClass]="m.role === 'user'
+          ? 'bg-[#B5601F] text-[#F8F2E6] rounded-br-md'
+          : (m.isError
+            ? 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-950/40 dark:text-red-200 dark:border-red-900 rounded-bl-md'
+            : 'bg-[#F2E9D8] text-[#3E2A1E] dark:bg-[#221D12] dark:text-[#EAE5E1] border border-[#E2D3B8] dark:border-[#4F4534] rounded-bl-md')">{{ m.text }}</div>
       <div *ngIf="m.campaigns?.length" class="mt-2 w-full max-w-[94%] space-y-2">
-        <div *ngFor="let c of m.campaigns"
-             class="rounded-xl overflow-hidden bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs">
+        <div *ngFor="let c of m.campaigns" class="rounded-xl overflow-hidden bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs">
           <div class="flex gap-3 p-2.5">
-            <img *ngIf="c.image_url" [src]="c.image_url" [alt]="c.title" loading="lazy"
-                 class="w-16 h-16 rounded-lg object-cover shrink-0 bg-[#E2D3B8]"
-                 (error)="$any($event.target).style.display = 'none'">
+            <img *ngIf="c.image_url" [src]="c.image_url" [alt]="c.title" loading="lazy" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-[#E2D3B8]" (error)="$any($event.target).style.display = 'none'">
             <div class="min-w-0 flex-1">
               <p class="font-semibold text-sm text-[#3E2A1E] dark:text-[#EBE4E0] truncate">{{ c.title }}</p>
-              <p class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1] truncate">
-                {{ c.location }}<span *ngIf="c.location && c.category"> · </span>{{ c.category }}
-              </p>
+              <p class="text-[11px] text-[#8A7863] dark:text-[#BFB8B1] truncate">{{ c.location }}<span *ngIf="c.location && c.category"> · </span>{{ c.category }}</p>
               <div class="mt-1.5 flex items-center justify-between text-[11px] font-semibold text-[#4A3627] dark:text-[#EAE5E1]">
                 <span>₹{{ c.raised | number }} of ₹{{ c.goal | number }}</span>
                 <span>{{ c.progress }}%</span>
               </div>
-              <div class="mt-1 w-full h-1.5 rounded-full bg-[#E2D3B8] dark:bg-[#4F4534] overflow-hidden">
-                <div class="h-full rounded-full bg-[#B5601F]" [style.width.%]="c.progress > 100 ? 100 : c.progress"></div>
-              </div>
+              <div class="mt-1 w-full h-1.5 rounded-full bg-[#E2D3B8] dark:bg-[#4F4534] overflow-hidden"><div class="h-full rounded-full bg-[#B5601F]" [style.width.%]="c.progress > 100 ? 100 : c.progress"></div></div>
             </div>
           </div>
-          <button (click)="goTo(c.path)"
-                  class="w-full bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] text-xs font-medium py-2 transition cursor-pointer">
-            Donate Now
-          </button>
+          <button (click)="goTo(c.path)" class="w-full bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] text-xs font-medium py-3 sm:py-2 transition cursor-pointer">Donate Now</button>
         </div>
       </div>
-
-      <!-- Link buttons the bot suggests -->
       <div *ngIf="m.links?.length" class="mt-2 flex flex-wrap gap-2">
-        <button *ngFor="let l of m.links" (click)="goTo(l.path)"
-                class="rounded-full border border-[#B5601F] text-[#8F4A16] dark:text-[#DF8642] dark:border-[#DF8642] text-xs font-medium px-3 py-1.5 transition-all duration-300 hover:bg-[#B5601F] hover:text-[#F8F2E6] hover:-translate-y-0.5 hover:shadow-md cursor-pointer">
-          {{ l.label }} →
-        </button>
+        <button *ngFor="let l of m.links" (click)="goTo(l.path)" class="rounded-full border border-[#B5601F] text-[#8F4A16] dark:text-[#DF8642] dark:border-[#DF8642] text-xs font-medium px-3.5 py-2 sm:px-3 sm:py-1.5 transition-all duration-300 hover:bg-[#B5601F] hover:text-[#F8F2E6] hover:-translate-y-0.5 hover:shadow-md cursor-pointer">{{ l.label }} →</button>
       </div>
-
-      <!-- Quick-reply suggestions (newest bot message only) -->
-      <div *ngIf="m.role === 'assistant' && m.suggestions?.length && m.id === lastMessageId() && !isSending()"
-           class="mt-2 flex flex-wrap gap-2">
-        <button *ngFor="let s of m.suggestions" (click)="askSuggestion(s)"
-                class="rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#6B380F] dark:text-[#E8C79A] text-xs font-medium px-3 py-1.5 transition-all duration-300 hover:bg-[#E8C79A] dark:hover:bg-[#443623] hover:-translate-y-0.5 hover:shadow-md cursor-pointer">
-          {{ s }}
-        </button>
+      <!-- quick replies show on the newest bot message only -->
+      <div *ngIf="m.role === 'assistant' && m.suggestions?.length && m.id === lastMessageId() && !isSending()" class="mt-2 flex flex-wrap gap-2">
+        <button *ngFor="let s of m.suggestions" (click)="askSuggestion(s)" class="rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#6B380F] dark:text-[#E8C79A] text-xs font-medium px-3.5 py-2 sm:px-3 sm:py-1.5 transition-all duration-300 hover:bg-[#E8C79A] dark:hover:bg-[#443623] hover:-translate-y-0.5 hover:shadow-md cursor-pointer">{{ s }}</button>
       </div>
     </div>
-
-    <!-- Typing indicator -->
     <div *ngIf="isSending()" class="flex items-start">
       <div class="px-4 py-3 rounded-2xl rounded-bl-md bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] flex items-center gap-1.5" aria-label="Nusrah assistant is typing">
         <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
       </div>
     </div>
   </div>
-
-  <!-- Input -->
-  <div class="shrink-0 border-t border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F] px-3 pt-3 pb-2">
+  <div class="shrink-0 border-t border-[#E2D3B8] dark:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F] px-3 pt-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] sm:pb-2">
     <div class="flex items-center gap-2">
-      <input #inputBox type="text" [(ngModel)]="draft" (keydown.enter)="sendDraft()" [maxLength]="maxLength"
-             placeholder="Ask about campaigns, donating, zakah…" autocomplete="off"
-             class="flex-1 min-w-0 px-4 py-2.5 rounded-full border border-[#DCC9A8] dark:border-[#5D513C] bg-[#F2E9D8] dark:bg-[#221D12] text-sm text-[#3E2A1E] dark:text-[#EBE4E0] placeholder:text-[#8A7863] dark:placeholder:text-[#BFB8B1] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642]">
+      <!-- 16px text on phones stops iPhones zooming the page when the box is tapped -->
+      <input #inputBox type="text" [(ngModel)]="draft" (keydown.enter)="sendDraft()" [maxLength]="maxLength" placeholder="Ask about campaigns, donating, zakah…" autocomplete="off" enterkeyhint="send"
+        class="flex-1 min-w-0 px-4 py-3 sm:py-2.5 rounded-full border border-[#DCC9A8] dark:border-[#5D513C] bg-[#F2E9D8] dark:bg-[#221D12] text-base sm:text-sm text-[#3E2A1E] dark:text-[#EBE4E0] placeholder:text-[#8A7863] dark:placeholder:text-[#BFB8B1] focus:outline-none focus:ring-2 focus:ring-[#B5601F] dark:focus:ring-[#DF8642]">
       <button (click)="sendDraft()" [disabled]="!draft.trim() || isSending()" aria-label="Send message"
-              class="shrink-0 w-10 h-10 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:cursor-not-allowed cursor-pointer">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-        </svg>
+        class="shrink-0 w-11 h-11 sm:w-10 sm:h-10 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95 disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none disabled:cursor-not-allowed cursor-pointer">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
       </button>
     </div>
-    <p class="mt-2 text-center text-[10px] text-[#8A7863] dark:text-[#BFB8B1]">
-      Answers may not always be accurate. For urgent help, please use the Contact page.
-    </p>
+    <p class="mt-2 text-center text-[10px] text-[#8A7863] dark:text-[#BFB8B1]">Answers may not always be accurate. For urgent help, please use the Contact page.</p>
   </div>
 </section>
