@@ -16,10 +16,11 @@
         <div class="grid touch-pan-y rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg sm:border sm:border-[#E2D3B8] dark:sm:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F]" (mouseenter)="stopHeroAutoplay()" (mouseleave)="startHeroAutoplay()" (touchstart)="onHeroTouchStart($event)" (touchend)="onHeroTouchEnd($event)">
           <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out" [ngClass]="heroSlideIndex === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'" [attr.aria-hidden]="heroSlideIndex !== 0">
             <div class="p-6 sm:p-8 lg:p-16 flex flex-col items-center justify-center text-center gap-4 sm:gap-5 order-2 md:order-1">
-              <img src="nusrah-logo.png" alt="Nusrah" class="w-36 sm:w-44 lg:w-64 h-auto object-contain">
-              <p class="uppercase tracking-[0.22em] text-[11px] sm:text-sm lg:text-base font-light text-[#3E2A1E] dark:text-[#EBE4E0]">Aid that anchors you to Jannah</p>
-              <span class="block w-14 h-px bg-[#B5601F]"></span>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">Donate Directly. Give with Confidence.</h2>
               <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">Nusrah connects you directly with verified Masjids, orphanages, NGOs, schools, medical cases, and community projects—no intermediaries, with every donation backed by transparency, updates, and accountability.</p>
+              <div class="flex flex-wrap justify-center gap-2">
+                <span *ngFor="let c of ['Verified campaigns', 'Direct to beneficiaries', 'Live progress updates']" class="inline-flex items-center gap-1.5 rounded-full bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] px-3 py-1.5 text-xs font-medium text-[#4A3627] dark:text-[#EAE5E1]"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold">✓</span>{{ c }}</span>
+              </div>
               <a routerLink="/campaigns" class="text-center w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">Explore Campaigns</a>
             </div>
             <div class="relative h-60 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2"><div class="absolute inset-0 md:top-[18%] md:bottom-[14%] md:right-5 lg:right-7 overflow-hidden md:rounded-2xl"><img src="images/hero-1.jpg" alt="A mosque glowing softly at dawn" class="w-full h-full object-cover object-center"></div></div>
@@ -104,8 +105,8 @@
           <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Because giving should be simple, transparent, and trustworthy.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div *ngFor="let t of ['Donate directly to verified beneficiaries', 'No money passes through Nusrah', 'Verified by our team and volunteers', 'Receive regular campaign updates', 'Know exactly where your contribution goes']; let last = last" [ngClass]="last ? 'lg:col-span-2' : ''" class="flex items-start gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
-            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✔</span>
+          <div *ngFor="let t of ['Donate directly to verified beneficiaries', 'No money passes through Nusrah', 'Verified by our team and volunteers', 'Receive regular campaign updates', 'Know exactly where your contribution goes', 'Pay securely with UPI, card, or netbanking']" class="flex items-center gap-3 p-4 rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+            <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0">✓</span>
             <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">{{ t }}</p>
           </div>
         </div>
