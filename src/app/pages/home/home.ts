@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -30,11 +30,42 @@ export class HomeComponent implements OnInit, OnDestroy {
   calculatedZakatResult: number | null = null;
   isEligibleForZakat = false;
   isWelcomeModalOpen = false;
+  isDisclaimerModalOpen = false;
+  private pendingRoute: string | null = null; // where to go after the disclaimer is acknowledged
   // lives on the class itself, so it resets on a full page load or refresh,
   // but clicking "Home" again inside the app doesn't bring the popup back
   private static welcomeShownThisLoad = false;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  // One verse per hero slide (Arabic text + meaning)
+  heroVerses = [
+    {
+      arabic: 'وَمَا تُنفِقُوا مِنْ خَيْرٍ يُوَفَّ إِلَيْكُمْ وَأَنتُمْ لَا تُظْلَمُونَ',
+      meaning: 'Whatever good you spend will be repaid to you in full, and you will not be wronged.',
+      ref: 'Surah Al-Baqarah 2:272'
+    },
+    {
+      arabic: 'وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ',
+      meaning: 'Help one another in righteousness and piety.',
+      ref: "Surah Al-Ma'idah 5:2"
+    },
+    {
+      arabic: 'خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا',
+      meaning: 'Take from their wealth a charity by which you purify them and cause them to grow.',
+      ref: 'Surah At-Tawbah 9:103'
+    }
+  ];
+
+  // Points shown in the important-notice (disclaimer) popup
+  disclaimerPoints = [
+    { b: 'Payment gateway temporarily unavailable:', t: 'Our online payment gateway is currently out of service, and we are working to restore it as soon as possible.' },
+    { b: 'Please note the banking details:', t: 'For the time being, the bank details shown on each campaign belong to Nusrah and not to the individuals or organizations receiving the donations.' },
+    { b: 'Every donation reaches its campaign:', t: 'We receive the donations and pass them on to the people of that same campaign.' },
+    { b: 'Why we do this:', t: 'This arrangement lets us track every contribution safely and transparently, which we believe is the most responsible option until the gateway is back.' },
+    { b: 'This is only temporary:', t: 'Once the payment gateway is restored, you will be able to donate directly to the people in need, which was our first and foundational idea.' },
+    { b: 'Our commitment to you:', t: 'Every campaign continues to be reviewed by our team and volunteers, and we will keep sharing updates so you can see the impact of your contribution.' }
+  ];
+
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit(): void {
     // welcome popup shows every time the website is opened or refreshed (once per page load)
@@ -82,8 +113,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  closeWelcomeModal(): void {
+  // Closing the welcome popup always leads to the important-notice popup.
+  // If a route is passed (e.g. '/campaigns'), we go there after the notice is acknowledged.
+  closeWelcomeModal(route?: string): void {
     this.isWelcomeModalOpen = false;
+    this.pendingRoute = route ?? null;
+    this.isDisclaimerModalOpen = true;
+  }
+
+  closeDisclaimerModal(skipNavigation = false): void {
+    this.isDisclaimerModalOpen = false;
+    const route = skipNavigation ? null : this.pendingRoute;
+    this.pendingRoute = null;
+    if (route) this.router.navigate([route]);
   }
 
   startHeroAutoplay(): void {

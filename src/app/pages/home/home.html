@@ -6,6 +6,13 @@
   .swipe-nudge-left { display: inline-block; animation: nudgeLeft 1.1s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) { .swipe-nudge, .swipe-nudge-left { animation: none; } }
 </style>
+<ng-template #verseTpl let-v>
+  <figure class="border-l-4 border-[#B5601F] dark:border-[#DF8642] bg-[#F2E9D8] dark:bg-[#221D12] rounded-r-xl px-4 py-3 space-y-1.5">
+    <p dir="rtl" lang="ar" class="text-right text-lg sm:text-xl leading-loose text-[#3E2A1E] dark:text-[#F5E3C8]" style="font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', 'Noto Naskh Arabic', serif;">{{ v.arabic }}</p>
+    <p class="text-xs sm:text-sm italic text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">"{{ v.meaning }}"</p>
+    <figcaption class="text-[11px] font-bold tracking-wide text-[#B5601F] dark:text-[#DF8642]">— {{ v.ref }}</figcaption>
+  </figure>
+</ng-template>
 <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] w-full">
   <section class="bg-[#EFE6D4] dark:bg-[#262015] w-full">
     <h1 class="sr-only">Nusrah — Donate Directly. Give with Confidence.</h1>
@@ -15,13 +22,14 @@
         <div class="relative flex-1 min-w-0">
         <div class="grid touch-pan-y rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-lg sm:border sm:border-[#E2D3B8] dark:sm:border-[#4F4534] bg-[#F8F2E6] dark:bg-[#1F1A0F]" (mouseenter)="stopHeroAutoplay()" (mouseleave)="startHeroAutoplay()" (touchstart)="onHeroTouchStart($event)" (touchend)="onHeroTouchEnd($event)">
           <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out" [ngClass]="heroSlideIndex === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'" [attr.aria-hidden]="heroSlideIndex !== 0">
-            <div class="p-6 sm:p-8 lg:p-16 flex flex-col items-center justify-center text-center gap-4 sm:gap-5 order-2 md:order-1">
+            <div class="p-6 sm:p-8 lg:p-16 flex flex-col justify-center gap-3 sm:gap-4 order-2 md:order-1">
               <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">Donate Directly. Give with Confidence.</h2>
-              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg">Nusrah connects you directly with verified Masjids, orphanages, NGOs, schools, medical cases, and community projects—no intermediaries, with every donation backed by transparency, updates, and accountability.</p>
-              <div class="flex flex-wrap justify-center gap-2">
+              <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Nusrah connects you directly with verified Masjids, orphanages, NGOs, schools, medical cases, and community projects—no intermediaries, with every donation backed by transparency, updates, and accountability.</p>
+              <div class="flex flex-wrap gap-2">
                 <span *ngFor="let c of ['Verified campaigns', 'Direct to beneficiaries', 'Live progress updates']" class="inline-flex items-center gap-1.5 rounded-full bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] px-3 py-1.5 text-xs font-medium text-[#4A3627] dark:text-[#EAE5E1]"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold">✓</span>{{ c }}</span>
               </div>
-              <a routerLink="/campaigns" class="text-center w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">Explore Campaigns</a>
+              <ng-container *ngTemplateOutlet="verseTpl; context: { $implicit: heroVerses[0] }"></ng-container>
+              <div class="pt-1"><a routerLink="/campaigns" class="block sm:inline-block text-center w-full sm:w-auto bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">Explore Campaigns</a></div>
             </div>
             <div class="relative h-60 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2"><div class="absolute inset-0 md:top-[18%] md:bottom-[14%] md:right-5 lg:right-7 overflow-hidden md:rounded-2xl"><img src="images/hero-1.jpg" alt="A mosque glowing softly at dawn" class="w-full h-full object-cover object-center"></div></div>
           </div>
@@ -32,6 +40,7 @@
               <ol class="space-y-2 text-sm text-[#4A3627] dark:text-[#EAE5E1]">
                 <li *ngFor="let s of [{ b: 'Register', t: 'a free account.' }, { b: 'Submit', t: 'your campaign with the required documents.' }, { b: 'Get verified', t: 'by our team and volunteers, then go live.' }, { b: 'Receive donations', t: 'directly and share updates with donors.' }]; let i = index" class="flex items-start gap-3"><span class="shrink-0 w-6 h-6 rounded-full bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-xs font-bold flex items-center justify-center">{{ i + 1 }}</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">{{ s.b }}</strong> {{ s.t }}</span></li>
               </ol>
+              <ng-container *ngTemplateOutlet="verseTpl; context: { $implicit: heroVerses[1] }"></ng-container>
               <div class="pt-1"><a routerLink="/register" class="block sm:inline-block text-center w-full sm:w-auto bg-[#6B7A4F] hover:bg-[#566140] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">Start a Campaign</a></div>
             </div>
             <div class="relative h-60 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2"><div class="absolute inset-0 md:top-[18%] md:bottom-[14%] md:right-5 lg:right-7 overflow-hidden md:rounded-2xl"><img src="images/hero-2.png" alt="Volunteers working together to help their community" class="w-full h-full object-cover object-center"></div></div>
@@ -43,6 +52,7 @@
               <div class="space-y-2 text-sm text-[#4A3627] dark:text-[#EAE5E1]">
                 <div *ngFor="let s of [{ b: 'Purifies your wealth', t: 'and brings barakah.' }, { b: 'Lifts the poor, orphans, and the needy', t: 'with direct support.' }, { b: 'Keeps wealth circulating', t: 'and communities strong.' }]" class="flex items-start gap-3"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">{{ s.b }}</strong> {{ s.t }}</span></div>
               </div>
+              <ng-container *ngTemplateOutlet="verseTpl; context: { $implicit: heroVerses[2] }"></ng-container>
               <div class="pt-1"><button (click)="scrollToZakat()" class="block sm:inline-block text-center w-full sm:w-auto bg-[#3E2A1E] hover:bg-[#2E2015] text-[#F8F2E6] font-medium px-6 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] cursor-pointer">Calculate Your Zakah</button></div>
             </div>
             <div class="relative h-60 sm:h-56 md:h-auto md:min-h-[580px] order-1 md:order-2"><div class="absolute inset-0 md:top-[18%] md:bottom-[14%] md:right-5 lg:right-7 overflow-hidden md:rounded-2xl"><img src="images/hero-3.jpg" alt="Hands giving charity to someone in need" class="w-full h-full object-cover object-center"></div></div>
@@ -203,23 +213,23 @@
     </div>
   </section>
 </div>
-<div *ngIf="isWelcomeModalOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs sm:p-4">
-  <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] flex flex-col max-h-[94vh] sm:max-h-[90vh]">
-    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0 bg-[#F8F2E6] dark:bg-[#1F1A0F]"><div class="w-10 h-1.5 rounded-full bg-[#DCC9A8] dark:bg-[#4F4534]"></div></div>
-    <div class="bg-[#3E2A1E] px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-[#F8F2E6] shrink-0">
+<div *ngIf="isWelcomeModalOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-xs sm:p-4">
+  <div class="bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] text-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#B5601F]/30 flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0"><div class="w-10 h-1.5 rounded-full bg-white/20"></div></div>
+    <div class="bg-white/5 border-b border-white/10 px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-[#F8F2E6] shrink-0">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#F8F2E6] flex items-center justify-center shrink-0 overflow-hidden"><img src="nusrah-logo.png" alt="Nusrah logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain"></div>
         <div>
           <h3 class="font-bold text-base sm:text-lg leading-tight">Welcome to Nusrah</h3>
-          <p class="text-[#E8C79A] text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5">Aid that anchors you to Jannah</p>
+          <p class="text-[#E8A25C] text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5">Aid that anchors you to Jannah</p>
         </div>
       </div>
-      <button (click)="closeWelcomeModal()" class="text-[#E2D3B8] hover:text-[#F8F2E6] text-xl font-bold px-2 py-1 cursor-pointer">✕</button>
+      <button (click)="closeWelcomeModal()" aria-label="Close" class="text-[#E2D3B8] hover:text-white text-xl font-bold px-2 py-1 cursor-pointer">✕</button>
     </div>
     <div class="p-5 sm:p-6 space-y-4 overflow-y-auto">
       <div>
-        <h4 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight mb-2">Direct & Intermediary-Free</h4>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Unlike traditional fundraising platforms, Nusrah never holds your money. Every donation goes directly to the verified beneficiary, while we focus on verification, transparency, and accountability.</p>
+        <h4 class="text-lg sm:text-xl font-bold text-white tracking-tight mb-2">Direct & Intermediary-Free</h4>
+        <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed">Unlike traditional fundraising platforms, Nusrah never holds your money. Every donation goes directly to the verified beneficiary, while we focus on verification, transparency, and accountability.</p>
       </div>
       <div class="space-y-3 pt-1">
         <div *ngFor="let s of [
@@ -228,14 +238,42 @@
           { b: 'Real Transparency:', t: 'Organizers share ongoing updates so you can see exactly how your contribution is making an impact.' },
           { b: 'Built on Trust & Accountability:', t: 'From Zakah to Sadaqah, give with confidence knowing where every rupee goes.' }
         ]" class="flex items-start gap-3">
-          <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
-          <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">{{ s.b }}</strong> {{ s.t }}</p>
+          <span class="text-[#E8A25C] font-bold text-lg mt-0.5 shrink-0">✓</span>
+          <p class="text-[#E2D3B8] text-sm"><strong class="text-[#F8F2E6]">{{ s.b }}</strong> {{ s.t }}</p>
         </div>
       </div>
     </div>
-    <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] px-5 sm:px-6 py-3.5 sm:py-4 border-t border-[#E2D3B8] dark:border-[#4F4534] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
-      <button (click)="closeWelcomeModal()" class="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-medium text-[#5C4433] dark:text-[#EAE5E1] hover:text-[#2E2015] dark:hover:text-[#EBE5E0] cursor-pointer">Continue Browsing</button>
-      <a routerLink="/campaigns" (click)="closeWelcomeModal()" class="w-full sm:w-auto text-center px-5 py-2.5 bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">Explore Campaigns</a>
+    <div class="bg-black/15 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-white/10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
+      <button (click)="closeWelcomeModal()" class="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-medium text-[#E2D3B8] hover:text-white cursor-pointer">Continue Browsing</button>
+      <button (click)="closeWelcomeModal('/campaigns')" class="w-full sm:w-auto text-center px-5 py-2.5 bg-[#B5601F] hover:bg-[#C96F28] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">Explore Campaigns</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="isDisclaimerModalOpen" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-xs sm:p-4" role="alertdialog" aria-modal="true" aria-labelledby="disclaimer-title">
+  <div class="bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] text-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#B5601F]/40 flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0"><div class="w-10 h-1.5 rounded-full bg-white/20"></div></div>
+    <div class="bg-white/5 border-b border-white/10 px-5 sm:px-6 py-4 sm:py-5 flex items-center gap-3 shrink-0">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-[#B5601F]/20 border border-[#B5601F]/40 text-[#E8A25C] flex items-center justify-center text-xl shrink-0">⚠️</div>
+      <div>
+        <h3 id="disclaimer-title" class="font-bold text-base sm:text-lg leading-tight">Important Notice</h3>
+        <p class="text-[#E8A25C] text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5">Please read carefully</p>
+      </div>
+    </div>
+    <div class="p-5 sm:p-6 space-y-4 overflow-y-auto">
+      <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed">Assalamu Alaikum, dear donors. We humbly request a moment of your attention regarding an important matter.</p>
+      <div class="space-y-3">
+        <div *ngFor="let p of disclaimerPoints" class="flex items-start gap-3">
+          <span class="text-[#E8A25C] font-bold text-lg mt-0.5 shrink-0">✓</span>
+          <p class="text-[#E2D3B8] text-sm leading-relaxed"><strong class="text-[#F8F2E6]">{{ p.b }}</strong> {{ p.t }}</p>
+        </div>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
+        <p class="text-[#E8C79A] text-sm leading-relaxed">We sincerely apologize for any inconvenience and kindly request your understanding and continued trust. May Allah reward your sincere intention, for as the Prophet ﷺ taught, <span class="italic">"Actions are judged by intentions."</span></p>
+        <p class="text-xs text-[#E2D3B8]">Questions or concerns? Please <a routerLink="/contact" (click)="closeDisclaimerModal(true)" class="font-semibold text-[#E8A25C] hover:underline">contact us</a>. Jazakumullahu khairan.</p>
+      </div>
+    </div>
+    <div class="bg-black/15 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-white/10 shrink-0">
+      <button (click)="closeDisclaimerModal()" class="w-full px-5 py-3 bg-[#B5601F] hover:bg-[#C96F28] active:scale-[0.98] text-[#F8F2E6] font-bold rounded-xl text-sm shadow-sm transition-all duration-300 hover:-translate-y-0.5 cursor-pointer">I Understand</button>
     </div>
   </div>
 </div>

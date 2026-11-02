@@ -1,0 +1,33 @@
+// Modal animations + scrollbar styling for the register page
+
+@keyframes registerFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes registerSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-backdrop-anim {
+  animation: registerFadeIn 0.2s ease-out;
+}
+
+.modal-panel-anim {
+  animation: registerSlideUp 0.3s ease-out;
+}
+
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232, 162, 92, 0.4) transparent;
+}
+
+.modal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(232, 162, 92, 0.4);
+  border-radius: 9999px;
+}

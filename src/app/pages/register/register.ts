@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,18 +21,108 @@ export class RegisterComponent implements OnDestroy {
   bio = '';
   referral = '';
   errorMessage = '';
+  showPassword = false;
+  showRegisterModal = false;
   showSuccessModal = false;
   countdownSeconds = 10;
   private timerInterval: any = null;
+
+  // Verses (Arabic text + meaning) shown in the "Words of Allah on Giving" section
+  verses = [
+    {
+      ref: 'Surah Al-Baqarah 2:261',
+      theme: 'Multiplied Reward',
+      arabic: 'مَّثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ ۗ وَاللَّهُ يُضَاعِفُ لِمَن يَشَاءُ',
+      meaning: 'The example of those who spend their wealth in the way of Allah is like a grain that grows seven ears, with a hundred grains in every ear. And Allah multiplies the reward for whom He wills.',
+      note: ''
+    },
+    {
+      ref: 'Surah Aal-Imran 3:92',
+      theme: 'True Righteousness',
+      arabic: 'لَن تَنَالُوا الْبِرَّ حَتَّىٰ تُنفِقُوا مِمَّا تُحِبُّونَ ۚ وَمَا تُنفِقُوا مِن شَيْءٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ',
+      meaning: 'You will never attain true righteousness until you spend from what you love. And whatever you spend, Allah knows it well.',
+      note: ''
+    },
+    {
+      ref: 'Surah Aal-Imran 3:133-134',
+      theme: 'The Path to Jannah',
+      arabic: 'وَسَارِعُوا إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ عَرْضُهَا السَّمَاوَاتُ وَالْأَرْضُ أُعِدَّتْ لِلْمُتَّقِينَ ۝ الَّذِينَ يُنفِقُونَ فِي السَّرَّاءِ وَالضَّرَّاءِ',
+      meaning: 'Hasten towards forgiveness from your Lord and a Garden as vast as the heavens and the earth, prepared for the righteous, those who spend in times of ease and in times of hardship.',
+      note: ''
+    },
+    {
+      ref: 'Surah Al-Insan 76:8-9',
+      theme: 'Giving For Allah Alone',
+      arabic: 'وَيُطْعِمُونَ الطَّعَامَ عَلَىٰ حُبِّهِ مِسْكِينًا وَيَتِيمًا وَأَسِيرًا ۝ إِنَّمَا نُطْعِمُكُمْ لِوَجْهِ اللَّهِ لَا نُرِيدُ مِنكُمْ جَزَاءً وَلَا شُكُورًا',
+      meaning: 'They feed the poor, the orphan and the captive, though they love the food themselves, saying: "We feed you only for the sake of Allah. We want no reward or thanks from you."',
+      note: 'Allah then promises them a Garden for their patience (76:12).'
+    }
+  ];
+
+  roles = [
+    {
+      icon: '📋',
+      title: 'Roles & Responsibilities',
+      text: 'Your primary mission is ensuring complete transparency and trust across campaigns.',
+      points: [
+        'Verify genuine campaign needs and project details on the ground.',
+        'Monitor fund utilization and make sure contributions reach the rightful recipients.',
+        'Maintain transparent documentation to build absolute donor confidence.'
+      ]
+    },
+    {
+      icon: '🕌',
+      title: 'Local Masjid Assignment',
+      text: 'Community work starts locally. Admins assign each volunteer to their nearest masjid or one of their preference.',
+      points: [
+        'Coordinate directly with local mosque committees for community welfare.',
+        'Seamlessly oversee local community campaigns near your neighborhood.',
+        'Foster local unity and charitable engagement close to home.'
+      ]
+    },
+    {
+      icon: '📊',
+      title: 'Ground Work & Digital Updates',
+      text: 'An exclusive volunteer portal lets you document field findings and keep donors updated in real time.',
+      points: [
+        'Perform on-site checks on progress, funds, and active requirements.',
+        'Upload photos, reports, and progress updates from the volunteer dashboard.',
+        'Keep donors informed with genuine visual proof and transparent milestones.'
+      ]
+    }
+  ];
+
+  steps = [
+    { title: 'Submit Your Details', text: 'Fill out the registration form with your accurate personal and contact information.' },
+    { title: 'Admin Review & Approval', text: 'The platform admin reviews and approves your registration. Once approved, you can log in with your credentials.' },
+    { title: 'Assignment & Field Updates', text: 'You are assigned to a campaign near your masjid. Conduct ground work, verify progress, and upload photo updates.' }
+  ];
 
   constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.clearTimer();
+    this.setScrollLock(false);
   }
 
-  scrollToRegistration(): void {
-    document.getElementById('registration-steps-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.showRegisterModal) this.closeRegisterModal();
+  }
+
+  openRegisterModal(): void {
+    this.errorMessage = '';
+    this.showRegisterModal = true;
+    this.setScrollLock(true);
+  }
+
+  closeRegisterModal(): void {
+    this.showRegisterModal = false;
+    this.setScrollLock(false);
+  }
+
+  private setScrollLock(lock: boolean): void {
+    document.body.style.overflow = lock ? 'hidden' : '';
   }
 
   get hasMinLength(): boolean { return this.password.length >= 5; }
@@ -67,6 +157,7 @@ export class RegisterComponent implements OnDestroy {
     this.http.post<any>('/api/auth/register', payload).subscribe({
       next: () => {
         this.countdownSeconds = 10;
+        this.showRegisterModal = false; // scroll stays locked while the success modal is open
         this.showSuccessModal = true;
         this.cdr.detectChanges();
         this.startCountdown();
@@ -98,6 +189,7 @@ export class RegisterComponent implements OnDestroy {
   closeModalAndRedirect(): void {
     this.clearTimer();
     this.showSuccessModal = false;
+    this.setScrollLock(false);
     this.cdr.detectChanges();
     this.router.navigate(['/login']);
   }
