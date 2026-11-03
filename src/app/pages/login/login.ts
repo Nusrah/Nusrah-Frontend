@@ -15,6 +15,7 @@ export class LoginComponent {
   view: 'login' | 'forgot' | 'reset' = 'login';
   email = '';
   password = '';
+  showPassword = false;
   otp = '';
   newPassword = '';
   isLoading = false;

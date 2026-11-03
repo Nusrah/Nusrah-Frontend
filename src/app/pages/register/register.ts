@@ -125,7 +125,7 @@ export class RegisterComponent implements OnDestroy {
     document.body.style.overflow = lock ? 'hidden' : '';
   }
 
-  get hasMinLength(): boolean { return this.password.length >= 5; }
+  get hasMinLength(): boolean { return this.password.length >= 8; }
   get hasLowercase(): boolean { return /[a-z]/.test(this.password); }
   get hasUppercase(): boolean { return /[A-Z]/.test(this.password); }
   get hasSpecialChar(): boolean { return /[^A-Za-z0-9]/.test(this.password); }

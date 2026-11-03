@@ -37,7 +37,47 @@ export class VolunteerDashboardComponent implements OnInit {
   selectedImageView: string | null = null;
   selectedImageTitle: string | null = null;
 
+  showPasswordModal = false;
+  changingPassword = false;
+  passwordError = '';
+  passwordForm = { current: '', next: '', confirm: '' };
+
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
+
+  openPasswordModal(): void {
+    this.passwordForm = { current: '', next: '', confirm: '' };
+    this.passwordError = '';
+    this.showPasswordModal = true;
+  }
+
+  closePasswordModal(): void {
+    this.showPasswordModal = false;
+    this.passwordForm = { current: '', next: '', confirm: '' };
+    this.passwordError = '';
+  }
+
+  changePassword(): void {
+    const { current, next, confirm } = this.passwordForm;
+    this.passwordError = '';
+    if (!current || !next || !confirm) { this.passwordError = 'Please fill in all fields.'; return; }
+    if (next.length < 8) { this.passwordError = 'New password must be at least 8 characters long.'; return; }
+    if (next !== confirm) { this.passwordError = 'New password and confirmation do not match.'; return; }
+    if (next === current) { this.passwordError = 'New password must be different from the current one.'; return; }
+    this.changingPassword = true;
+    this.http.post<any>(`${API}/auth/change-password`, { current_password: current, new_password: next }).subscribe({
+      next: () => {
+        this.changingPassword = false;
+        this.closePasswordModal();
+        alert('Password changed successfully!');
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        this.changingPassword = false;
+        this.passwordError = typeof err.error?.detail === 'string' ? err.error.detail : 'Could not change password. Please try again.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   ngOnInit(): void {
     const profileJson = localStorage.getItem('user_profile');
