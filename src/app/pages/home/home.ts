@@ -55,6 +55,23 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   ];
 
+  // ---- Mobile-only accordion data / state ----
+  howSteps = [
+    { t: 'Campaign Registration', d: 'Organizations or individuals submit their campaign with all required documents.' },
+    { t: 'Verification', d: 'Our team reviews documents and performs background & field verification.' },
+    { t: 'Campaign Published', d: 'Once approved, the campaign becomes visible on the platform.' },
+    { t: 'Donate Directly', d: "Donors contribute directly to the organizer's official account or payment method." },
+    { t: 'Receive Updates', d: 'Organizers regularly upload progress updates so donors can see real impact.' }
+  ];
+  private openHowSteps = new Set<number>();
+  isZakatInfoOpen = false;
+
+  zakatImportancePoints = [
+    { b: 'Purification of Wealth:', t: 'Cleanses your earnings and possessions while bringing divine barakah (blessing).' },
+    { b: 'Direct Social Impact:', t: 'Directly empowers the poor, needy, orphans, and distressed educational or medical cases without intermediaries.' },
+    { b: 'Economic Circulation:', t: 'Prevents wealth concentration in few hands and fosters robust community solidarity and mutual trust.' }
+  ];
+
   // Points shown in the important-notice (disclaimer) popup
   disclaimerPoints = [
     { b: 'Payment gateway temporarily unavailable:', t: 'Our online payment gateway is currently out of service, and we are working to restore it as soon as possible.' },
@@ -177,6 +194,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getPercent(camp: any): number {
     return Math.min(100, ((Number(camp.raised) || 0) / (Number(camp.goal ?? camp.budget) || 1)) * 100);
+  }
+
+  toggleHowStep(i: number): void {
+    if (this.openHowSteps.has(i)) this.openHowSteps.delete(i);
+    else this.openHowSteps.add(i);
+  }
+
+  isHowStepOpen(i: number): boolean {
+    return this.openHowSteps.has(i);
+  }
+
+  toggleZakatInfo(): void {
+    this.isZakatInfoOpen = !this.isZakatInfoOpen;
   }
 
   scrollToZakat(): void {

@@ -1,11 +1,16 @@
-<div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] text-[#3E2A1E] dark:text-[#EBE4E0] pb-12 sm:pb-16">
+<!-- Reusable dropdown arrow (mobile only: hidden from the sm breakpoint up) -->
+<ng-template #chev let-open="open" let-cls="cls">
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="sm:hidden shrink-0 w-5 h-5 transition-transform duration-300" [ngClass]="[cls, open ? 'rotate-180' : '']"><path d="M6 9l6 6 6-6"/></svg>
+</ng-template>
+
+<div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] text-[#3E2A1E] dark:text-[#EBE4E0] pb-10 sm:pb-16">
 
   <!-- Hero with background image -->
   <section
     class="relative isolate overflow-hidden bg-[#2A1B12] bg-cover bg-center"
     style="background-image: url('/images/about-bg.jpg');">
     <div class="absolute inset-0 -z-10 bg-gradient-to-br from-[#2A1B12]/85 via-[#2A1B12]/70 to-[#6B380F]/70"></div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-20 sm:py-28 md:py-36 text-center space-y-4 sm:space-y-5">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-12 py-14 sm:py-28 md:py-36 text-center space-y-4 sm:space-y-5">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">About Nusrah</h1>
       <p class="text-[#E8A25C] text-xs sm:text-sm font-bold tracking-widest uppercase">Aid that anchors you to Jannah</p>
       <p class="text-base sm:text-lg text-white font-semibold leading-snug max-w-3xl mx-auto">We connect donors directly with verified causes.</p>
@@ -13,128 +18,208 @@
     </div>
   </section>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 mt-10 sm:mt-14 space-y-8 sm:space-y-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-12 mt-6 sm:mt-14 space-y-3 sm:space-y-12">
 
     <!-- Our Story -->
-    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 md:p-14 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 sm:space-y-8 transition-all duration-300 ease-out hover:shadow-lg">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] border-b border-[#E2D3B8] dark:border-[#4F4534] pb-4">Our Story</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 items-center">
-        <div class="space-y-4 text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed text-sm sm:text-base">
-          <p class="font-semibold">Many people want to give, but they wonder:</p>
-          <ul class="space-y-3 pl-4 border-l-4 border-[#B5601F] font-bold text-[#4A3627] dark:text-[#EAE5E1]">
-            <li *ngFor="let q of ['Is this campaign genuine?', 'Will my money reach the right person?', 'Did my donation make a difference?']">• {{ q }}</li>
-          </ul>
-          <p>Nusrah answers those questions. Every campaign is verified before it goes live.</p>
-        </div>
-        <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-6 sm:p-8 rounded-2xl border border-[#F2DFC4] dark:border-[#443623] space-y-3 text-sm sm:text-base text-[#4A3627] dark:text-[#EAE5E1]">
-          <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-lg sm:text-xl">The Direct Difference</h3>
-          <p><strong>Nusrah never receives your donation.</strong></p>
-          <p>It goes directly to the verified beneficiary. We just make that connection trustworthy.</p>
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-8 transition-all duration-300 ease-out hover:shadow-lg">
+      <h2 class="sm:border-b sm:border-[#E2D3B8] sm:dark:border-[#4F4534] sm:pb-4">
+        <button type="button" (click)="toggleSection('story')" [attr.aria-expanded]="isOpen('story')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="sm:hidden w-10 h-10 rounded-xl bg-[#F2DFC4] dark:bg-[#332715] flex items-center justify-center text-base shrink-0">📖</span>
+          <span class="flex-1 min-w-0 block text-base sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Story</span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('story'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('story') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-10 items-center">
+            <div class="space-y-4 text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed text-sm sm:text-base">
+              <p class="font-semibold">Many people want to give, but they wonder:</p>
+              <ul class="space-y-3 pl-4 border-l-4 border-[#B5601F] font-bold text-[#4A3627] dark:text-[#EAE5E1]">
+                <li *ngFor="let q of ['Is this campaign genuine?', 'Will my money reach the right person?', 'Did my donation make a difference?']">• {{ q }}</li>
+              </ul>
+              <p>Nusrah answers those questions. Every campaign is verified before it goes live.</p>
+            </div>
+            <div class="bg-[#F8F2E6] dark:bg-[#1F1A0F] p-5 sm:p-8 rounded-2xl border border-[#F2DFC4] dark:border-[#443623] space-y-3 text-sm sm:text-base text-[#4A3627] dark:text-[#EAE5E1]">
+              <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-xl">The Direct Difference</h3>
+              <p><strong>Nusrah never receives your donation.</strong></p>
+              <p>It goes directly to the verified beneficiary. We just make that connection trustworthy.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Mission & Vision -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8">
-      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-4 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]">
-        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] flex items-center justify-center text-xl sm:text-2xl shadow-sm">🎯</div>
-        <h3 class="text-lg sm:text-xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Mission</h3>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Make giving transparent, trustworthy, and easy.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-8">
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-4 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]">
+        <h3>
+          <button type="button" (click)="toggleSection('mission')" [attr.aria-expanded]="isOpen('mission')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:flex-col sm:items-start sm:gap-4 sm:cursor-default sm:pointer-events-none">
+            <span aria-hidden="true" class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] flex items-center justify-center text-lg sm:text-2xl shadow-sm shrink-0">🎯</span>
+            <span class="flex-1 min-w-0 sm:flex-none block text-base sm:text-xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Mission</span>
+            <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('mission'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+          </button>
+        </h3>
+        <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('mission') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+          <div class="overflow-hidden min-h-0 sm:overflow-visible">
+            <p class="pt-4 sm:pt-0 text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Make giving transparent, trustworthy, and easy.</p>
+          </div>
+        </div>
       </div>
-      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-4 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]">
-        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F] flex items-center justify-center text-xl sm:text-2xl shadow-sm">🔭</div>
-        <h3 class="text-lg sm:text-xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Vision</h3>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">The world's most trusted platform for direct giving.</p>
+      <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-4 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]">
+        <h3>
+          <button type="button" (click)="toggleSection('vision')" [attr.aria-expanded]="isOpen('vision')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:flex-col sm:items-start sm:gap-4 sm:cursor-default sm:pointer-events-none">
+            <span aria-hidden="true" class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F] flex items-center justify-center text-lg sm:text-2xl shadow-sm shrink-0">🔭</span>
+            <span class="flex-1 min-w-0 sm:flex-none block text-base sm:text-xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Vision</span>
+            <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('vision'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+          </button>
+        </h3>
+        <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('vision') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+          <div class="overflow-hidden min-h-0 sm:overflow-visible">
+            <p class="pt-4 sm:pt-0 text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">The world's most trusted platform for direct giving.</p>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Trust (image background) -->
     <div
-      class="relative isolate overflow-hidden bg-[#2A1B12] bg-cover bg-center text-white p-6 sm:p-10 md:p-14 rounded-3xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl space-y-4 sm:space-y-5"
+      class="relative isolate overflow-hidden bg-[#2A1B12] bg-cover bg-center text-white p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl sm:space-y-5"
       style="background-image: url('/images/about-trust-bg.jpg');">
       <div class="absolute inset-0 -z-10 bg-gradient-to-br from-[#2A1B12]/90 to-[#6B380F]/80"></div>
-      <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#B5601F]/20 text-[#E8A25C] rounded-2xl flex items-center justify-center text-xl sm:text-2xl border border-[#B5601F]/30">🤲</div>
-      <h2 class="text-xl sm:text-2xl font-extrabold text-white">Trust, Honesty &amp; Accountability</h2>
-      <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed max-w-3xl">Every rupee is tracked from pledge to progress update. We take zero commission from campaign funds.</p>
-      <div class="bg-[#F2E9D8]/10 p-4 rounded-2xl border border-white/10 text-xs sm:text-sm text-[#E8C79A] italic max-w-3xl">"The truthful and trustworthy merchant will be with the prophets, the truthful, and the martyrs." (Jami' at-Tirmidhi)</div>
-    </div>
-
-    <!-- How We Verify -->
-    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 md:p-14 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
-      <div class="space-y-2">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">How We Verify Campaigns</h2>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base">Four checks before any campaign goes live.</p>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div *ngFor="let s of [
-          ['01', 'Documents', 'We review identity, registration, and ownership papers.'],
-          ['02', 'Background', 'We confirm who the organizers and beneficiaries really are.'],
-          ['03', 'On the Ground', 'Trusted volunteers visit the site when needed.'],
-          ['04', 'Monitoring', 'Organizers share regular photos, invoices, and updates.']
-        ]" class="p-5 sm:p-6 bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
-          <div class="text-[#B5601F] dark:text-[#DF8642] font-extrabold text-lg sm:text-xl">{{ s[0] }}</div>
-          <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-lg sm:text-xl">{{ s[1] }}</h3>
-          <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ s[2] }}</p>
+      <h2>
+        <button type="button" (click)="toggleSection('trust')" [attr.aria-expanded]="isOpen('trust')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:flex-col sm:items-start sm:gap-5 sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="w-10 h-10 sm:w-14 sm:h-14 bg-[#B5601F]/20 text-[#E8A25C] rounded-xl sm:rounded-2xl flex items-center justify-center text-lg sm:text-2xl border border-[#B5601F]/30 shrink-0">🤲</span>
+          <span class="flex-1 min-w-0 sm:flex-none block text-base sm:text-2xl font-extrabold text-white">Trust, Honesty &amp; Accountability</span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('trust'), cls: 'text-[#F8F2E6]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('trust') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 space-y-4 sm:space-y-5">
+            <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed max-w-3xl">Every rupee is tracked from pledge to progress update. We take zero commission from campaign funds.</p>
+            <div class="bg-[#F2E9D8]/10 p-4 rounded-2xl border border-white/10 text-xs sm:text-sm text-[#E8C79A] italic max-w-3xl">"The truthful and trustworthy merchant will be with the prophets, the truthful, and the martyrs." (Jami' at-Tirmidhi)</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- How giving works (new) -->
-    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 md:p-14 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
-      <div class="space-y-2">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">How Giving Works</h2>
-        <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base">From choosing a cause to seeing the result.</p>
+    <!-- How We Verify -->
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
+      <h2>
+        <button type="button" (click)="toggleSection('verify')" [attr.aria-expanded]="isOpen('verify')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="sm:hidden w-10 h-10 rounded-xl bg-[#E4E6D6] dark:bg-[#25261C] flex items-center justify-center text-base shrink-0">✅</span>
+          <span class="flex-1 min-w-0 block">
+            <span class="block text-base sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">How We Verify Campaigns</span>
+            <span class="block mt-0.5 sm:mt-2 text-xs sm:text-base font-normal text-[#5C4433] dark:text-[#EAE5E1]">Four checks before any campaign goes live.</span>
+          </span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('verify'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('verify') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div *ngFor="let s of [
+              ['01', 'Documents', 'We review identity, registration, and ownership papers.'],
+              ['02', 'Background', 'We confirm who the organizers and beneficiaries really are.'],
+              ['03', 'On the Ground', 'Trusted volunteers visit the site when needed.'],
+              ['04', 'Monitoring', 'Organizers share regular photos, invoices, and updates.']
+            ]" class="p-4 sm:p-6 bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-2 sm:space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
+              <div class="text-[#B5601F] dark:text-[#DF8642] font-extrabold text-lg sm:text-xl">{{ s[0] }}</div>
+              <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-xl">{{ s[1] }}</h3>
+              <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ s[2] }}</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-        <div *ngFor="let h of [
-          ['🔎', 'Pick a campaign', 'Browse verified projects by category or city.'],
-          ['💳', 'Give securely', 'Pay with UPI, card, netbanking, or wallet.'],
-          ['📸', 'See the impact', 'Follow photo updates and the live funding meter.']
-        ]" class="p-5 sm:p-6 bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
-          <div class="w-11 h-11 rounded-2xl bg-[#F2DFC4] dark:bg-[#332715] flex items-center justify-center text-lg shadow-xs">{{ h[0] }}</div>
-          <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-lg sm:text-xl">{{ h[1] }}</h3>
-          <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ h[2] }}</p>
+    </div>
+
+    <!-- How giving works -->
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
+      <h2>
+        <button type="button" (click)="toggleSection('giving')" [attr.aria-expanded]="isOpen('giving')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="sm:hidden w-10 h-10 rounded-xl bg-[#E9D3BE] dark:bg-[#392B1E] flex items-center justify-center text-base shrink-0">🧭</span>
+          <span class="flex-1 min-w-0 block">
+            <span class="block text-base sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">How Giving Works</span>
+            <span class="block mt-0.5 sm:mt-2 text-xs sm:text-base font-normal text-[#5C4433] dark:text-[#EAE5E1]">From choosing a cause to seeing the result.</span>
+          </span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('giving'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('giving') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
+            <div *ngFor="let h of [
+              ['🔎', 'Pick a campaign', 'Browse verified projects by category or city.'],
+              ['💳', 'Give securely', 'Pay with UPI, card, netbanking, or wallet.'],
+              ['📸', 'See the impact', 'Follow photo updates and the live funding meter.']
+            ]" class="p-4 sm:p-6 bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] space-y-2 sm:space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
+              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-[#F2DFC4] dark:bg-[#332715] flex items-center justify-center text-lg shadow-xs">{{ h[0] }}</div>
+              <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-xl">{{ h[1] }}</h3>
+              <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ h[2] }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Our Values -->
-    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 md:p-14 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] border-b border-[#E2D3B8] dark:border-[#4F4534] pb-4">Our Values</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div *ngFor="let v of [
-          ['Transparency', 'Clear information, documents, and updates on every campaign.'],
-          ['Trust', 'Every campaign is verified so you can give with confidence.'],
-          ['Accountability', 'Organizers must keep sharing progress.'],
-          ['Community', 'Generosity built on trust makes communities stronger.']
-        ]" class="p-5 sm:p-6 rounded-2xl bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#F2DFC4] dark:border-[#443623] space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
-          <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-lg sm:text-xl">{{ v[0] }}</h3>
-          <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ v[1] }}</p>
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-10 transition-all duration-300 ease-out hover:shadow-lg">
+      <h2 class="sm:border-b sm:border-[#E2D3B8] sm:dark:border-[#4F4534] sm:pb-4">
+        <button type="button" (click)="toggleSection('values')" [attr.aria-expanded]="isOpen('values')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="sm:hidden w-10 h-10 rounded-xl bg-[#F2DFC4] dark:bg-[#332715] flex items-center justify-center text-base shrink-0">💎</span>
+          <span class="flex-1 min-w-0 block text-base sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Our Values</span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('values'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('values') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div *ngFor="let v of [
+              ['Transparency', 'Clear information, documents, and updates on every campaign.'],
+              ['Trust', 'Every campaign is verified so you can give with confidence.'],
+              ['Accountability', 'Organizers must keep sharing progress.'],
+              ['Community', 'Generosity built on trust makes communities stronger.']
+            ]" class="p-4 sm:p-6 rounded-2xl bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#F2DFC4] dark:border-[#443623] space-y-2 sm:space-y-3 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md">
+              <h3 class="font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-xl">{{ v[0] }}</h3>
+              <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ v[1] }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- FAQ (new) -->
-    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-6 sm:p-10 md:p-14 rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] space-y-6 transition-all duration-300 ease-out hover:shadow-lg">
-      <h2 class="text-xl sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0] border-b border-[#E2D3B8] dark:border-[#4F4534] pb-4">Common Questions</h2>
-      <div class="space-y-3">
-        <details *ngFor="let f of [
-          ['Does Nusrah hold my donation?', 'No. Your payment goes directly to the campaign organizer.'],
-          ['Do you charge a fee?', 'No. We take zero commission from campaign funds.'],
-          ['How do I know a campaign is real?', 'Every campaign is checked by our team before it is published.'],
-          ['Will I get a receipt?', 'Yes. You receive a digital receipt right after you donate.']
-        ]" class="group bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] px-5 py-4">
-          <summary class="flex items-center justify-between gap-3 cursor-pointer list-none text-sm sm:text-base font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">
-            {{ f[0] }}
-            <span class="text-[#B5601F] dark:text-[#DF8642] text-xs shrink-0 transition-transform duration-200 group-open:rotate-180">▼</span>
-          </summary>
-          <p class="mt-3 text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ f[1] }}</p>
-        </details>
+    <!-- FAQ -->
+    <div class="bg-[#F2E9D8] dark:bg-[#221D12] p-4 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] sm:space-y-6 transition-all duration-300 ease-out hover:shadow-lg">
+      <h2 class="sm:border-b sm:border-[#E2D3B8] sm:dark:border-[#4F4534] sm:pb-4">
+        <button type="button" (click)="toggleSection('faq')" [attr.aria-expanded]="isOpen('faq')" class="w-full flex items-center gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+          <span aria-hidden="true" class="sm:hidden w-10 h-10 rounded-xl bg-[#E4E6D6] dark:bg-[#25261C] flex items-center justify-center text-base shrink-0">❓</span>
+          <span class="flex-1 min-w-0 block text-base sm:text-2xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Common Questions</span>
+          <ng-container *ngTemplateOutlet="chev; context: { open: isOpen('faq'), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+        </button>
+      </h2>
+      <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isOpen('faq') ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+        <div class="overflow-hidden min-h-0 sm:overflow-visible">
+          <div class="pt-4 sm:pt-0 space-y-3">
+            <details *ngFor="let f of [
+              ['Does Nusrah hold my donation?', 'No. Your payment goes directly to the campaign organizer.'],
+              ['Do you charge a fee?', 'No. We take zero commission from campaign funds.'],
+              ['How do I know a campaign is real?', 'Every campaign is checked by our team before it is published.'],
+              ['Will I get a receipt?', 'Yes. You receive a digital receipt right after you donate.']
+            ]" class="group bg-[#F8F2E6] dark:bg-[#1F1A0F] rounded-2xl border border-[#E2D3B8] dark:border-[#4F4534] px-4 sm:px-5 py-3.5 sm:py-4">
+              <summary class="flex items-center justify-between gap-3 cursor-pointer list-none text-sm sm:text-base font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">
+                {{ f[0] }}
+                <span class="hidden sm:inline text-[#B5601F] dark:text-[#DF8642] text-xs shrink-0 transition-transform duration-200 group-open:rotate-180">▼</span>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="sm:hidden shrink-0 w-5 h-5 text-[#3E2A1E] dark:text-[#EBE4E0] transition-transform duration-200 group-open:rotate-180"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <p class="mt-3 text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">{{ f[1] }}</p>
+            </details>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Closing CTA (new) -->
-    <div class="bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white p-6 sm:p-10 md:p-14 rounded-3xl shadow-md text-center space-y-4 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl">
+    <!-- Closing CTA (always visible) -->
+    <div class="bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white p-6 sm:p-10 md:p-14 rounded-2xl sm:rounded-3xl shadow-md text-center space-y-4 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl">
       <h2 class="text-xl sm:text-2xl font-extrabold text-white">Ready to Give with Confidence?</h2>
       <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">Browse verified campaigns and make a difference today.</p>
       <a routerLink="/campaigns" class="inline-block bg-[#B5601F] hover:bg-[#8F4A16] text-white font-bold px-6 py-3 rounded-2xl shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] text-sm">View Campaigns</a>

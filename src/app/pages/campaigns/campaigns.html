@@ -19,7 +19,19 @@
 
       <div class="my-6 sm:my-7 border-t border-[#E2D3B8] dark:border-[#4F4534]"></div>
 
-      <!-- Controls -->
+      <!-- Mobile-only toggle for the search & filter controls -->
+      <button type="button" (click)="toggleFilters()" [attr.aria-expanded]="isFiltersOpen" class="sm:hidden w-full flex items-center gap-3 p-4 rounded-2xl bg-[#F8F2E6] dark:bg-[#1F1A0F] border border-[#E2D3B8] dark:border-[#4F4534] text-left cursor-pointer">
+        <span aria-hidden="true" class="text-lg shrink-0">🔍</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-sm font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Search &amp; Filter Campaigns</span>
+          <span class="block text-xs text-[#8A7863] dark:text-[#BFB8B1]">Name, city, category and sorting</span>
+        </span>
+        <span *ngIf="hasActiveFilters && !isFiltersOpen" class="shrink-0 bg-[#B5601F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Active</span>
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#3E2A1E] dark:text-[#EBE4E0] transition-transform duration-300" [ngClass]="isFiltersOpen ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <!-- Controls (always visible from sm up; collapsible on mobile) -->
+      <div [ngClass]="isFiltersOpen ? 'block pt-4' : 'hidden'" class="sm:block sm:pt-0">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div>
           <label for="searchName" class="block text-[11px] font-bold text-[#5C4433] dark:text-[#EAE5E1] uppercase tracking-wide mb-1.5">Masjid or campaign</label>
@@ -66,6 +78,7 @@
             <span class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-[#B5601F] dark:text-[#DF8642] text-xs">▼</span>
           </div>
         </div>
+      </div>
       </div>
 
       <!-- Result count -->
@@ -118,12 +131,47 @@
         <h2 class="text-xl sm:text-2xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">Learn More About Giving Through Nusrah</h2>
         <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm">How we verify campaigns, how progress is tracked, and how to donate.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-        <div *ngFor="let c of [
-          { icon: '🔍', iconCls: 'bg-[#F2DFC4] dark:bg-[#332715] text-[#B5601F] dark:text-[#DF8642]', tick: 'text-[#B5601F] dark:text-[#DF8642]', title: 'How We Verify Campaigns', desc: 'Trust and absolute transparency are our core values. We do not list campaigns blindly.', items: ['Our team goes directly to the ground to inspect the physical site.', 'We verify financial requirements, estimates, and immediate needs with local committees.', 'Every single project is vetted before going live to protect donor contributions.'] },
-          { icon: '📈', iconCls: 'bg-[#E4E6D6] dark:bg-[#25261C] text-[#5B6048] dark:text-[#DBDCD6]', tick: 'text-[#5B6048] dark:text-[#DBDCD6]', title: 'Live Progress Tracking', desc: 'You can always see how a project is evolving from start to completion.', items: ['Click on any campaign card to open its dedicated donation and progress page.', 'View real-time funding meters, percentage metrics, and milestones.', 'Our volunteers update progress ASAP via photo logs from the field.'] },
-          { icon: '💳', iconCls: 'bg-[#E9D3BE] dark:bg-[#392B1E] text-[#6B380F] dark:text-[#E0751F]', tick: 'text-[#6B380F] dark:text-[#E0751F]', num: true, title: 'Simple Steps to Donate', desc: 'Contributing to noble causes has never been easier or more secure.', items: ['Open any campaign page by clicking its card above.', 'Pay securely through Razorpay using UPI, card, netbanking, or wallet.', 'Receive an instant digital donation receipt and watch project milestones unfold.'] }
-        ]" class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
+      <!-- Mobile-only accordion version of the info cards -->
+      <div class="sm:hidden grid grid-cols-1 gap-3">
+        <div *ngFor="let c of infoCards; let i = index" class="rounded-2xl bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs">
+          <button type="button" (click)="toggleInfoCard(i)" [attr.aria-expanded]="isInfoCardOpen(i)" class="w-full flex items-center gap-3 p-4 text-left cursor-pointer">
+            <div aria-hidden="true" [ngClass]="c.iconCls" class="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0">{{ c.icon }}</div>
+            <span class="flex-1 text-base font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-snug">{{ c.title }}</span>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#3E2A1E] dark:text-[#EBE4E0] transition-transform duration-300" [ngClass]="isInfoCardOpen(i) ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out" [ngClass]="isInfoCardOpen(i) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0">
+              <div class="px-4 pb-4 space-y-3">
+                <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ c.desc }}</p>
+                <ul class="space-y-2.5 text-xs text-[#4A3627] dark:text-[#EAE5E1]">
+                  <li *ngFor="let item of c.items; let j = index" class="flex items-start gap-2.5">
+                    <span [ngClass]="c.tick" class="font-bold shrink-0">{{ c.num ? (j + 1) + '.' : '✓' }}</span> {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white shadow-xs">
+          <button type="button" (click)="toggleInfoCard(infoCards.length)" [attr.aria-expanded]="isInfoCardOpen(infoCards.length)" class="w-full flex items-center gap-3 p-4 text-left cursor-pointer">
+            <div aria-hidden="true" class="w-10 h-10 bg-[#B5601F]/20 text-[#E8A25C] rounded-xl flex items-center justify-center text-base shrink-0 border border-[#B5601F]/30">✨</div>
+            <span class="flex-1 text-base font-bold text-white leading-snug">Rewards for Building the House of Allah</span>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#F8F2E6] transition-transform duration-300" [ngClass]="isInfoCardOpen(infoCards.length) ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out" [ngClass]="isInfoCardOpen(infoCards.length) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0">
+              <div class="px-4 pb-4 space-y-3">
+                <p class="text-[#E2D3B8] text-sm leading-relaxed">Supporting the construction, maintenance, and needs of masjids brings immense spiritual barakah and acts as continuous charity (*Sadaqah Jariyah*).</p>
+                <div class="bg-[#F2E9D8]/10 p-4 rounded-2xl border border-white/10 text-xs text-[#E8C79A] italic">"Whoever builds a mosque for the sake of Allah, Allah will build for him a house like it in Paradise." (Sahih Al-Bukhari)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden sm:grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        <div *ngFor="let c of infoCards" class="bg-[#F2E9D8] dark:bg-[#221D12] p-5 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl shadow-md border border-[#E2D3B8] dark:border-[#4F4534] transition-all duration-300 ease-out md:hover:-translate-y-1.5 hover:shadow-xl space-y-3 sm:space-y-4">
           <div [ngClass]="c.iconCls" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-lg sm:text-xl font-bold shadow-xs">{{ c.icon }}</div>
           <h3 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">{{ c.title }}</h3>
           <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ c.desc }}</p>

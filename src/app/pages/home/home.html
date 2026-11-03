@@ -73,8 +73,8 @@
         <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Featured Campaigns</h2>
         <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Discover verified causes making real impact in communities</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <div *ngFor="let camp of campaigns" class="bg-[#F8F2E6] dark:bg-[#221D12] rounded-2xl overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] shadow-md sm:shadow-sm flex flex-col transition-all duration-300 ease-out md:hover:-translate-y-1 hover:shadow-lg">
+      <div class="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 pt-1 pb-4 sm:pt-0 sm:pb-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div *ngFor="let camp of campaigns" class="min-w-[86%] snap-center shrink-0 sm:min-w-0 sm:shrink bg-[#F8F2E6] dark:bg-[#221D12] rounded-2xl overflow-hidden border border-[#E2D3B8] dark:border-[#4F4534] shadow-md sm:shadow-sm flex flex-col transition-all duration-300 ease-out md:hover:-translate-y-1 hover:shadow-lg">
           <div class="relative h-52 sm:h-48 w-full bg-[#3E2A1E]">
             <img [src]="camp.image_url || 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800'" [alt]="camp.title || camp.name" class="w-full h-full object-cover">
             <span class="absolute top-3 right-3 bg-[#6B7A4F] text-[#F8F2E6] text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full">{{ (camp.status || 'Active') | titlecase }}</span>
@@ -123,7 +123,31 @@
       </div>
     </div>
   </section>
-  <section class="w-full">
+  <section class="w-full sm:hidden">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl p-5 shadow-xs">
+        <div class="text-center max-w-2xl mx-auto mb-8">
+          <h2 class="text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">How Nusrah Works</h2>
+          <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm">A transparent 5-step flow from campaign submission to final impact tracking.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4">
+          <div *ngFor="let s of howSteps; let i = index" class="rounded-xl bg-[#F2E9D8] dark:bg-[#221D12]">
+            <button type="button" (click)="toggleHowStep(i)" [attr.aria-expanded]="isHowStepOpen(i)" class="w-full flex items-center gap-3 p-4 text-left cursor-pointer">
+              <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg shrink-0 w-5 text-center">{{ i + 1 }}</span>
+              <span class="flex-1 text-[#4A3627] dark:text-[#EAE5E1] text-sm font-medium">{{ s.t }}</span>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#3E2A1E] dark:text-[#EBE4E0] transition-transform duration-300" [ngClass]="isHowStepOpen(i) ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="grid transition-[grid-template-rows] duration-300 ease-out" [ngClass]="isHowStepOpen(i) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+              <div class="overflow-hidden min-h-0">
+                <p class="px-4 pb-4 pl-12 pr-12 text-[#8A7863] dark:text-[#BFB8B1] text-xs leading-relaxed">{{ s.d }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="w-full hidden sm:block">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
       <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">How Nusrah Works</h2>
@@ -150,7 +174,20 @@
         <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">Our Live Impact</h2>
         <p class="text-[#8A7863] dark:text-[#BFB8B1] mt-2 text-sm sm:text-base">Real-time metrics connected directly to our verified database ecosystem.</p>
       </div>
-      <div class="bg-[#3E2A1E] rounded-2xl shadow-lg px-5 sm:px-6 py-8 sm:py-10 md:px-10">
+      <div class="sm:hidden rounded-3xl bg-gradient-to-br from-[#3A2A1F] to-[#6B3A14] shadow-lg px-3 py-6">
+        <div class="grid grid-cols-4 gap-1 text-center">
+          <div *ngFor="let s of [
+            { n: stats.active_campaigns, l: 'Verified campaigns' },
+            { n: stats.communities_supported, l: 'Communities' },
+            { n: stats.active_volunteers, l: 'Volunteers' },
+            { n: stats.finished_campaigns, l: 'Completed' }
+          ]" class="px-0.5">
+            <h3 class="text-3xl font-extrabold text-[#E8A25C] leading-none">{{ s.n }}</h3>
+            <p class="mt-2 text-[11px] font-bold text-white leading-tight">{{ s.l }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="hidden sm:block bg-[#3E2A1E] rounded-2xl shadow-lg px-5 sm:px-6 py-8 sm:py-10 md:px-10">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6 divide-y-0 divide-x divide-[#5C4433]/60 lg:divide-x">
           <div *ngFor="let s of [
             { n: stats.active_campaigns, l: 'Verified Campaigns', d: 'Successfully verified & published' },
@@ -176,6 +213,26 @@
   <section class="w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-24">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center">
+        <div class="sm:hidden rounded-2xl bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] shadow-xs">
+          <button type="button" (click)="toggleZakatInfo()" [attr.aria-expanded]="isZakatInfoOpen" class="w-full flex items-center gap-3 p-4 text-left cursor-pointer">
+            <span class="flex-1 text-[#3E2A1E] dark:text-[#EBE4E0] text-base font-bold leading-snug">The Importance of Zakah in Community Well-being</span>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#3E2A1E] dark:text-[#EBE4E0] transition-transform duration-300" [ngClass]="isZakatInfoOpen ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out" [ngClass]="isZakatInfoOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0">
+              <div class="px-4 pb-4 space-y-4">
+                <div class="inline-block bg-[#F8F2E6] dark:bg-[#1F1A0F] text-[#8F4A16] dark:text-[#DD7222] text-[10px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Spiritual & Social Significance</div>
+                <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">Zakah is the third pillar of Islam, serving as a mandatory act of worship and financial obligation for every qualifying Muslim. Beyond its profound spiritual purification, it acts as an economic equalizer designed to eradicate poverty and support those in dire need.</p>
+                <div class="space-y-3">
+                  <div *ngFor="let s of zakatImportancePoints" class="flex items-start gap-3">
+                    <span class="text-[#B5601F] dark:text-[#DF8642] font-bold text-lg mt-0.5 shrink-0">✓</span>
+                    <p class="text-[#4A3627] dark:text-[#EAE5E1] text-sm"><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">{{ s.b }}</strong> {{ s.t }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="bg-[#F2E9D8] dark:bg-[#221D12] rounded-2xl shadow-lg overflow-hidden border border-[#F2DFC4] dark:border-[#443623] flex flex-col transition-all duration-300 ease-out md:hover:-translate-y-1 hover:shadow-2xl">
           <div class="h-48 sm:h-60 w-full bg-[#3E2A1E] overflow-hidden relative flex items-center justify-center p-5 sm:p-6 text-center">
             <div class="absolute inset-0 bg-gradient-to-tr from-[#2A1B12] to-[#6B380F] opacity-90"></div>
@@ -194,7 +251,7 @@
             <div><button (click)="openZakatModal()" class="block text-center w-full py-3.5 bg-[#B5601F] hover:bg-[#8F4A16] active:scale-[0.98] text-[#F8F2E6] font-bold rounded-xl shadow-md transition-all duration-300 cursor-pointer text-base">Calculate Zakah Now</button></div>
           </div>
         </div>
-        <div class="space-y-4 sm:space-y-6">
+        <div class="hidden sm:block space-y-4 sm:space-y-6">
           <div class="inline-block bg-[#F2E9D8] dark:bg-[#221D12] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Spiritual & Social Significance</div>
           <h2 class="text-2xl sm:text-3xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] tracking-tight">The Importance of Zakah in Community Well-being</h2>
           <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Zakah is the third pillar of Islam, serving as a mandatory act of worship and financial obligation for every qualifying Muslim. Beyond its profound spiritual purification, it acts as an economic equalizer designed to eradicate poverty and support those in dire need.</p>

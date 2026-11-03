@@ -59,7 +59,7 @@ export class ChatbotComponent {
       id: this.nextId++,
       role: 'assistant',
       text: 'Assalamu alaikum! I\'m the Nusrah assistant. I can help you find campaigns, explain how to donate or start a campaign, and take you to the right page. What would you like to do?',
-      suggestions: ['Show Masjid campaigns', 'How do I donate?', 'How do I start a campaign?', 'Calculate my zakah']
+      suggestions: ['Show campaigns', 'How do I donate?', 'How do I start a campaign?', 'Calculate my zakah']
     };
   }
 
