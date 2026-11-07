@@ -98,6 +98,19 @@ export class RegisterComponent implements OnDestroy {
     { title: 'Assignment & Field Updates', text: 'You are assigned to a campaign near your masjid. Conduct ground work, verify progress, and upload photo updates.' }
   ];
 
+  // Mobile-only dropdown cards (verses 'v0', roles 'r0', steps 's0'...). Collapsed by default,
+  // each opens independently. From the `sm` breakpoint up every card is always shown.
+  private openCards = new Set<string>();
+
+  toggleCard(key: string): void {
+    if (this.openCards.has(key)) this.openCards.delete(key);
+    else this.openCards.add(key);
+  }
+
+  isCardOpen(key: string): boolean {
+    return this.openCards.has(key);
+  }
+
   constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnDestroy(): void {

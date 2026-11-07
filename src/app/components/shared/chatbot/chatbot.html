@@ -1,7 +1,7 @@
-<!-- Launcher button: sits above the phone tab bar (and above the donate bar on donate pages) -->
+<!-- Launcher button: bottom-right corner (above the donate bar on donate pages). --footer-overlap is set by the footer component and lifts the button so it rests right above the footer instead of covering it. -->
 <button *ngIf="!isOpen()" (click)="toggle()" aria-label="Open the Nusrah assistant"
-  [ngClass]="onDonatePage() ? 'bottom-[calc(8.5rem+env(safe-area-inset-bottom))]' : 'bottom-[calc(4.75rem+env(safe-area-inset-bottom))]'"
-  class="fixed right-4 sm:bottom-6 sm:right-6 z-40 h-14 px-4 sm:px-5 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] shadow-lg flex items-center gap-2 font-medium transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:scale-[1.04] active:scale-[0.97] cursor-pointer">
+  [ngClass]="onDonatePage() ? 'bottom-[calc(4.75rem+env(safe-area-inset-bottom)+var(--footer-overlap,0px))]' : 'bottom-[calc(1rem+env(safe-area-inset-bottom)+var(--footer-overlap,0px))]'"
+  class="fixed right-4 sm:bottom-[calc(1.5rem+var(--footer-overlap,0px))] sm:right-6 z-40 h-14 px-4 sm:px-5 rounded-full bg-[#B5601F] hover:bg-[#8F4A16] text-[#F8F2E6] shadow-lg flex items-center gap-2 font-medium transition-[transform,box-shadow,background-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:scale-[1.04] active:scale-[0.97] cursor-pointer">
   <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>

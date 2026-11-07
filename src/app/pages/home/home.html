@@ -270,7 +270,42 @@
     </div>
   </section>
 </div>
-<div *ngIf="isWelcomeModalOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-xs sm:p-4">
+<!-- Mobile-only welcome box: small card at the top of the screen; tap it to read more -->
+<div *ngIf="isWelcomeModalOpen" class="sm:hidden fixed top-[4.25rem] inset-x-3 z-[35] rounded-2xl bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] text-white shadow-2xl border border-[#B5601F]/40 overflow-hidden" role="dialog" aria-label="Welcome to Nusrah">
+  <div class="flex items-center gap-2 p-3">
+    <button type="button" (click)="toggleWelcomeInfo()" [attr.aria-expanded]="isWelcomeInfoOpen" class="flex-1 min-w-0 flex items-center gap-3 text-left cursor-pointer">
+      <span aria-hidden="true" class="w-10 h-10 rounded-xl bg-[#F8F2E6] flex items-center justify-center shrink-0 overflow-hidden"><img src="nusrah-logo.png" alt="" class="w-8 h-8 object-contain"></span>
+      <span class="flex-1 min-w-0 block">
+        <span class="block font-bold text-sm leading-tight text-[#F8F2E6]">Welcome to Nusrah</span>
+        <span class="block text-[#E8A25C] text-[10px] font-medium tracking-wide uppercase mt-0.5 truncate">Aid that anchors you to Jannah</span>
+        <span class="block text-[11px] text-[#E2D3B8] mt-0.5">{{ isWelcomeInfoOpen ? 'Tap to show less' : 'Tap to read more' }}</span>
+      </span>
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 w-5 h-5 text-[#E8A25C] transition-transform duration-300" [ngClass]="isWelcomeInfoOpen ? 'rotate-180' : ''"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <button type="button" (click)="closeWelcomeModal()" aria-label="Close" class="shrink-0 text-[#E2D3B8] hover:text-white text-lg font-bold w-8 h-8 flex items-center justify-center cursor-pointer">✕</button>
+  </div>
+  <div class="grid transition-[grid-template-rows] duration-300 ease-out" [ngClass]="isWelcomeInfoOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+    <div class="overflow-hidden min-h-0">
+      <div class="px-4 pb-3 max-h-[45vh] overflow-y-auto space-y-3">
+        <div>
+          <h4 class="text-base font-bold text-white tracking-tight mb-1.5">Direct &amp; Intermediary-Free</h4>
+          <p class="text-[#E2D3B8] text-sm leading-relaxed">Unlike traditional fundraising platforms, Nusrah never holds your money. Every donation goes directly to the verified beneficiary, while we focus on verification, transparency, and accountability.</p>
+        </div>
+        <div class="space-y-2.5">
+          <div *ngFor="let s of welcomePoints" class="flex items-start gap-3">
+            <span class="text-[#E8A25C] font-bold text-lg mt-0.5 shrink-0">✓</span>
+            <p class="text-[#E2D3B8] text-sm"><strong class="text-[#F8F2E6]">{{ s.b }}</strong> {{ s.t }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 gap-2 px-3 py-3 border-t border-white/10 bg-black/15">
+    <button type="button" (click)="closeWelcomeModal()" class="px-3 py-2.5 text-sm font-medium text-[#E2D3B8] hover:text-white border border-white/20 rounded-xl cursor-pointer">Continue Browsing</button>
+    <button type="button" (click)="closeWelcomeModal('/campaigns')" class="px-3 py-2.5 bg-[#B5601F] hover:bg-[#C96F28] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">Explore Campaigns</button>
+  </div>
+</div>
+<div *ngIf="isWelcomeModalOpen" class="hidden sm:flex fixed inset-0 z-50 items-center justify-center bg-black/70 backdrop-blur-xs p-4">
   <div class="bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] text-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#B5601F]/30 flex flex-col max-h-[94vh] sm:max-h-[90vh]">
     <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0"><div class="w-10 h-1.5 rounded-full bg-white/20"></div></div>
     <div class="bg-white/5 border-b border-white/10 px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-[#F8F2E6] shrink-0">
@@ -289,12 +324,7 @@
         <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed">Unlike traditional fundraising platforms, Nusrah never holds your money. Every donation goes directly to the verified beneficiary, while we focus on verification, transparency, and accountability.</p>
       </div>
       <div class="space-y-3 pt-1">
-        <div *ngFor="let s of [
-          { b: '100% Reaches the Cause:', t: 'We never hold, deduct from, or take a cut of your donation at any stage.' },
-          { b: 'Verified Campaigns Only:', t: 'Every Masjid, orphanage, NGO, school, and medical case is reviewed by our team before it\'s published.' },
-          { b: 'Real Transparency:', t: 'Organizers share ongoing updates so you can see exactly how your contribution is making an impact.' },
-          { b: 'Built on Trust & Accountability:', t: 'From Zakah to Sadaqah, give with confidence knowing where every rupee goes.' }
-        ]" class="flex items-start gap-3">
+        <div *ngFor="let s of welcomePoints" class="flex items-start gap-3">
           <span class="text-[#E8A25C] font-bold text-lg mt-0.5 shrink-0">✓</span>
           <p class="text-[#E2D3B8] text-sm"><strong class="text-[#F8F2E6]">{{ s.b }}</strong> {{ s.t }}</p>
         </div>
@@ -303,34 +333,6 @@
     <div class="bg-black/15 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-white/10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 shrink-0">
       <button (click)="closeWelcomeModal()" class="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm font-medium text-[#E2D3B8] hover:text-white cursor-pointer">Continue Browsing</button>
       <button (click)="closeWelcomeModal('/campaigns')" class="w-full sm:w-auto text-center px-5 py-2.5 bg-[#B5601F] hover:bg-[#C96F28] active:scale-[0.98] text-[#F8F2E6] font-semibold rounded-xl text-sm shadow-sm transition cursor-pointer">Explore Campaigns</button>
-    </div>
-  </div>
-</div>
-<div *ngIf="isDisclaimerModalOpen" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-xs sm:p-4" role="alertdialog" aria-modal="true" aria-labelledby="disclaimer-title">
-  <div class="bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] text-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-[#B5601F]/40 flex flex-col max-h-[94vh] sm:max-h-[90vh]">
-    <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0"><div class="w-10 h-1.5 rounded-full bg-white/20"></div></div>
-    <div class="bg-white/5 border-b border-white/10 px-5 sm:px-6 py-4 sm:py-5 flex items-center gap-3 shrink-0">
-      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-[#B5601F]/20 border border-[#B5601F]/40 text-[#E8A25C] flex items-center justify-center text-xl shrink-0">⚠️</div>
-      <div>
-        <h3 id="disclaimer-title" class="font-bold text-base sm:text-lg leading-tight">Important Notice</h3>
-        <p class="text-[#E8A25C] text-[10px] sm:text-xs font-medium tracking-wide uppercase mt-0.5">Please read carefully</p>
-      </div>
-    </div>
-    <div class="p-5 sm:p-6 space-y-4 overflow-y-auto">
-      <p class="text-[#E2D3B8] text-sm sm:text-base leading-relaxed">Assalamu Alaikum, dear donors. We humbly request a moment of your attention regarding an important matter.</p>
-      <div class="space-y-3">
-        <div *ngFor="let p of disclaimerPoints" class="flex items-start gap-3">
-          <span class="text-[#E8A25C] font-bold text-lg mt-0.5 shrink-0">✓</span>
-          <p class="text-[#E2D3B8] text-sm leading-relaxed"><strong class="text-[#F8F2E6]">{{ p.b }}</strong> {{ p.t }}</p>
-        </div>
-      </div>
-      <div class="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
-        <p class="text-[#E8C79A] text-sm leading-relaxed">We sincerely apologize for any inconvenience and kindly request your understanding and continued trust. May Allah reward your sincere intention, for as the Prophet ﷺ taught, <span class="italic">"Actions are judged by intentions."</span></p>
-        <p class="text-xs text-[#E2D3B8]">Questions or concerns? Please <a routerLink="/contact" (click)="closeDisclaimerModal(true)" class="font-semibold text-[#E8A25C] hover:underline">contact us</a>. Jazakumullahu khairan.</p>
-      </div>
-    </div>
-    <div class="bg-black/15 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-white/10 shrink-0">
-      <button (click)="closeDisclaimerModal()" class="w-full px-5 py-3 bg-[#B5601F] hover:bg-[#C96F28] active:scale-[0.98] text-[#F8F2E6] font-bold rounded-xl text-sm shadow-sm transition-all duration-300 hover:-translate-y-0.5 cursor-pointer">I Understand</button>
     </div>
   </div>
 </div>

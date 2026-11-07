@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -26,6 +26,55 @@ export class DonateComponent implements OnInit, OnDestroy {
   donorMessage = '';
   isProcessingPayment = false;
   private destroy$ = new Subject<void>();
+
+  // ---- Mobile helpers ----
+  showDonateBar = true;   // floating donate bar: visible until the donation box is on screen
+  linkCopied = false;     // "Link copied" hint after sharing on browsers without the share sheet
+  private donateObserver?: IntersectionObserver;
+
+  // Watches the donation box (it only exists once the campaign has loaded). The bar shows only
+  // while the box is still below the screen; it hides once the box is visible or already passed.
+  @ViewChild('donateBox') set donateBoxRef(ref: ElementRef<HTMLElement> | undefined) {
+    this.donateObserver?.disconnect();
+    if (!ref || typeof IntersectionObserver === 'undefined') return;
+    this.donateObserver = new IntersectionObserver(([entry]) => {
+      const below = !entry.isIntersecting && entry.boundingClientRect.top > 0;
+      if (below !== this.showDonateBar) {
+        this.showDonateBar = below;
+        this.cdRef.detectChanges();
+      }
+    });
+    this.donateObserver.observe(ref.nativeElement);
+  }
+
+  get fundedPercent(): number {
+    const goal = Number(this.campaign?.goal) || 0;
+    if (!goal) return 0;
+    return Math.min(100, Math.round(((Number(this.campaign?.raised) || 0) / goal) * 100));
+  }
+
+  get remaining(): number {
+    return Math.max(0, (Number(this.campaign?.goal) || 0) - (Number(this.campaign?.raised) || 0));
+  }
+
+  // Share the campaign: native share sheet on phones (WhatsApp etc.), otherwise copy the link
+  async share(): Promise<void> {
+    const url = window.location.href;
+    const title = this.campaign?.title || 'Nusrah campaign';
+    const nav: any = navigator;
+    try {
+      if (nav.share) {
+        await nav.share({ title, text: `Support "${title}" on Nusrah`, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      this.linkCopied = true;
+      this.cdRef.detectChanges();
+      setTimeout(() => { this.linkCopied = false; this.cdRef.detectChanges(); }, 2000);
+    } catch {
+      // share sheet dismissed or clipboard unavailable: nothing to do
+    }
+  }
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private cdRef: ChangeDetectorRef) {}
 
@@ -67,6 +116,7 @@ export class DonateComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.donateObserver?.disconnect();
   }
 
   private done(error = ''): void {

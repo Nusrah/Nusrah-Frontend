@@ -30,8 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   calculatedZakatResult: number | null = null;
   isEligibleForZakat = false;
   isWelcomeModalOpen = false;
-  isDisclaimerModalOpen = false;
-  private pendingRoute: string | null = null; // where to go after the disclaimer is acknowledged
+  isWelcomeInfoOpen = false; // mobile welcome box: expanded or collapsed
   // lives on the class itself, so it resets on a full page load or refresh,
   // but clicking "Home" again inside the app doesn't bring the popup back
   private static welcomeShownThisLoad = false;
@@ -72,14 +71,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     { b: 'Economic Circulation:', t: 'Prevents wealth concentration in few hands and fosters robust community solidarity and mutual trust.' }
   ];
 
-  // Points shown in the important-notice (disclaimer) popup
-  disclaimerPoints = [
-    { b: 'Payment gateway temporarily unavailable:', t: 'Our online payment gateway is currently out of service, and we are working to restore it as soon as possible.' },
-    { b: 'Please note the banking details:', t: 'For the time being, the bank details shown on each campaign belong to Nusrah and not to the individuals or organizations receiving the donations.' },
-    { b: 'Every donation reaches its campaign:', t: 'We receive the donations and pass them on to the people of that same campaign.' },
-    { b: 'Why we do this:', t: 'This arrangement lets us track every contribution safely and transparently, which we believe is the most responsible option until the gateway is back.' },
-    { b: 'This is only temporary:', t: 'Once the payment gateway is restored, you will be able to donate directly to the people in need, which was our first and foundational idea.' },
-    { b: 'Our commitment to you:', t: 'Every campaign continues to be reviewed by our team and volunteers, and we will keep sharing updates so you can see the impact of your contribution.' }
+  // Points shown in the welcome popup (desktop modal and mobile box)
+  welcomePoints = [
+    { b: '100% Reaches the Cause:', t: 'We never hold, deduct from, or take a cut of your donation at any stage.' },
+    { b: 'Verified Campaigns Only:', t: "Every Masjid, orphanage, NGO, school, and medical case is reviewed by our team before it's published." },
+    { b: 'Real Transparency:', t: 'Organizers share ongoing updates so you can see exactly how your contribution is making an impact.' },
+    { b: 'Built on Trust & Accountability:', t: 'From Zakah to Sadaqah, give with confidence knowing where every rupee goes.' }
   ];
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
@@ -130,19 +127,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  // Closing the welcome popup always leads to the important-notice popup.
-  // If a route is passed (e.g. '/campaigns'), we go there after the notice is acknowledged.
+  // Closes the welcome popup. If a route is passed (e.g. '/campaigns'), we go there straight away.
   closeWelcomeModal(route?: string): void {
     this.isWelcomeModalOpen = false;
-    this.pendingRoute = route ?? null;
-    this.isDisclaimerModalOpen = true;
+    this.isWelcomeInfoOpen = false;
+    if (route) this.router.navigate([route]);
   }
 
-  closeDisclaimerModal(skipNavigation = false): void {
-    this.isDisclaimerModalOpen = false;
-    const route = skipNavigation ? null : this.pendingRoute;
-    this.pendingRoute = null;
-    if (route) this.router.navigate([route]);
+  toggleWelcomeInfo(): void {
+    this.isWelcomeInfoOpen = !this.isWelcomeInfoOpen;
   }
 
   startHeroAutoplay(): void {

@@ -1,3 +1,8 @@
+<!-- Reusable dropdown arrow (mobile only: hidden from the sm breakpoint up) -->
+<ng-template #chev let-open="open" let-cls="cls">
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="sm:hidden shrink-0 w-5 h-5 transition-transform duration-300" [ngClass]="[cls, open ? 'rotate-180' : '']"><path d="M6 9l6 6 6-6"/></svg>
+</ng-template>
+
 <div class="min-h-screen bg-[#F8F2E6] dark:bg-[#1F1A0F] transition-colors duration-300">
 
   <!-- ============ HERO ============ -->
@@ -5,7 +10,7 @@
     <div class="pointer-events-none absolute -top-24 -left-24 w-96 h-96 rounded-full bg-[#B5601F]/10 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-32 -right-20 w-[28rem] h-[28rem] rounded-full bg-[#E8A25C]/15 blur-3xl"></div>
 
-    <div class="relative max-w-4xl mx-auto px-5 sm:px-8 py-16 sm:py-24 lg:py-28 text-center space-y-6">
+    <div class="relative max-w-4xl mx-auto px-5 sm:px-8 py-12 sm:py-24 lg:py-28 text-center space-y-6">
       <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
         Join Our Team &amp; Earn <span class="text-[#E8A25C]">Sadaqah Jariyah</span>
       </h1>
@@ -31,59 +36,83 @@
     </div>
   </section>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16 sm:space-y-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-10 sm:space-y-24">
 
     <!-- ============ QURAN VERSES ============ -->
-    <section class="space-y-8 sm:space-y-10">
+    <section class="space-y-5 sm:space-y-10">
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <span class="inline-block bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">From the Qur'an</span>
         <h2 class="text-2xl sm:text-4xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Words of Allah on Giving</h2>
         <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Every act of service you do for the sake of Allah is a seed planted for the Hereafter.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
         <div *ngFor="let v of verses; let i = index"
-             class="relative overflow-hidden rounded-3xl p-6 sm:p-8 space-y-4 shadow-md hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1.5"
+             class="relative overflow-hidden rounded-2xl sm:rounded-3xl p-4 sm:p-8 sm:space-y-4 shadow-md hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1.5"
              [ngClass]="i === 2
                ? 'bg-gradient-to-br from-[#2A1B12] to-[#6B380F] text-white border border-[#B5601F]/30'
                : 'bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534]'">
-          <div class="flex items-center justify-between gap-3">
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"
-                  [ngClass]="i === 2 ? 'bg-[#B5601F]/25 text-[#E8A25C]' : 'bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222]'">{{ v.theme }}</span>
-            <span class="text-2xl" [ngClass]="i === 2 ? 'text-[#E8A25C]/60' : 'text-[#B5601F]/40'">❝</span>
+          <h3>
+            <button type="button" (click)="toggleCard('v' + i)" [attr.aria-expanded]="isCardOpen('v' + i)" class="w-full flex items-center justify-between gap-3 text-left cursor-pointer sm:cursor-default sm:pointer-events-none">
+              <span class="min-w-0 flex flex-col items-start gap-1.5">
+                <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"
+                      [ngClass]="i === 2 ? 'bg-[#B5601F]/25 text-[#E8A25C]' : 'bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222]'">{{ v.theme }}</span>
+                <span class="sm:hidden text-[11px] font-bold tracking-wide pl-1" [ngClass]="i === 2 ? 'text-[#E8A25C]' : 'text-[#B5601F] dark:text-[#DF8642]'">{{ v.ref }}</span>
+              </span>
+              <span class="flex items-center gap-3 shrink-0">
+                <span aria-hidden="true" class="hidden sm:inline text-2xl" [ngClass]="i === 2 ? 'text-[#E8A25C]/60' : 'text-[#B5601F]/40'">❝</span>
+                <ng-container *ngTemplateOutlet="chev; context: { open: isCardOpen('v' + i), cls: i === 2 ? 'text-[#F8F2E6]' : 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+              </span>
+            </button>
+          </h3>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isCardOpen('v' + i) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0 sm:overflow-visible">
+              <div class="pt-4 sm:pt-0 space-y-4">
+                <p dir="rtl" lang="ar" class="text-right text-xl sm:text-2xl leading-[2.2] font-medium"
+                   style="font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', 'Noto Naskh Arabic', serif;"
+                   [ngClass]="i === 2 ? 'text-[#F5E3C8]' : 'text-[#3E2A1E] dark:text-[#F5E3C8]'">{{ v.arabic }}</p>
+
+                <div class="h-px w-full" [ngClass]="i === 2 ? 'bg-white/15' : 'bg-[#DCC9A8] dark:bg-[#4F4534]'"></div>
+
+                <p class="text-sm sm:text-base leading-relaxed italic"
+                   [ngClass]="i === 2 ? 'text-[#E8C79A]' : 'text-[#4A3627] dark:text-[#EAE5E1]'">"{{ v.meaning }}"</p>
+                <p *ngIf="v.note" class="text-xs sm:text-sm leading-relaxed"
+                   [ngClass]="i === 2 ? 'text-[#E8A25C]' : 'text-[#8F4A16] dark:text-[#DF8642]'">{{ v.note }}</p>
+
+                <p class="hidden sm:block text-xs font-bold tracking-wide" [ngClass]="i === 2 ? 'text-[#E8A25C]' : 'text-[#B5601F] dark:text-[#DF8642]'">— {{ v.ref }}</p>
+              </div>
+            </div>
           </div>
-
-          <p dir="rtl" lang="ar" class="text-right text-xl sm:text-2xl leading-[2.2] font-medium"
-             style="font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', 'Noto Naskh Arabic', serif;"
-             [ngClass]="i === 2 ? 'text-[#F5E3C8]' : 'text-[#3E2A1E] dark:text-[#F5E3C8]'">{{ v.arabic }}</p>
-
-          <div class="h-px w-full" [ngClass]="i === 2 ? 'bg-white/15' : 'bg-[#DCC9A8] dark:bg-[#4F4534]'"></div>
-
-          <p class="text-sm sm:text-base leading-relaxed italic"
-             [ngClass]="i === 2 ? 'text-[#E8C79A]' : 'text-[#4A3627] dark:text-[#EAE5E1]'">"{{ v.meaning }}"</p>
-          <p *ngIf="v.note" class="text-xs sm:text-sm leading-relaxed"
-             [ngClass]="i === 2 ? 'text-[#E8A25C]' : 'text-[#8F4A16] dark:text-[#DF8642]'">{{ v.note }}</p>
-
-          <p class="text-xs font-bold tracking-wide" [ngClass]="i === 2 ? 'text-[#E8A25C]' : 'text-[#B5601F] dark:text-[#DF8642]'">— {{ v.ref }}</p>
         </div>
       </div>
     </section>
 
     <!-- ============ WHAT YOU'LL DO ============ -->
-    <section class="space-y-8 sm:space-y-10">
+    <section class="space-y-5 sm:space-y-10">
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <span class="inline-block bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Your Role</span>
         <h2 class="text-2xl sm:text-4xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">What You'll Do as a Volunteer</h2>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6">
-        <div *ngFor="let r of roles" class="bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-3xl p-6 sm:p-8 space-y-4 shadow-md hover:shadow-xl transition-all duration-300 lg:hover:-translate-y-1.5">
-          <div class="w-12 h-12 bg-[#F2DFC4] dark:bg-[#332715] rounded-2xl flex items-center justify-center text-xl shadow-xs">{{ r.icon }}</div>
-          <h3 class="text-lg sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">{{ r.title }}</h3>
-          <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ r.text }}</p>
-          <ul class="space-y-2.5 text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-1">
-            <li *ngFor="let p of r.points" class="flex items-start gap-2.5"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> {{ p }}</li>
-          </ul>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div *ngFor="let r of roles; let i = index" class="bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl sm:rounded-3xl p-4 sm:p-8 sm:space-y-4 shadow-md hover:shadow-xl transition-all duration-300 lg:hover:-translate-y-1.5">
+          <h3>
+            <button type="button" (click)="toggleCard('r' + i)" [attr.aria-expanded]="isCardOpen('r' + i)" class="w-full flex items-center gap-3 text-left cursor-pointer sm:flex-col sm:items-start sm:gap-4 sm:cursor-default sm:pointer-events-none">
+              <span aria-hidden="true" class="w-10 h-10 sm:w-12 sm:h-12 bg-[#F2DFC4] dark:bg-[#332715] rounded-xl sm:rounded-2xl flex items-center justify-center text-lg sm:text-xl shadow-xs shrink-0">{{ r.icon }}</span>
+              <span class="flex-1 min-w-0 sm:flex-none block text-base sm:text-xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0]">{{ r.title }}</span>
+              <ng-container *ngTemplateOutlet="chev; context: { open: isCardOpen('r' + i), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+            </button>
+          </h3>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isCardOpen('r' + i) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0 sm:overflow-visible">
+              <div class="pt-4 sm:pt-0 space-y-3 sm:space-y-4">
+                <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ r.text }}</p>
+                <ul class="space-y-2.5 text-sm text-[#4A3627] dark:text-[#EAE5E1] pt-1">
+                  <li *ngFor="let p of r.points" class="flex items-start gap-2.5"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span> {{ p }}</li>
+                </ul>
+              </div>
+          </div>
+          </div>
         </div>
       </div>
 
@@ -95,26 +124,32 @@
           <h3 class="text-xl sm:text-2xl font-bold">Sadaqah Jariyah &amp; Aakhirah Rewards</h3>
           <p class="text-[#E8C79A] text-sm sm:text-base italic leading-relaxed">"When a person dies, all their deeds come to an end except three: ongoing charity (Sadaqah Jariyah), beneficial knowledge, or a righteous child who prays for them." <span class="not-italic text-[#E8A25C] font-semibold">(Sahih Muslim)</span></p>
         </div>
-        <button type="button" (click)="openRegisterModal()" class="relative w-full md:w-auto shrink-0 bg-[#B5601F] hover:bg-[#C96F28] text-white font-bold px-7 py-3.5 rounded-2xl shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-[0.98] cursor-pointer text-sm">
-          Register as Volunteer
-        </button>
       </div>
     </section>
 
     <!-- ============ HOW TO JOIN ============ -->
-    <section class="space-y-8 sm:space-y-10">
+    <section class="space-y-5 sm:space-y-10">
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <span class="inline-block bg-[#F2DFC4] dark:bg-[#332715] text-[#8F4A16] dark:text-[#DD7222] text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">How to Join</span>
         <h2 class="text-2xl sm:text-4xl font-extrabold text-[#3E2A1E] dark:text-[#EBE4E0]">Three Simple Steps</h2>
         <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base">Follow these steps to start your journey as a Nusrah volunteer.</p>
       </div>
 
-      <div class="relative grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+      <div class="relative grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
         <div class="hidden md:block absolute top-[2.35rem] left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-[#B5601F]/10 via-[#B5601F]/50 to-[#B5601F]/10"></div>
-        <div *ngFor="let s of steps; let i = index" class="relative bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-3xl p-6 sm:p-8 text-center space-y-3 shadow-md hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1.5">
-          <div class="relative mx-auto w-14 h-14 bg-gradient-to-br from-[#B5601F] to-[#8F4A16] text-white font-extrabold rounded-2xl flex items-center justify-center text-xl shadow-md ring-4 ring-[#F2E9D8] dark:ring-[#221D12]">{{ i + 1 }}</div>
-          <h3 class="font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-lg">{{ s.title }}</h3>
-          <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ s.text }}</p>
+        <div *ngFor="let s of steps; let i = index" class="relative bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] rounded-2xl sm:rounded-3xl p-4 sm:p-8 text-left sm:text-center sm:space-y-3 shadow-md hover:shadow-xl transition-all duration-300 md:hover:-translate-y-1.5">
+          <h3>
+            <button type="button" (click)="toggleCard('s' + i)" [attr.aria-expanded]="isCardOpen('s' + i)" class="w-full flex items-center gap-3 text-left cursor-pointer sm:flex-col sm:items-center sm:text-center sm:gap-3 sm:cursor-default sm:pointer-events-none">
+              <span aria-hidden="true" class="relative sm:mx-auto w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-[#B5601F] to-[#8F4A16] text-white font-extrabold rounded-xl sm:rounded-2xl flex items-center justify-center text-base sm:text-xl shadow-md sm:ring-4 ring-[#F2E9D8] dark:ring-[#221D12] shrink-0">{{ i + 1 }}</span>
+              <span class="flex-1 min-w-0 sm:flex-none block font-bold text-[#3E2A1E] dark:text-[#EBE4E0] text-base sm:text-lg">{{ s.title }}</span>
+              <ng-container *ngTemplateOutlet="chev; context: { open: isCardOpen('s' + i), cls: 'text-[#3E2A1E] dark:text-[#EBE4E0]' }"></ng-container>
+            </button>
+          </h3>
+          <div class="grid transition-[grid-template-rows] duration-300 ease-out sm:block" [ngClass]="isCardOpen('s' + i) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+            <div class="overflow-hidden min-h-0 sm:overflow-visible">
+              <p class="pt-4 sm:pt-0 text-[#5C4433] dark:text-[#EAE5E1] text-sm leading-relaxed">{{ s.text }}</p>
+          </div>
+          </div>
         </div>
       </div>
     </section>
