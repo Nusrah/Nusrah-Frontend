@@ -2,6 +2,25 @@
   <div class="w-full max-w-md space-y-6">
     <img src="/nusrah-logo.png" alt="Nusrah" class="sm:hidden mx-auto h-16 w-auto object-contain">
 
+    <!-- ============ NOTES (above the login block) ============ -->
+    <div *ngIf="justRegistered" class="flex gap-3 items-start text-left bg-[#F2DFC4] dark:bg-[#332715] border border-[#B5601F]/40 rounded-3xl p-5 shadow-lg">
+      <span class="text-xl shrink-0" aria-hidden="true">⏳</span>
+      <div class="space-y-1">
+        <p class="text-sm font-bold text-[#8F4A16] dark:text-[#E8A25C]">Your request has been received</p>
+        <p class="text-xs sm:text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">
+          If you have sent a registration request, kindly wait until Nusrah has approved it. You can <a href="/contact" class="font-semibold text-[#8F4A16] dark:text-[#E8A25C] hover:underline">contact us</a> in the meantime for any inquiries.
+        </p>
+      </div>
+    </div>
+
+    <div class="relative overflow-hidden rounded-3xl bg-[#F2E9D8] dark:bg-[#221D12] border border-[#E2D3B8] dark:border-[#4F4534] p-5 sm:p-6 text-center space-y-2 shadow-lg">
+      <p class="text-sm font-bold text-[#8F4A16] dark:text-[#DD7222]">Thank you for being a part of Nusrah 🤍</p>
+      <p class="text-sm text-[#5C4433] dark:text-[#EAE5E1] leading-relaxed">
+        We truly appreciate your time and effort for the community. May Allah reward you and your parents for your good deeds, and make your service a source of Sadaqah Jariyah for you.
+      </p>
+      <p class="text-xs italic text-[#8F4A16] dark:text-[#DF8642]">Jazakumullahu khairan</p>
+    </div>
+
     <div class="w-full rounded-3xl bg-gradient-to-br from-[#2A1B12] via-[#2A1B12] to-[#4A2A10] border border-[#B5601F]/30 shadow-2xl text-white p-6 sm:p-8 space-y-6">
 
     <!-- ============ SIGN IN ============ -->
@@ -65,13 +84,6 @@
         </div>
 
         <ng-container *ngTemplateOutlet="successBox"></ng-container>
-
-        <div *ngIf="notRegistered" class="bg-[#B5432F]/15 border border-[#B5432F]/40 p-4 rounded-xl space-y-3">
-          <p class="text-sm text-[#F5B4A6] font-medium text-center">Oops!! Seems like you have not registered yet.</p>
-          <button type="button" (click)="goToRegister()"
-                  class="w-full py-3 px-4 rounded-xl text-sm font-bold text-white bg-[#B5601F] hover:bg-[#C96F28] transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer">Register Now</button>
-        </div>
-
         <ng-container *ngTemplateOutlet="errorBox"></ng-container>
         <ng-container *ngTemplateOutlet="submitBtn; context: { $implicit: 'Sending Code...', idle: 'Send Verification OTP' }"></ng-container>
         <ng-container *ngTemplateOutlet="backBtn"></ng-container>
@@ -106,6 +118,13 @@
         <ng-container *ngTemplateOutlet="successBox"></ng-container>
         <ng-container *ngTemplateOutlet="errorBox"></ng-container>
         <ng-container *ngTemplateOutlet="submitBtn; context: { $implicit: 'Resetting...', idle: 'Update Password' }"></ng-container>
+
+        <p class="text-center text-xs text-[#A8927B] leading-relaxed">
+          Didn't get a code? Check your spam folder, or
+          <button type="button" (click)="goToRegister()" class="font-semibold text-[#E8A25C] hover:text-white cursor-pointer transition">register</button>
+          if you haven't yet.
+        </p>
+
         <ng-container *ngTemplateOutlet="backBtn"></ng-container>
       </form>
     </div>

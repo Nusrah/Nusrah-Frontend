@@ -204,6 +204,6 @@ export class RegisterComponent implements OnDestroy {
     this.showSuccessModal = false;
     this.setScrollLock(false);
     this.cdr.detectChanges();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], { state: { registered: true } });
   }
 }

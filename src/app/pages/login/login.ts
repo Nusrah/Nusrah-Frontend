@@ -21,14 +21,17 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
-  notRegistered = false; // true only when the backend says this email has no account
 
-  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
+  // true only when the user was sent here from the register page after a successful registration
+  justRegistered = false;
+
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {
+    this.justRegistered = !!this.router.getCurrentNavigation()?.extras?.state?.['registered'];
+  }
 
   switchView(targetView: 'login' | 'forgot' | 'reset') {
     this.view = targetView;
     this.errorMessage = this.successMessage = '';
-    this.notRegistered = false;
     this.cdr.detectChanges();
   }
 
@@ -70,21 +73,16 @@ export class LoginComponent {
 
   onRequestOtp() {
     if (!this.email) return this.fail('Please enter your email address.');
-    this.notRegistered = false;
     this.begin();
     this.http.post<any>('/api/auth/forgot-password', { email: this.email.trim() }).subscribe({
       next: (res) => {
+        // the backend answers the same way whether or not the email is registered, so we always move on to the OTP screen
         this.isLoading = false;
         this.view = 'reset';
-        this.successMessage = res.message || 'OTP sent successfully to your email.';
+        this.successMessage = res.message || 'If this email is registered, a verification code has been sent to it.';
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        this.isLoading = false;
-        this.notRegistered = err.status === 404; // backend returns 404 when the email isn't registered
-        this.errorMessage = this.notRegistered ? '' : err.error?.detail || 'Failed to send OTP. Please try again.';
-        this.cdr.detectChanges();
-      }
+      error: this.failWith('Failed to send OTP. Please try again.')
     });
   }
 

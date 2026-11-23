@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ThemeService } from '../../../theme';
 
 const API = '/api';
 const emptyCampaign = () => ({ title: '', location: '', description: '', goal: 0, category: '', information: '', end_date: '', bank_account_name: '', bank_account_number: '', bank_ifsc_code: '', bank_name: '', upi_id: '' });
@@ -42,7 +43,7 @@ export class VolunteerDashboardComponent implements OnInit {
   passwordError = '';
   passwordForm = { current: '', next: '', confirm: '' };
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router, public themeService: ThemeService) {}
 
   openPasswordModal(): void {
     this.passwordForm = { current: '', next: '', confirm: '' };

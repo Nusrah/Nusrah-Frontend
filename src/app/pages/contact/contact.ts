@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './contact.html',
   styleUrls: ['./contact.scss']
 })
@@ -16,22 +15,8 @@ export class ContactComponent {
   readonly whatsappDisplay = '+91 98765 43210';
   readonly instagramDisplay = '@nusrah.in';
   readonly instagramLink = 'https://www.instagram.com/nusrah.in/';
-
-  name = '';
-  email = '';
-  message = '';
-  errorMessage = '';
-  submitted = false;
-  copied = false;
-
-  // Opens the user's default mail app with a ready-made mail addressed to support
-  get mailtoLink(): string {
-    const subject = `Message from ${this.name.trim() || 'a Nusrah visitor'}`;
-    const body =
-      `Assalamu Alaikum,\r\n\r\n${this.message.trim()}\r\n\r\n` +
-      `Regards,\r\n${this.name.trim()}\r\nReply to: ${this.email.trim()}`;
-    return `mailto:${this.supportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
+  readonly twitterDisplay = '@nusrah_in'; // change to your real X handle
+  readonly twitterLink = 'https://x.com/nusrah_in'; // change to your real X profile
 
   // Opens WhatsApp directly to the support chat
   get whatsappLink(): string {
@@ -39,38 +24,59 @@ export class ContactComponent {
     return `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(text)}`;
   }
 
-  onSubmit(): void {
-    if (!this.name.trim()) { this.errorMessage = 'Please enter your name.'; return; }
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.email.trim())) {
-      this.errorMessage = 'Please enter a valid email address.';
-      return;
+  readonly infoCards = [
+    {
+      icon: '⏳',
+      title: 'Response Time',
+      text: 'Every message is read by a real person on our team.',
+      points: [
+        'Our team will respond as soon as possible.',
+        'Replies can take a little longer during busy campaign periods.',
+        'Please be patient, we have not missed your message.'
+      ]
+    },
+    {
+      icon: '📝',
+      title: 'Before You Write',
+      text: 'A few details help us answer you faster and more accurately.',
+      points: [
+        'Mention the campaign name you are asking about.',
+        'Include your name and the best way to reach you.',
+        'Keep your question clear and to the point.'
+      ]
+    },
+    {
+      icon: '🤝',
+      title: 'How We Can Help',
+      text: 'We are here for donors, volunteers and the wider community.',
+      points: [
+        'Questions about campaigns and donations.',
+        'Volunteering and local masjid assignment.',
+        'Feedback and suggestions to improve our work.'
+      ]
     }
-    if (!this.message.trim()) { this.errorMessage = 'Please write your message.'; return; }
+  ];
 
-    this.errorMessage = '';
-    this.submitted = true;
-    this.openMailApp();
-  }
-
-  openMailApp(): void {
-    window.location.href = this.mailtoLink;
-  }
-
-  async copyEmail(): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(this.supportEmail);
-      this.copied = true;
-      setTimeout(() => (this.copied = false), 2000);
-    } catch {
-      this.copied = false;
+  readonly verses = [
+    {
+      arabic: 'يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',
+      meaning: 'O you who believe, seek help through patience and prayer. Indeed, Allah is with the patient.',
+      source: 'Surah Al-Baqarah 2:153'
+    },
+    {
+      arabic: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ۝ إِنَّ مَعَ الْعُسْرِ يُسْرًا',
+      meaning: 'So indeed, with hardship comes ease. Indeed, with hardship comes ease.',
+      source: 'Surah Ash-Sharh 94:5-6'
+    },
+    {
+      arabic: 'وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ',
+      meaning: 'And cooperate with one another in righteousness and piety.',
+      source: 'Surah Al-Ma\u2019idah 5:2'
+    },
+    {
+      arabic: 'وَاللَّهُ فِي عَوْنِ الْعَبْدِ مَا كَانَ الْعَبْدُ فِي عَوْنِ أَخِيهِ',
+      meaning: 'Allah helps His servant as long as the servant helps his brother.',
+      source: 'Sahih Muslim'
     }
-  }
-
-  reset(): void {
-    this.name = '';
-    this.email = '';
-    this.message = '';
-    this.errorMessage = '';
-    this.submitted = false;
-  }
+  ];
 }

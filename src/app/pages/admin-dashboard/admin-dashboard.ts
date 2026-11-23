@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ThemeService } from '../../../theme';
 
 const API = '/api';
 
@@ -52,7 +53,7 @@ export class AdminDashboardComponent implements OnInit {
   passwordError = '';
   passwordForm = { current: '', next: '', confirm: '' };
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router, public themeService: ThemeService) {}
 
   openPasswordModal(): void {
     this.passwordForm = { current: '', next: '', confirm: '' };
@@ -137,7 +138,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
+    ['token', 'role', 'user_profile'].forEach(k => localStorage.removeItem(k));
     this.router.navigate(['/']);
   }
 
