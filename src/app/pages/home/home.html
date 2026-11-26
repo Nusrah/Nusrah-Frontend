@@ -45,7 +45,7 @@
           </div>
           <div class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-2 transition-opacity duration-700 ease-in-out" [ngClass]="heroSlideIndex === 2 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'" [attr.aria-hidden]="heroSlideIndex !== 2">
             <div class="p-6 sm:p-8 lg:p-16 flex flex-col justify-center gap-3 sm:gap-4 order-2 md:order-1">
-              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">Calculate Your Zakah with Confidence</h2>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#3E2A1E] dark:text-[#EBE4E0] leading-tight">Calculate Your Zakah and Donate</h2>
               <p class="text-[#5C4433] dark:text-[#EAE5E1] text-sm sm:text-base leading-relaxed">Work out your 2.5% Zakah on cash, gold, silver, business assets, and investments against the Nisab threshold—then give it directly to verified causes.</p>
               <div class="space-y-2 text-sm text-[#4A3627] dark:text-[#EAE5E1]">
                 <div *ngFor="let s of [{ b: 'Purifies your wealth', t: 'and brings barakah.' }, { b: 'Lifts the poor, orphans, and the needy', t: 'with direct support.' }, { b: 'Keeps wealth circulating', t: 'and communities strong.' }]" class="flex items-start gap-3"><span class="text-[#B5601F] dark:text-[#DF8642] font-bold shrink-0">✓</span><span><strong class="text-[#3E2A1E] dark:text-[#EBE4E0]">{{ s.b }}</strong> {{ s.t }}</span></div>

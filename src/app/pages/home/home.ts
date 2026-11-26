@@ -97,7 +97,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           active_campaigns: res.active_campaigns ?? res.verified_campaigns ?? 0,
           active_volunteers: res.active_volunteers ?? res.volunteers ?? 0,
           finished_campaigns: res.finished_campaigns ?? 0,
-          communities_supported: res.communities_supported ?? 15,
+          communities_supported: res.communities_supported ?? 0,
           total_donations_enabled: res.total_donations_enabled ?? 0
         };
         this.cdr.detectChanges();
