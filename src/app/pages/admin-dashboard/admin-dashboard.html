@@ -567,6 +567,7 @@
 <td class="p-4 text-[#5C4433] dark:text-[#EAE5E1] max-w-xs truncate"><span class="text-xs text-[#8A7863] dark:text-[#BFB8B1]">{{ camp.description || 'N/A' }}</span></td>
 <td class="p-4 text-right" [class.space-x-2]="pending">
 <ng-container *ngIf="pending; else addBank">
+<button (click)="openCampaignManageModal(camp)" class="text-[#3E2A1E] dark:text-[#EBE4E0] bg-[#E5D8C0] dark:bg-[#393020] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Review</button>
 <button (click)="approveCampaign(camp.id)" class="text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] hover:bg-[#F2DFC4] dark:hover:bg-[#332715] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Approve</button>
 <button (click)="rejectCampaign(camp.id)" class="text-[#B5432F] dark:text-[#D56E5C] bg-[#FBEAE5] dark:bg-[#22110C] hover:bg-[#F6DCD3] dark:hover:bg-[#26150F] font-semibold text-xs px-4 py-2 rounded-xl transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Reject</button>
 </ng-container>
@@ -590,7 +591,7 @@
 <span class="text-[#B5601F] dark:text-[#DF8642] font-semibold shrink-0 ml-2">₹{{ camp.goal | number }}</span>
 </div>
 <p class="text-xs text-[#8A7863] dark:text-[#BFB8B1] line-clamp-2">{{ camp.description || 'N/A' }}</p>
-<div *ngIf="pending; else addBankMobile" class="grid grid-cols-2 gap-2 pt-1">
+<div *ngIf="pending; else addBankMobile" class="grid grid-cols-3 gap-2 pt-1">
 <button (click)="approveCampaign(camp.id)" class="text-[#8F4A16] dark:text-[#DD7222] bg-[#F2DFC4] dark:bg-[#332715] font-semibold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition">Approve</button>
 <button (click)="rejectCampaign(camp.id)" class="text-[#B5432F] dark:text-[#D56E5C] bg-[#FBEAE5] dark:bg-[#22110C] font-semibold text-xs px-4 py-2.5 rounded-xl active:scale-[0.98] transition">Reject</button>
 </div>

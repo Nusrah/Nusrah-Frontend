@@ -238,6 +238,10 @@ export class VolunteerDashboardComponent implements OnInit {
     return this.campaigns.filter(c => c.status === 'pending_bank_details' && c.user_id === this.volunteerProfile.id);
   }
 
+  canEditCampaign(c: any): boolean {
+    return ['pending', 'pending_bank_details'].includes((c?.status || '').toLowerCase());
+  }
+
   openCampaignManageModal(campaign: any): void {
     this.selectedCampaignModal = { ...campaign };
   }
@@ -398,7 +402,7 @@ export class VolunteerDashboardComponent implements OnInit {
         alert('Campaign details updated successfully!');
         this.loadCampaigns();
       },
-      error: err => console.error('Error updating campaign', err)
+      error: err => alert(typeof err.error?.detail === 'string' ? err.error.detail : 'Could not update the campaign. Please try again.')
     });
   }
 
@@ -406,7 +410,7 @@ export class VolunteerDashboardComponent implements OnInit {
     const { bank_account_name, bank_account_number, bank_ifsc_code, bank_name, upi_id } = camp;
     this.http.put<any>(`${API}/campaigns/${camp.id}`, { bank_account_name, bank_account_number, bank_ifsc_code, bank_name, upi_id }).subscribe({
       next: res => {
-        alert(res?.campaign?.[0]?.status === 'active' ? 'Bank details saved — this campaign is now live for donors!' : 'Bank details saved successfully!');
+        alert(res?.campaign?.[0]?.status === 'pending' ? 'Bank details saved and sent to the admin for review. Your campaign will go live once they approve it.' : 'Bank details saved successfully!');
         this.loadCampaigns();
       },
       error: err => {
