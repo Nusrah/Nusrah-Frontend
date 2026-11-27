@@ -8,6 +8,29 @@ import { ThemeService } from '../../../theme';
 
 const API = '/api';
 
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const DOC_TYPES = ['application/pdf', ...IMAGE_TYPES];
+
+// Same rules the server enforces, checked first so people get a clear message before anything uploads
+function checkFiles(files: File[], kind: 'image' | 'doc'): File[] {
+  const types = kind === 'image' ? IMAGE_TYPES : DOC_TYPES;
+  const maxMb = kind === 'image' ? 5 : 8;
+  const problems: string[] = [];
+  const ok = files.filter(f => {
+    if (!types.includes(f.type)) {
+      problems.push(`${f.name}: ${kind === 'image' ? 'only JPG, PNG or WebP images are allowed' : 'only PDF, JPG, PNG or WebP files are allowed'}`);
+      return false;
+    }
+    if (f.size > maxMb * 1024 * 1024) {
+      problems.push(`${f.name}: must be ${maxMb} MB or smaller`);
+      return false;
+    }
+    return true;
+  });
+  if (problems.length) alert('Some files were not added:\n' + problems.join('\n'));
+  return ok;
+}
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
@@ -118,7 +141,11 @@ export class AdminDashboardComponent implements OnInit {
   private act(obs: Observable<any>, ok?: string, fail?: string, after: (res?: any) => void = () => this.loadAdminData()): void {
     obs.subscribe({
       next: res => { if (ok) alert(ok); after(res); },
-      error: err => { console.error(err); if (fail) alert(fail); }
+      error: err => {
+        console.error(err);
+        const detail = err?.error?.detail;
+        if (fail) alert(typeof detail === 'string' && err.status >= 400 && err.status < 500 ? detail : fail);
+      }
     });
   }
 
@@ -398,12 +425,12 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0] ?? this.selectedFile;
+    this.selectedFile = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0] ?? this.selectedFile;
   }
 
   onAdditionalFilesSelected(event: any): void {
     const files = event.target.files;
-    if (files) this.selectedAdditionalFiles = [...this.selectedAdditionalFiles, ...(Array.from(files) as File[]).slice(0, 10 - this.selectedAdditionalFiles.length)];
+    if (files) this.selectedAdditionalFiles = [...this.selectedAdditionalFiles, ...checkFiles((Array.from(files) as File[]).slice(0, 10 - this.selectedAdditionalFiles.length), 'image')];
   }
 
   removeAdditionalFile(index: number): void {
@@ -412,7 +439,7 @@ export class AdminDashboardComponent implements OnInit {
 
   onDocumentProofsSelected(event: any): void {
     const files = event.target.files;
-    if (files) this.selectedDocumentProofs = [...this.selectedDocumentProofs, ...(Array.from(files) as File[])];
+    if (files) this.selectedDocumentProofs = [...this.selectedDocumentProofs, ...checkFiles((Array.from(files) as File[]).slice(0, 5 - this.selectedDocumentProofs.length), 'doc')];
   }
 
   removeDocumentProofFile(index: number): void {
@@ -420,16 +447,16 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onCreateQrCodeSelected(event: any): void {
-    this.selectedQrCodeFile = event.target.files[0] ?? this.selectedQrCodeFile;
+    this.selectedQrCodeFile = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0] ?? this.selectedQrCodeFile;
   }
 
   onPhotoUploadSelected(event: any, campaignId: string): void {
-    const file = event.target.files[0];
+    const file = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0];
     if (file) this.act(this.http.post(`${API}/campaigns/${campaignId}/upload-photo`, this.form('file', [file])), 'Campaign cover photo updated successfully!');
   }
 
   onQrCodeUploadSelected(event: any, campaignId: string): void {
-    const file = event.target.files[0];
+    const file = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0];
     if (!file) return;
     this.act(this.http.post<any>(`${API}/campaigns/${campaignId}/upload-qr-code`, this.form('file', [file])), 'UPI QR Code uploaded successfully!', 'Failed to upload QR code image.', res => {
       if (res.upi_qr_code_url && this.selectedCampaignModal) this.selectedCampaignModal.upi_qr_code_url = res.upi_qr_code_url;
@@ -438,13 +465,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onGalleryUploadSelected(event: any, campaignId: string): void {
-    const files = event.target.files;
-    if (files) this.act(this.http.post(`${API}/campaigns/${campaignId}/upload-gallery`, this.form('files', files)), 'Gallery photos added successfully!');
+    const files = checkFiles(Array.from<File>(event.target.files), 'image');
+    if (files.length) this.act(this.http.post(`${API}/campaigns/${campaignId}/upload-gallery`, this.form('files', files)), 'Gallery photos added successfully!');
   }
 
   onDocumentUploadSelected(event: any, campaignId: string): void {
-    const files = event.target.files;
-    if (files) this.act(this.http.post(`${API}/campaigns/${campaignId}/upload-documents`, this.form('documents', files)), 'PDF document proofs uploaded successfully!');
+    const files = checkFiles(Array.from<File>(event.target.files), 'doc').slice(0, 5);
+    if (files.length) this.act(this.http.post(`${API}/campaigns/${campaignId}/upload-documents`, this.form('documents', files)), 'PDF document proofs uploaded successfully!');
   }
 
   createCampaign(): void {
@@ -529,9 +556,6 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  updateCampaignFunds(camp: any): void {
-    this.act(this.http.put(`${API}/admin/campaigns/${camp.id}`, { raised: camp.raised_input }), 'Raised funds updated successfully!');
-  }
 
   deleteCampaign(id: string): void {
     if (confirm('Are you sure you want to delete this campaign?')) this.act(this.http.delete(`${API}/campaigns/${id}`));

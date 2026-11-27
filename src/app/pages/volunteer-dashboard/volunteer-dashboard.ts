@@ -12,6 +12,29 @@ const toArray = (v: any): any[] => {
   return Array.isArray(v) ? v : [];
 };
 
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const DOC_TYPES = ['application/pdf', ...IMAGE_TYPES];
+
+// Same rules the server enforces, checked first so people get a clear message before anything uploads
+function checkFiles(files: File[], kind: 'image' | 'doc'): File[] {
+  const types = kind === 'image' ? IMAGE_TYPES : DOC_TYPES;
+  const maxMb = kind === 'image' ? 5 : 8;
+  const problems: string[] = [];
+  const ok = files.filter(f => {
+    if (!types.includes(f.type)) {
+      problems.push(`${f.name}: ${kind === 'image' ? 'only JPG, PNG or WebP images are allowed' : 'only PDF, JPG, PNG or WebP files are allowed'}`);
+      return false;
+    }
+    if (f.size > maxMb * 1024 * 1024) {
+      problems.push(`${f.name}: must be ${maxMb} MB or smaller`);
+      return false;
+    }
+    return true;
+  });
+  if (problems.length) alert('Some files were not added:\n' + problems.join('\n'));
+  return ok;
+}
+
 @Component({
   selector: 'app-volunteer-dashboard',
   standalone: true,
@@ -149,7 +172,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   onVolunteerPhotoSelected(event: any): void {
-    const file = event.target.files[0];
+    const file = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0];
     if (!file) return;
     const formData = new FormData();
     formData.append('file', file, file.name);
@@ -165,7 +188,7 @@ export class VolunteerDashboardComponent implements OnInit {
       },
       error: err => {
         console.error('Failed to upload profile photo', err);
-        alert('Could not upload profile photo.');
+        alert(typeof err.error?.detail === 'string' && err.status < 500 ? err.error.detail : 'Could not upload profile photo.');
       }
     });
   }
@@ -264,12 +287,12 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0] || this.selectedFile;
+    this.selectedFile = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0] || this.selectedFile;
   }
 
   onAdditionalFilesSelected(event: any): void {
     const files = event.target.files;
-    if (files) this.selectedAdditionalFiles = [...this.selectedAdditionalFiles, ...Array.from<File>(files).slice(0, 10 - this.selectedAdditionalFiles.length)];
+    if (files) this.selectedAdditionalFiles = [...this.selectedAdditionalFiles, ...checkFiles(Array.from<File>(files).slice(0, 10 - this.selectedAdditionalFiles.length), 'image')];
   }
 
   removeAdditionalFile(index: number): void {
@@ -278,7 +301,7 @@ export class VolunteerDashboardComponent implements OnInit {
 
   onVerificationDocsSelected(event: any): void {
     const files = event.target.files;
-    if (files) this.selectedVerificationDocs = [...this.selectedVerificationDocs, ...Array.from<File>(files)];
+    if (files) this.selectedVerificationDocs = [...this.selectedVerificationDocs, ...checkFiles(Array.from<File>(files).slice(0, 5 - this.selectedVerificationDocs.length), 'doc')];
   }
 
   removeVerificationDoc(index: number): void {
@@ -286,7 +309,7 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   onCreateQrCodeSelected(event: any): void {
-    this.selectedQrCodeFile = event.target.files[0] || this.selectedQrCodeFile;
+    this.selectedQrCodeFile = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0] || this.selectedQrCodeFile;
   }
 
   fillSampleCampaignData(): void {
@@ -302,21 +325,24 @@ export class VolunteerDashboardComponent implements OnInit {
   }
 
   onPhotoUploadSelected(event: any, campaignId: string): void {
-    const file = event.target.files[0];
+    const file = checkFiles(Array.from<File>(event.target.files).slice(0, 1), 'image')[0];
     if (file) this.uploadProgressPhoto(campaignId, file);
   }
 
   private uploadFiles(event: any, campaignId: string, path: string, field: string, okMsg: string, errMsg: string): void {
-    const files = event.target.files;
-    if (!files) return;
+    const files = checkFiles(Array.from<File>(event.target.files || []), field === 'files' ? 'image' : 'doc').slice(0, field === 'files' ? 10 : 5);
+    if (!files.length) return;
     const formData = new FormData();
-    Array.from<File>(files).forEach(f => formData.append(field, f, f.name));
+    files.forEach(f => formData.append(field, f, f.name));
     this.http.post(`${API}/campaigns/${campaignId}/${path}`, formData).subscribe({
       next: () => {
         alert(okMsg);
         this.loadCampaigns();
       },
-      error: err => console.error(errMsg, err)
+      error: err => {
+        console.error(errMsg, err);
+        alert(typeof err.error?.detail === 'string' && err.status < 500 ? err.error.detail : errMsg);
+      }
     });
   }
 
@@ -405,16 +431,6 @@ export class VolunteerDashboardComponent implements OnInit {
     });
   }
 
-  updateProgress(campaign: any): void {
-    this.http.put(`${API}/campaigns/${campaign.id}/progress`, { raised: Number(campaign.raised) }).subscribe({
-      next: () => {
-        alert('Campaign raised amount updated successfully!');
-        this.loadCampaigns();
-      },
-      error: err => console.error('Failed to update progress', err)
-    });
-  }
-
   uploadProgressPhoto(campaignId: string, file: File): void {
     const formData = new FormData();
     formData.append('file', file, file.name);
@@ -423,7 +439,10 @@ export class VolunteerDashboardComponent implements OnInit {
         alert('Campaign cover photo updated successfully!');
         this.loadCampaigns();
       },
-      error: err => console.error('Failed to upload photo', err)
+      error: err => {
+        console.error('Failed to upload photo', err);
+        alert(typeof err.error?.detail === 'string' && err.status < 500 ? err.error.detail : 'Could not upload the photo.');
+      }
     });
   }
 
